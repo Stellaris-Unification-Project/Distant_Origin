@@ -1,0 +1,55 @@
+﻿l_english:
+
+# Vengeful Refugees dialogue
+ VR_HOSTILE_GREETING_01:0 "When the [Root.home_planet.Owner.GetSpeciesAdj] race first made contact, many of our people believed they could be trusted. That mistake cost us §Y[Root.home_planet.GetName]§!, our homeworld, and we do not intend to repeat it."
+
+ VR_HOSTILE_GREETING_02A:0 "You would find us a formidable opponent, [From.GetSpeciesName], even without our homeworld."
+ VR_HOSTILE_GREETING_02B:0 "You would find us a formidable opponent, [From.GetRulerTitle], even without our homeworld."
+
+ VR_HOSTILE_GREETING_03:0 "The children of [Root.home_planet.GetName] stand united against you, [From.GetSpeciesNameInsult]. You will NOT defeat us a second time!"
+
+ VR_HOSTILE_GREETING_04:0 "§Y[Root.home_planet.GetName]§! will be ours again. We are back, and we will have our vengeance one day!"
+
+ VR_DOMINEERING_GREETING_01:0 "We spare you now because we know how it feels to be helpless before an alien power. But make no mistake, we WILL smite you if it proves necessary."
+
+ VR_DOMINEERING_GREETING_02:0 "How does it feel, [From.GetSpeciesName]? To stand completely helpless before an alien threat? A reckoning is coming soon, [From.GetSpeciesNameInsult], and we will ensure that none of you escape the blastwave."
+
+ VR_NEUTRAL_GREETING_01:0 "We used to live on another world, a [Root.home_planet.GetPlanetMoon] called §Y[Root.home_planet.GetName]§!. But when [Root.home_planet.Owner.GetSpeciesAdj] forces invaded, centuries ago, we were forced to leave that place behind. We will return... someday..."
+
+ VR_NEUTRAL_GREETING_02:0 "We intend to re-claim §Y[Root.home_planet.GetName]§!, by any means necessary. So long as the [From.GetName] does not stand in our way, we have no quarrel with you."
+
+ VR_THREATENED_GREETING_01:0 "We've been outnumbered before. Do what you will -- the [Root.GetName] will survive regardless."
+
+ VR_THREATENED_GREETING_02:0 "The [Root.GetName] will never yield, [From.GetSpeciesNameInsult]! Even if you take [Root.Capital.GetName] too, it will only make us stronger in the long run."
+
+ VR_FRIENDLY_GREETING_01:0 "With friends like the [From.GetName] by our side, the [Root.home_planet.space_owner.GetName] won't know what hit them. §Y[Root.home_planet.GetName]§! is finally within our reach again!"
+
+ VR_FRIENDLY_GREETING_02:0 "To what do we own the pleasure, [From.GetRulerTitle]? Have you come to lend us aid against the [Root.home_planet.space_owner.GetAdj] fleets guarding §Y[Root.home_planet.GetName]§!?"
+
+ VR_WAR_GREETING_01:0 "You have no idea what's begun here."
+
+ VR_WAR_GREETING_02:0 "The [Root.home_planet.Owner.GetSpeciesAdj] military couldn't destroy us. What makes you think you [From.GetSpeciesNamePlural] will?"
+
+ VR_WAR_GREETING_03:0 "This war will be your end. When the dust settles on §Y[Root.home_planet.GetName]§!, the [From.GetName] will be no more and the [Root.GetSpeciesAdj] people will have finally had our revenge!"
+
+ VR_WAR_GREETING_04:0 "For §Y[Root.home_planet.GetName]§!! For every [Root.GetSpeciesSpawnName] that died in the first war, and every [Root.GetSpeciesNameCompliment] to be born after this one!"
+
+ VR_VASSAL_GREETING_01:0 "This is just a temporary arrangement, of course. We look forward to regaining our sovereignty once §Y[Root.home_planet.GetName]§! is ours again."
+
+ VR_VASSAL_GREETING_DISLOYAL_01:0 "This is growing tiresome, [From.GetRulerTitle]. If you won't return §Y[Root.home_planet.GetName]§! to us, perhaps it's time for us to part ways and do it ourselves."
+
+ VR_VASSAL_GREETING_DISLOYAL_02:0 "[From.GetSpeciesAdj] filth! We will remember this humiliation when our armies land on [From.Capital.GetName]!"
+
+ VR_DOW_PROPOSE_01:0 "The [Root.GetName] have proven to be an obstacle to the [From.GetSpeciesAdj] cause. That threat must be removed, by any means necessary."
+
+ VR_DOW_PROPOSE_02:0 "We are back, [Root.GetSpeciesName], and we are coming for you! §Y[From.home_planet.GetName]§! will soon belong to [From.GetSpeciesNamePlural] once again!"
+
+ VR_01_DOW_HOSTILE_ACCEPT:0 "We expected as much. [Root.GetSpeciesName]-kind already survived one alien invasion, and we are fully capable of surviving this one."
+
+ VR_02_DOW_HOSTILE_ACCEPT:0 "This war will be your end, [From.GetSpeciesName]. §Y[Root.home_planet.GetName]§! will soon belong to [Root.GetSpeciesNamePlural] once again!"
+
+ VR_01_DOW_NEUTRAL_ACCEPT:0 "We should have known better than to trust a [From.GetSpeciesName]. You will find us ready to defend ourselves!"
+
+ VR_02_DOW_NEUTRAL_ACCEPT:0 "I knew it! [From.GetSpeciesNamePlural] can never be trusted!"
+
+ VR_01_DOW_FRIENDLY_ACCEPT:0 "Backstabbing [From.GetSpeciesNamePluralInsult]! You will not destroy us!"

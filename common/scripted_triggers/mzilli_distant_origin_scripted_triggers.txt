@@ -1,0 +1,109 @@
+has_not_aquatics = {
+	NOT = { host_has_dlc = "Aquatics Species Pack" }
+}
+
+has_ancrel_and_humanoids = {
+	host_has_dlc = "Ancient Relics Story Pack"
+	host_has_dlc = "Humanoids Species Pack"
+}
+
+has_ancrel_and_not_humanoids = {
+	host_has_dlc = "Ancient Relics Story Pack"
+	NOT = { host_has_dlc = "Humanoids Species Pack" }
+}
+
+has_a_distant_origin_trait = {
+	OR = {
+		has_trait = trait_mzilli_distant_origin_sol
+		has_trait = trait_mzilli_distant_origin_xarmir
+		has_trait = trait_mzilli_distant_origin_1
+		has_trait = trait_mzilli_distant_origin_2
+		has_trait = trait_mzilli_distant_origin_3
+		has_trait = trait_mzilli_distant_origin_4
+		has_trait = trait_mzilli_distant_origin_5
+	}
+}
+
+is_distant_origin_civ = {
+	OR = {
+		AND = {
+			has_origin = origin_homeworld_occupiers
+			has_a_distant_origin_trait = yes
+		}
+		has_origin = origin_mzilli_exiles
+		has_origin = origin_lithoid
+		has_origin = origin_lost_colony
+		has_origin = origin_shattered_ring
+		has_origin = origin_void_dwellers
+		has_origin = origin_mzilli_jovian
+		has_origin = origin_celestial_remnant
+		has_origin = origin_void_nomads
+		has_origin = origin_void_marauders
+		has_origin = origin_void_reavers
+		has_origin = origin_ancient_drones
+	}
+	NOT = { has_country_flag = spawned_parent_country }
+}
+
+is_valid_vestigial_colony_site = {
+	planet_size > 11
+	planet_size < 26
+	NOR = {
+		has_anomaly = yes
+		has_planet_flag = vestigial_colony_of_@root
+		any_country = { prev = { has_planet_flag = vestigial_colony_of_@prev } }
+		has_planet_flag = prescripted_ideal
+		has_planet_flag = distant_origin_homeworld
+		has_planet_flag = distant_origin_homeworld_blank
+		has_planet_flag = polaris_patrol_3
+		has_modifier = "holy_planet"
+		has_modifier = "titanic_life"
+		is_planet_class = pc_nuked
+		is_planet_class = pc_relic
+		is_planet_class = pc_ringworld_habitable
+		is_planet_class = pc_habitat
+		is_planet_class = pc_bespin
+		exists = owner
+	}
+	solar_system = {
+		NOR = {
+			any_system_planet = { has_planet_flag = vestigial_colony_of_@root }
+			any_neighbor_system = {
+				exists = space_owner
+				space_owner = { has_country_flag = fallen_empire_4 }
+			}
+			exists = space_owner
+			exists = starbase
+			has_star_flag = wenkwort_system
+			has_star_flag = empire_home_system
+			has_star_flag = primitive_system
+			has_star_flag = sanctuary_system
+			has_star_flag = hostile_system
+			has_star_flag = sealed_system
+			has_star_flag = enclave
+			has_star_flag = guardian
+			has_star_flag = vechtar_zavonia_system
+			has_star_flag = big_rip_system
+			has_star_flag = time_loop_world_system
+			has_star_flag = toxic_moon_system
+			has_star_flag = shattered_world_system
+			has_star_flag = ice_system
+			has_star_flag = primitive_robot_system
+			has_star_flag = superflare_system
+			has_star_flag = collapse_system
+			has_star_flag = old_foes_system
+			has_star_flag = scavenger_bot_system
+			has_star_flag = living_planet_system
+			has_star_flag = elderly_tiyanki_system
+			has_star_flag = ratling_system
+			has_star_flag = ruined_empire
+			has_star_flag = escape_pod_system
+			has_star_flag = phaseshift_system
+			has_star_flag = marauder_system
+			has_star_flag = sol
+			has_star_flag = ai_system
+			has_star_flag = manufactory_system
+			has_star_flag = mzilli_supernova_system
+		}
+	}
+}

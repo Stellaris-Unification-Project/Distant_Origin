@@ -1,0 +1,18 @@
+entity = {
+ 	name = "relic_world_mars_entity"
+ 	pdxmesh = "planet_no_pole_no_clouds_mesh"
+	meshsettings = {
+		name = "planet_geosphereShape"
+		texture_diffuse = "barren_04_diffuse.dds"
+		texture_normal = "nonormal.dds"
+		texture_specular = "arctic_01_spec.dds"
+	}
+	default_state = "idle"
+	state = {
+		name = "idle"
+		animation = "idle"
+		time_offset = { 0 100 }
+		start_event = { trigger_once = yes sound = { soundeffect = "amb_planet_class" } }
+		start_event = { trigger_once = yes sound = { soundeffect = "amb_planet_class_02" } }
+	}
+}

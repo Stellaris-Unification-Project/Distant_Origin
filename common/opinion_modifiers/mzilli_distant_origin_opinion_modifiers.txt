@@ -1,0 +1,95 @@
+# STANDARD
+
+opinion_distant_origin_olive_branch = {
+	opinion = {
+		base = 20
+	}
+	decay = {
+		base = 1
+	}
+}
+
+opinion_distant_origin_rejected_olive_branch = {
+	opinion = {
+		base = -20
+	}
+	decay = {
+		base = 1
+	}
+}
+
+opinion_distant_origin_old_rivalries = {
+	opinion = {
+		base = -200
+	}
+	decay = {
+		base = 1
+	}
+}
+
+opinion_vengeful_refugees_planet_destroyed = {
+	opinion = {
+		base = 200
+		modifier = {
+			add = -800
+			has_civic = civic_vengeful_refugees
+		}
+	}
+	decay = {
+		base = 1
+	}
+}
+
+
+
+# TRIGGERED
+
+# Scope is the opinionator and FROM the target of their opinion
+
+# Two Vengeful Refugees sharing a homeworld
+triggered_opinion_distant_origin_rival_vengeful_refugees = {
+	trigger = {
+		has_civic = civic_vengeful_refugees
+		FROM = { has_civic = civic_vengeful_refugees }
+		home_planet = { is_planet = FROM.home_planet }
+	}
+	opinion = {
+		base = -75
+	}
+}
+
+# Exiles mad at you for conquering their planet
+triggered_opinion_distant_origin_angry_exiles = {
+	trigger = {
+		has_origin = origin_mzilli_exiles
+		FROM = {
+			has_origin = origin_homeworld_occupiers
+			has_country_flag = occupiers_of_@root.home_planet
+		}
+	}
+	opinion = {
+		base = -100
+	}
+}
+
+# Vengeful Refugees want their planet back
+triggered_opinion_distant_origin_vengeful_refugees = {
+	trigger = {
+		has_ai_personality = vengeful_refugees
+		home_planet = { is_inside_border = FROM }
+	}
+	opinion = {
+		base = -1000
+	}
+}
+
+# Same as above, but your subject has their homeworld
+triggered_opinion_distant_origin_vengeful_refugees_subject = {
+	trigger = {
+		has_civic = civic_vengeful_refugees
+		FROM = { any_subject = { any_system_within_border = { any_system_planet = { is_planet = root.home_planet } } } }
+	}
+	opinion = {
+		base = -200
+	}
+}

@@ -1,0 +1,186 @@
+# Available requirements:
+#
+#	SKILLS
+#	skill = 2
+#
+#	LEADER
+#	leader = scientist
+#	leader = admiral
+#	leader = general
+#	leader = ruler
+#	leader = governor
+#	
+#	MILITARY SHIPS
+#	shipclass_military = 1
+#	
+#	CIVILIAN SHIPS
+#	shipclass_constructor = 2
+#	shipclass_science_ship = 1
+#	shipclass_colonizer = 2
+#	
+#	ARMIES
+#	shipclass_transport = 1
+#	assault_armies = 2
+#	defense_armies = 1
+#	
+#	STATIONS
+#	research_station = yes
+#	mining_station = yes
+#	observation_station = yes
+#
+#	SCOPES
+#	abort_trigger
+#	this = country (project owner)
+#	from = event scope (planet or ship, MIGHT NOT EXIST)
+#	fromfrom = project creation scope (usually equals location)
+#	
+#	on_success
+#	this = event scope (ship or planet)
+#	from = project creation scope (usually equals location)
+#	
+#	on_fail
+#	this = country (project owner)
+#	from = project creation scope (usually equals location)
+
+special_project = {
+	key = "DISTANT_ORIGIN_HOMEWORLD_PROJECT"
+	cost = 0
+	days_to_research = 180
+	tech_department = society_technology
+	picture = GFX_evt_big_landing_ship
+	event_chain = do_homeworld_chain
+	icon = "gfx/interface/icons/situation_log/situation_log_archaeology.dds"
+
+	event_scope = ship_event
+
+	requirements = {
+		shipclass_science_ship = 1
+		leader = scientist
+	}
+	
+	on_success = {
+		FROMFROM = { set_surveyed = { surveyed = yes surveyor = root.owner } }
+		# Tomb world
+		if = {
+			limit = {
+				FROMFROM = {
+					OR = {
+						is_planet_class = pc_nuked
+						is_planet_class = pc_relic
+					}
+				}
+			}
+			ship_event = { id = mzilli_distant_origin.4 }
+		}
+		else_if = {
+			# Barren or machine world
+			limit = {
+				FROMFROM = {
+					OR = {
+						NOR = {
+							is_colonizable = yes
+							exists = owner
+						}
+						is_planet_class = pc_machine
+					}
+				}
+			}
+			ship_event = { id = mzilli_distant_origin.5 }
+		}
+		# Gaia world
+		else_if = {
+			limit = { FROMFROM = { is_planet_class = pc_gaia } }
+			ship_event = { id = mzilli_distant_origin.6 }
+		}
+		# Other planet class
+		else = { ship_event = { id = mzilli_distant_origin.7 } }
+	}
+}
+
+special_project = {
+	key = "DISTANT_ORIGIN_LOST_COLONY_PROJECT"
+	cost = 0
+	days_to_research = 60
+	tech_department = society_technology
+	picture = GFX_evt_star_chart
+	event_chain = vestigial_colony_search
+	icon = "gfx/interface/icons/situation_log/situation_log_archaeology.dds"
+
+	event_scope = ship_event
+
+	requirements = {
+		shipclass_science_ship = 1
+		leader = scientist
+	}
+	
+	on_success = {
+		solar_system = {
+			root.owner = {
+				if = {
+					limit = { has_country_flag = found_ancient_empire }
+					random_country = {
+						limit = { has_country_flag = precursors_of_@prev }
+						save_global_event_target_as = mzilli_ancient_empire
+					}
+				}
+			}
+			random_system_planet = {
+				limit = {
+					has_planet_flag = vestigial_colony_of_@root.owner
+					NOT = { has_planet_flag = do_passive_scan }
+				}
+				remove_planet_flag = vestigial_colony_of_@root.owner
+				set_surveyed = { surveyed = yes surveyor = root.owner }
+				planet_event = { id = mzilli_distant_origin_unification.5 }
+			}
+		}
+	}
+}
+
+special_project = {
+	key = "MZILLI_ANCIENT_CACHE"
+	cost = 0
+	days_to_research = 180
+	tech_department = society_technology
+	picture = GFX_evt_ruined_system
+	icon = "gfx/interface/icons/situation_log/situation_log_archaeology.dds"
+
+	event_scope = ship_event
+
+	requirements = {
+		shipclass_science_ship = 1
+		leader = scientist
+	}
+	
+	on_success = {
+		clear_global_event_target = mzilli_ancient_empire
+		clear_global_event_target = mzilli_fallen
+		solar_system = {
+			random_system_planet = {
+				limit = { has_planet_flag = mzilli_ancient_cache }
+				save_global_event_target_as = mzilli_ancient_cache
+			}
+		}
+		random_country = {
+			limit = { owner_species = { has_species_flag = mzilli_fallen_of_@root.owner } }
+			owner_species = { save_global_event_target_as = mzilli_fallen }
+		}
+		random_country = {
+			limit = { has_country_flag = precursors_of_@root.owner }
+			save_global_event_target_as = mzilli_ancient_empire
+			if = {
+				limit = { has_country_flag = ethic_fanatic_xenophobe }
+				ROOT = { ship_event = { id = mzilli_distant_origin_unification.21 } }
+			}
+			else_if = {
+				limit = { has_country_flag = ethic_fanatic_xenophile }
+				ROOT = { ship_event = { id = mzilli_distant_origin_unification.22 } }
+			}
+			else_if = {
+				limit = { has_country_flag = ethic_fanatic_spiritualist }
+				ROOT = { ship_event = { id = mzilli_distant_origin_unification.23 } }
+			}
+			else = { ROOT = { ship_event = { id = mzilli_distant_origin_unification.24 } } }
+		}
+	}
+}

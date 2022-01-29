@@ -1,0 +1,840 @@
+namespace = mzilli_distant_origin_start
+
+event = {
+	id = mzilli_distant_origin_start.1
+	title = OK
+	desc = OK
+	hide_window = yes
+	fire_only_once = yes
+	is_triggered_only = yes
+	
+	immediate = {
+		every_country = {
+			limit = { is_distant_origin_civ = yes }
+			set_country_flag = distant_origin_empire
+		}
+		# Assigns Fallen Empire homeworlds
+		every_country = {
+			limit = {
+				is_country_type = fallen_empire
+				NOT = { has_country_flag = fallen_empire_machine }
+			}
+			owner_species = {
+				set_species_flag = mzilli_fallen
+				set_species_homeworld = prev.capital_scope
+			}
+		}
+		# Precursor cache backup planet
+		every_galaxy_planet = {
+			limit = {
+				is_planet_class = pc_nuked
+				NOT = { exists = owner }
+				solar_system = {
+					NOR = {
+						has_star_flag = sol
+						has_star_flag = ratling_system
+					}
+				}
+			}
+			set_planet_flag = mzilli_nuked
+			solar_system = { set_star_flag = mzilli_nuked }
+		}
+
+		# Tags planets with their number if applicable
+		random_galaxy_planet = {
+			limit = {
+				exists = owner
+				is_capital = yes
+				owner = { owner_species = { has_trait = trait_mzilli_distant_origin_homeworld_1 } }
+			}
+			set_planet_flag = distant_origin_homeworld_1
+			solar_system = { set_star_flag = distant_origin_homeworld_1 }
+			every_country = {
+				limit = {
+					is_distant_origin_civ = yes
+					owner_species = { has_trait = trait_mzilli_distant_origin_1 }
+				}
+				prev = {
+					set_planet_flag = homeworld_of_@prev
+					solar_system = { set_star_flag = homeworld_of_@prevprev }
+					if = {
+						limit = { owner = { NOT = { has_origin = origin_homeworld_occupiers } } }
+						owner = {
+							set_country_flag = lost_colony_parent
+							set_country_flag = lost_colony_parent_of@prevprev
+							set_country_flag = special_intro_for@prevprev
+						}
+					}
+					else = { prev = { owner_species = { set_species_homeworld = prevprev } } }
+				}
+			}
+		}
+		random_galaxy_planet = {
+			limit = {
+				exists = owner
+				is_capital = yes
+				owner = { owner_species = { has_trait = trait_mzilli_distant_origin_homeworld_2 } }
+			}
+			set_planet_flag = distant_origin_homeworld_2
+			solar_system = { set_star_flag = distant_origin_homeworld_2 }
+			every_country = {
+				limit = {
+					is_distant_origin_civ = yes
+					owner_species = { has_trait = trait_mzilli_distant_origin_2 }
+				}
+				prev = {
+					set_planet_flag = homeworld_of_@prev
+					solar_system = { set_star_flag = homeworld_of_@prevprev }
+					if = {
+						limit = { owner = { NOT = { has_origin = origin_homeworld_occupiers } } }
+						owner = {
+							set_country_flag = lost_colony_parent
+							set_country_flag = lost_colony_parent_of@prevprev
+							set_country_flag = special_intro_for@prevprev
+						}
+					}
+					else = { prev = { owner_species = { set_species_homeworld = prevprev } } }
+				}
+			}
+		}
+		random_galaxy_planet = {
+			limit = {
+				exists = owner
+				is_capital = yes
+				owner = { owner_species = { has_trait = trait_mzilli_distant_origin_homeworld_3 } }
+			}
+			set_planet_flag = distant_origin_homeworld_3
+			solar_system = { set_star_flag = distant_origin_homeworld_3 }
+			every_country = {
+				limit = {
+					is_distant_origin_civ = yes
+					owner_species = { has_trait = trait_mzilli_distant_origin_3 }
+				}
+				prev = {
+					set_planet_flag = homeworld_of_@prev
+					solar_system = { set_star_flag = homeworld_of_@prevprev }
+					if = {
+						limit = { owner = { NOT = { has_origin = origin_homeworld_occupiers } } }
+						owner = {
+							set_country_flag = lost_colony_parent
+							set_country_flag = lost_colony_parent_of@prevprev
+							set_country_flag = special_intro_for@prevprev
+						}
+					}
+					else = { prev = { owner_species = { set_species_homeworld = prevprev } } }
+				}
+			}
+		}
+		random_galaxy_planet = {
+			limit = {
+				exists = owner
+				is_capital = yes
+				owner = { owner_species = { has_trait = trait_mzilli_distant_origin_homeworld_4 } }
+			}
+			set_planet_flag = distant_origin_homeworld_4
+			solar_system = { set_star_flag = distant_origin_homeworld_4 }
+			every_country = {
+				limit = {
+					is_distant_origin_civ = yes
+					owner_species = { has_trait = trait_mzilli_distant_origin_4 }
+				}
+				prev = {
+					set_planet_flag = homeworld_of_@prev
+					solar_system = { set_star_flag = homeworld_of_@prevprev }
+					if = {
+						limit = { owner = { NOT = { has_origin = origin_homeworld_occupiers } } }
+						owner = {
+							set_country_flag = lost_colony_parent
+							set_country_flag = lost_colony_parent_of@prevprev
+							set_country_flag = special_intro_for@prevprev
+						}
+					}
+					else = { prev = { owner_species = { set_species_homeworld = prevprev } } }
+				}
+			}
+		}
+		random_galaxy_planet = {
+			limit = {
+				exists = owner
+				is_capital = yes
+				owner = { owner_species = { has_trait = trait_mzilli_distant_origin_homeworld_5 } }
+			}
+			set_planet_flag = distant_origin_homeworld_5
+			solar_system = { set_star_flag = distant_origin_homeworld_5 }
+			every_country = {
+				limit = {
+					is_distant_origin_civ = yes
+					owner_species = { has_trait = trait_mzilli_distant_origin_5 }
+				}
+				prev = {
+					set_planet_flag = homeworld_of_@prev
+					solar_system = { set_star_flag = homeworld_of_@prevprev }
+					if = {
+						limit = { owner = { NOT = { has_origin = origin_homeworld_occupiers } } }
+						owner = {
+							set_country_flag = lost_colony_parent
+							set_country_flag = lost_colony_parent_of@prevprev
+							set_country_flag = special_intro_for@prevprev
+						}
+					}
+					else = { prev = { owner_species = { set_species_homeworld = prevprev } } }
+				}
+			}
+		}
+		# Ensures the "planet_earth" and "planet_mars" flags are assigned if possible
+		random_system = {
+			limit = { has_star_flag = sol }
+			# Mars
+			if = {
+				limit = { NOT = { any_system_planet = { has_planet_flag = planet_mars } } }
+				random_system_planet = {
+					limit = {
+						is_planet_class = pc_barren
+						NOR = {
+							is_moon = yes
+							AND = {
+								has_moon = yes
+								any_moon = { NOT = { is_planet_class = pc_habitat } }
+							}
+						}
+					}
+					set_planet_flag = planet_mars
+				}
+			}
+			# Cockroach Earth
+			if = {
+				limit = { NOT = { any_system_planet = { has_planet_flag = planet_earth } } }
+				random_system_planet = {
+					limit = { has_planet_flag = nuked_earth }
+					set_planet_flag = planet_earth
+				}
+			}
+			# Primitive(?) Earth
+			if = {
+				limit = { NOT = { any_system_planet = { has_planet_flag = planet_earth } } }
+				random_system_planet = {
+					limit = { is_planet_class = pc_continental }
+					set_planet_flag = planet_earth
+				}
+			}
+			# Tomb World Earth
+			if = {
+				limit = { NOT = { any_system_planet = { has_planet_flag = planet_earth } } }
+				random_system_planet = {
+					limit = { is_planet_class = pc_nuked }
+					set_planet_flag = planet_earth
+				}
+			}
+			# Any planet that can reasonably assumed to be Earth
+			if = {
+				limit = { NOT = { any_system_planet = { has_planet_flag = planet_earth } } }
+				random_system_planet = {
+					limit = {
+						has_moon = yes
+						NOR = {
+							is_planet_class = pc_gas_giant
+							is_planet_class = pc_ice_giant
+						}
+					}
+					set_planet_flag = planet_earth
+				}
+			}
+			random_system_planet = {
+				limit = { has_planet_flag = planet_earth }
+				# Deletes primitive humans if necessary
+				if = {
+					limit = {
+						exists = owner
+						owner = { is_country_type = primitive }
+					}
+					destroy_colony = yes
+					remove_all_buildings = yes
+					remove_all_districts = yes
+					reroll_deposits = yes
+					solar_system = { remove_star_flag = primitive_sol }
+				}
+				every_country = {
+					limit = {
+						is_distant_origin_civ = yes
+						OR = {
+							owner_species = { has_trait = trait_mzilli_distant_origin_sol }
+							has_country_flag = human_2 #Event-spawned CoM
+						}
+					}
+					prev = {
+						set_planet_flag = homeworld_of_@prev
+						solar_system = { set_star_flag = homeworld_of_@prevprev }
+						if = {
+							limit = {
+								owner = { has_country_flag = human_1 }
+								prev = { has_country_flag = human_2 }
+							}
+							owner = {
+								set_country_flag = lost_colony_parent
+								set_country_flag = lost_colony_parent_of@prevprev
+								set_country_flag = special_intro_for@prevprev
+							}
+						}
+						else = { prev = { every_owned_pop = { species = { set_species_homeworld = prevprevprev } } } }
+					}
+				}
+				if = {
+					limit = {
+						any_country = {
+							owner_species = { has_trait = trait_mzilli_distant_origin_sol }
+							has_origin = origin_mzilli_exiles
+						}
+						OR = {
+							NOT = { exists = owner }
+							owner = { NOT = { has_origin = origin_homeworld_occupiers } }
+						}
+					}
+					if = {
+						limit = { exists = owner }
+						owner = {
+							every_owned_planet = {
+								destroy_colony = yes
+								remove_all_buildings = yes
+								remove_all_districts = yes
+								reroll_deposits = yes
+							}
+						}
+					}
+					random_country = {
+						limit = {
+							owner_species = { has_trait = trait_mzilli_distant_origin_sol }
+							has_origin = origin_mzilli_exiles
+						}
+						save_global_event_target_as = source_empire
+						if = {
+							limit = {
+								OR = {
+									has_civic = civic_machine_servitor
+									has_civic = civic_machine_assimilator
+									has_civic = civic_hostile_occupation
+								}
+							}
+							random_owned_pop = {
+								limit = { species = { NOT = { is_same_value = prevprev.owner_species } } }
+								species = { save_global_event_target_as = source_species }
+							}
+						}
+						else = { owner_species = { save_global_event_target_as = source_species } }
+						prev = {
+							change_pc = event_target:source_species
+							setup_lost_homeworld = yes
+						}
+					}
+				}
+			}
+		}
+		random_galaxy_planet = {
+			limit = { has_planet_flag = xarmir }
+			every_country = {
+				limit = {
+					is_distant_origin_civ = yes
+					owner_species = { has_trait = trait_mzilli_distant_origin_xarmir }
+				}
+				prev = {
+					set_planet_flag = homeworld_of_@prev
+					solar_system = { set_star_flag = homeworld_of_@prevprev }
+					if = {
+						limit = { owner = { NOT = { has_origin = origin_homeworld_occupiers } } }
+						owner = {
+							set_country_flag = lost_colony_parent
+							set_country_flag = lost_colony_parent_of@prevprev
+							set_country_flag = special_intro_for@prevprev
+						}
+					}
+					else = { prev = { every_owned_pop = { species = { set_species_homeworld = prevprevprev } } } }
+				}
+			}
+			solar_system = {
+				if = {
+					limit = { is_inside_nebula = yes }
+					every_system_ambient_object = { destroy_ambient_object = this }
+					create_rare_nebula_2 = yes
+				}
+			}
+		}
+
+		every_galaxy_planet = {
+			limit = {
+				exists = owner
+				is_capital = yes
+				owner = {
+					has_origin = origin_homeworld_occupiers
+					NOT = { has_country_flag = occupiers_of_@prev }
+				}
+			}
+			owner = { set_country_flag = occupiers_of_@prev }
+		}
+
+		# Sets up the Vigil system
+		random_galaxy_planet = {
+			limit = { has_planet_flag = new_xarmir }
+			add_modifier = { modifier = "bleak_planet" }
+			if = {
+				limit = { owner = { is_ai = yes } }
+				set_name = "New Xarmir"
+			}
+			remove_deposit = d_failing_infrastructure
+			remove_deposit = d_failing_infrastructure
+			add_deposit = d_decrepit_dwellings
+			solar_system = {
+				random_system_planet = {
+					limit = { has_planet_flag = vigil_2 }
+					remove_planet_flag = vigil_2
+					set_name = "[This.System.GetName] II"
+					random_moon = { set_name = "[This.System.GetName] IIa" }
+				}
+				random_system_planet = {
+					limit = { has_planet_flag = vigil_3 }
+					remove_planet_flag = vigil_3
+					set_name = "[This.System.GetName] III"
+				}
+				random_system_planet = {
+					limit = { has_planet_flag = vigil_4 }
+					remove_planet_flag = vigil_4
+					set_name = "[This.System.GetName] IV"
+				}
+			}
+		}
+
+		# Sets up Distant Origin empires and spawns homeworlds if none exist
+		every_country = {
+			limit = { is_distant_origin_civ = yes }
+			if = {
+				limit = { NOT = { any_system = { has_star_flag = homeworld_of_@prev } } }
+				# Homeworld is Earth
+				if = {
+					limit = { owner_species = { has_trait = trait_mzilli_distant_origin_sol } }
+					random_system = {
+						limit = { NOT = { has_star_flag = empire_cluster } }
+						random_list = {
+							10 = {
+								modifier = {
+									factor = 0
+									prev = { has_origin = origin_mzilli_exiles }
+								}
+								spawn_system = { initializer = "distant_origin_red_giant_sol_initializer" }
+							}
+							10 = { spawn_system = { initializer = "sol_refugees_init" } }
+						}
+					}
+					random_system = {
+						limit = { has_star_flag = sol }
+						set_star_flag = homeworld_of_@prev
+						every_system_planet = { prevent_anomaly = yes }
+						# Earth
+						random_system_planet = {
+							limit = { has_planet_flag = planet_earth }
+							set_planet_flag = homeworld_of_@prevprev
+							if = {
+								limit = {
+									prevprev = {
+										NOR = {
+											ideal_planet_class = pc_continental
+											ideal_planet_class = pc_habitat
+											ideal_planet_class = pc_ringworld_habitable
+											ideal_planet_class = pc_shattered_ring_habitable
+											is_species_class = MACHINE
+											is_species_class = ROBOT
+										}
+									}
+								}
+								change_pc = prevprev
+							}
+							prevprev = {
+								save_global_event_target_as = source_empire
+								if = {
+									limit = {
+										OR = {
+											has_civic = civic_machine_servitor
+											has_civic = civic_machine_assimilator
+										}
+									}
+									random_owned_pop = {
+										limit = { species = { NOT = { is_same_value = prevprev.owner_species } } }
+										species = {
+											save_global_event_target_as = source_species
+											set_species_homeworld = prevprevprev
+										}
+									}
+									prev = { change_pc = event_target:source_species }
+								}
+								else = {
+									owner_species = { save_global_event_target_as = source_species }
+									prev = { change_pc = event_target:source_species }
+								}
+							}
+							setup_lost_homeworld = yes
+						}
+					}
+				}
+
+				else = {
+					if = { # Spawns homeworld system if none exists
+						limit = {
+							OR = {
+								NOT = { has_a_distant_origin_trait = yes }
+								AND = {
+									owner_species = { has_trait = trait_mzilli_distant_origin_1 }
+									NOT = { any_system = { has_star_flag = distant_origin_homeworld_1 } }
+								}
+								AND = {
+									owner_species = { has_trait = trait_mzilli_distant_origin_2 }
+									NOT = { any_system = { has_star_flag = distant_origin_homeworld_2 } }
+								}
+								AND = {
+									owner_species = { has_trait = trait_mzilli_distant_origin_3 }
+									NOT = { any_system = { has_star_flag = distant_origin_homeworld_3 } }
+								}
+								AND = {
+									owner_species = { has_trait = trait_mzilli_distant_origin_4 }
+									NOT = { any_system = { has_star_flag = distant_origin_homeworld_4 } }
+								}
+								AND = {
+									owner_species = { has_trait = trait_mzilli_distant_origin_5 }
+									NOT = { any_system = { has_star_flag = distant_origin_homeworld_5 } }
+								}
+							}
+						}
+						random_system = {
+							limit = { NOR = { has_star_flag = empire_cluster } }
+							random_list = {
+								10 = { spawn_system = { initializer = "distant_origin_homeworld_01" } } # S-type trinary
+								10 = { spawn_system = { initializer = "distant_origin_homeworld_02" } } # P-type trinary
+								10 = { spawn_system = { initializer = "distant_origin_homeworld_03" } } # S-type binary
+								10 = { spawn_system = { initializer = "distant_origin_homeworld_04" } } # P-type binary
+								5 = { spawn_system = { initializer = "distant_origin_homeworld_05" } } # Unary planet
+								15 = {
+									modifier = {
+										factor = 0
+										prev = {
+											OR = {
+												owner_species = { ideal_planet_class = pc_eyeball }
+												owner_species = { ideal_planet_class = pc_tidallylocked }
+											}
+										}
+									}
+									spawn_system = { initializer = "distant_origin_homeworld_06" }  # Unary moon
+								}
+								10 = {
+									modifier = {
+										factor = 0
+										prev = { has_origin = origin_mzilli_exiles }
+									}
+									spawn_system = { initializer = "distant_origin_homeworld_07" } # Supernova remnant
+								}
+							}
+						}
+						random_system = {
+							limit = { has_star_flag = distant_origin_homeworld_blank }
+							remove_star_flag = distant_origin_homeworld_blank
+							set_star_flag = homeworld_of_@prev
+							generate_home_system_resources = yes
+							random_system_planet = {
+								limit = { has_planet_flag = distant_origin_homeworld_blank }
+								remove_planet_flag = distant_origin_homeworld_blank
+								set_planet_flag = homeworld_of_@prevprev
+
+								# Changes to ideal planet class if applicable, or a random habitable class if not
+								if = {
+									limit = {
+										prevprev = {
+											NOR = {
+												is_species_class = ROBOT
+												is_species_class = MACHINE
+												ideal_planet_class = pc_habitat
+												ideal_planet_class = pc_ringworld_habitable
+												ideal_planet_class = pc_shattered_ring_habitable
+											}
+										}
+									}
+									change_pc = prevprev
+								}
+								else = { change_pc = rl_habitable_normal }
+
+								prevprev = {
+									save_global_event_target_as = source_empire
+									if = {
+										limit = {
+											OR = {
+												has_civic = civic_machine_servitor
+												has_civic = civic_machine_assimilator
+											}
+										}
+										random_owned_pop = {
+											limit = { species = { NOT = { is_same_value = prevprev.owner_species } } }
+											species = {
+												save_global_event_target_as = source_species
+												set_species_homeworld = prevprevprev
+											}
+										}
+										prev = { change_pc = event_target:source_species }
+									}
+									else = { owner_species = { save_global_event_target_as = source_species } }
+								}
+
+								# Uses a "pretty" continental/ocean entity
+								if = {
+									limit = { is_planet_class = pc_continental }
+									random_list = {
+										10 = { set_planet_entity = { entity = "continental_planet_03_entity" } }
+										10 = { set_planet_entity = { entity = "continental_planet_04_entity" } }
+									}
+								}
+								else_if = {
+									limit = { is_planet_class = pc_ocean }
+									set_planet_entity = { entity = "ocean_planet_02_entity" }
+								}
+
+								setup_lost_homeworld = yes
+
+								# Sets homeworld flags 1-5 if applicable
+								if = {
+									limit = { prevprev = { owner_species = { has_trait = trait_mzilli_distant_origin_1 } } }
+									set_planet_flag = distant_origin_homeworld_1
+									solar_system = { set_star_flag = distant_origin_homeworld_1 }
+								}
+								else_if = {
+									limit = { prevprev = { owner_species = { has_trait = trait_mzilli_distant_origin_2 } } }
+									set_planet_flag = distant_origin_homeworld_2
+									solar_system = { set_star_flag = distant_origin_homeworld_2 }
+								}
+								else_if = {
+									limit = { prevprev = { owner_species = { has_trait = trait_mzilli_distant_origin_3 } } }
+									set_planet_flag = distant_origin_homeworld_3
+									solar_system = { set_star_flag = distant_origin_homeworld_3 }
+								}
+								else_if = {
+									limit = { prevprev = { owner_species = { has_trait = trait_mzilli_distant_origin_4 } } }
+									set_planet_flag = distant_origin_homeworld_4
+									solar_system = { set_star_flag = distant_origin_homeworld_4 }
+								}
+								else_if = {
+									limit = { prevprev = { owner_species = { has_trait = trait_mzilli_distant_origin_5 } } }
+									set_planet_flag = distant_origin_homeworld_5
+									solar_system = { set_star_flag = distant_origin_homeworld_5 }
+								}
+							}
+						}
+					}
+
+					else_if = {
+						limit = { owner_species = { has_trait = trait_mzilli_distant_origin_1 } }
+						random_system = {
+							limit = { has_star_flag = distant_origin_homeworld_1 }
+							set_star_flag = homeworld_of_@prev
+							random_system_planet = {
+								limit = { has_planet_flag = distant_origin_homeworld_1 }
+								set_planet_flag = homeworld_of_@prevprev
+							}
+						}
+					}
+					else_if = {
+						limit = { owner_species = { has_trait = trait_mzilli_distant_origin_2 } }
+						random_system = {
+							limit = { has_star_flag = distant_origin_homeworld_2 }
+							set_star_flag = homeworld_of_@prev
+							random_system_planet = {
+								limit = { has_planet_flag = distant_origin_homeworld_2 }
+								set_planet_flag = homeworld_of_@prevprev
+							}
+						}
+					}
+					else_if = {
+						limit = { owner_species = { has_trait = trait_mzilli_distant_origin_3 } }
+						random_system = {
+							limit = { has_star_flag = distant_origin_homeworld_3 }
+							set_star_flag = homeworld_of_@prev
+							random_system_planet = {
+								limit = { has_planet_flag = distant_origin_homeworld_3 }
+								set_planet_flag = homeworld_of_@prevprev
+							}
+						}
+					}
+					else_if = {
+						limit = { owner_species = { has_trait = trait_mzilli_distant_origin_4 } }
+						random_system = {
+							limit = { has_star_flag = distant_origin_homeworld_4 }
+							set_star_flag = homeworld_of_@prev
+							random_system_planet = {
+								limit = { has_planet_flag = distant_origin_homeworld_4 }
+								set_planet_flag = homeworld_of_@prevprev
+							}
+						}
+					}
+					else_if = {
+						limit = { owner_species = { has_trait = trait_mzilli_distant_origin_5 } }
+						random_system = {
+							limit = { has_star_flag = distant_origin_homeworld_5 }
+							set_star_flag = homeworld_of_@prev
+							random_system_planet = {
+								limit = { has_planet_flag = distant_origin_homeworld_5 }
+								set_planet_flag = homeworld_of_@prevprev
+							}
+						}
+					}
+				}
+			}
+
+			begin_event_chain = {
+				event_chain = do_homeworld_chain
+				target = this
+			}
+			if = {
+				limit = { has_civic = civic_vengeful_refugees }
+				create_point_of_interest = {
+					id = refugees_homeworld_poi
+					name = refugees_homeworld_poi_title
+					desc = refugees_homeworld_poi_desc
+					event_chain = do_homeworld_chain
+					location = home_planet
+				}
+			}
+		}
+		# Spawns refugees, if none exist, for Contested Capital empires
+		every_country = {
+			limit = {
+				has_origin = origin_homeworld_occupiers
+				NOT = {
+					any_country = {
+						has_origin = origin_mzilli_exiles
+						prev.capital_scope = { has_planet_flag = homeworld_of_@prev }
+					}
+				}
+			}
+			set_country_flag = spawned_refugees
+			random_system = {
+				limit = { NOR = { has_star_flag = empire_cluster } }
+				random_list = {
+					10 = { spawn_system = { initializer = "distant_origin_homeworld_01" } } # S-type trinary
+					10 = { spawn_system = { initializer = "distant_origin_homeworld_02" } } # P-type trinary
+					10 = { spawn_system = { initializer = "distant_origin_homeworld_03" } } # S-type binary
+					10 = { spawn_system = { initializer = "distant_origin_homeworld_04" } } # P-type binary
+					5 = { spawn_system = { initializer = "distant_origin_homeworld_05" } } # Unary planet
+					15 = { spawn_system = { initializer = "distant_origin_homeworld_06" } } # Unary moon
+				}
+			}
+			random_system = {
+				limit = { has_star_flag = distant_origin_homeworld_blank }
+				remove_star_flag = distant_origin_homeworld_blank
+				remove_star_flag = distant_origin_homeworld
+				set_star_flag = empire_home_system
+				set_star_flag = empire_cluster
+				generate_home_system_resources = yes
+				random_system_planet = {
+					limit = { has_planet_flag = distant_origin_homeworld_blank }
+					remove_planet_flag = distant_origin_homeworld_blank
+
+					# Changes to ideal planet class if applicable, or a random habitable class if not
+					if = {
+						limit = {
+							prevprev = {
+								NOR = {
+									is_species_class = ROBOT
+									is_species_class = MACHINE
+									ideal_planet_class = pc_habitat
+									ideal_planet_class = pc_ringworld_habitable
+									ideal_planet_class = pc_shattered_ring_habitable
+								}
+							}
+						}
+						change_pc = prevprev
+					}
+					else = { change_pc = rl_habitable_normal }
+					prevprev = {
+						save_global_event_target_as = source_empire
+						if = {
+							limit = {
+								OR = {
+									has_civic = civic_machine_servitor
+									has_civic = civic_machine_assimilator
+									has_civic = civic_hostile_occupation
+								}
+							}
+							random_owned_pop = {
+								limit = { species = { NOT = { is_same_value = prevprev.owner_species } } }
+								species = { save_global_event_target_as = source_species }
+								prevprev = { change_pc = event_target:source_species }
+							}
+						}
+						else = { owner_species = { save_global_event_target_as = source_species } }
+					}
+					setup_distant_origin_exiles = yes
+				}
+			}
+		}
+
+		# Sets up Remnants empires
+		every_country = {
+			limit = {
+				has_origin = origin_remnants
+				NOT = { has_ethic = ethic_gestalt_consciousness }
+			}
+			if = {
+				limit = { capital_scope = { solar_system = { has_star_flag = sol } } }
+				capital_scope = {
+					solar_system = {
+						random_system_planet = {
+							limit = {
+								is_moon = yes
+								NOT = { exists = owner }
+							}
+							change_pc = pc_shattered
+						}
+					}
+					if = { # Capital is Earth
+						limit = { has_planet_flag = planet_earth }
+						solar_system = {
+							random_system_planet = { # Mars
+								limit = { has_planet_flag = planet_mars }
+								if = {
+									limit = { has_modifier = terraforming_candidate }
+									remove_modifier = terraforming_candidate
+								}
+								random_list = {
+									10 = {
+										change_pc = pc_broken
+										set_deposit = d_minerals_6
+									}
+									10 = {
+										change_pc = pc_nuked
+										reroll_deposits = yes
+										if = {
+											limit = { NOT = { has_modifier = mineral_rich } }
+											add_modifier = { modifier = mineral_rich }
+										}
+										set_planet_flag = colony_event
+										change_pc = pc_tundra
+										set_planet_entity = { entity = "relic_world_mars_entity" }
+										if = {
+											limit = { space_owner = { is_ai = yes } }
+											set_owner = space_owner
+											set_name = "Mars"
+											create_pop = { species = space_owner.owner_species }
+											add_building = building_colony_shelter
+										}
+									}
+								}
+							}
+						}
+					}
+					else = { # Capital is Mars
+						set_planet_entity = { entity = "relic_world_mars_entity" }
+						solar_system = {
+							random_system_planet = {
+								limit = { has_planet_flag = planet_earth }
+								set_planet_flag = colony_event
+								prevprevprev = { owner_species = { set_species_homeworld = prevprev } }
+							}
+						}
+					}
+				}
+			}
+			country_event = { id = mzilli_distant_origin_unification.2 days = -1 }
+		}
+	}
+}

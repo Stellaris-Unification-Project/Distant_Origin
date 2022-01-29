@@ -1,0 +1,63 @@
+civic_vengeful_refugees = {
+	description = "civic_tooltip_vengeful_refugees_effects"
+	modification = yes
+	icon = "gfx/interface/icons/traits/leader_traits/leader_trait_ai_aided_design.dds"
+	potential = {
+		ethics = { NOT = { value = ethic_gestalt_consciousness } }
+		authority = { NOT = { value = auth_corporate } }
+	}
+	possible = {
+		origin = { value = origin_mzilli_exiles }
+		ethics = {
+			OR = {
+				text = civic_tooltip_militarist
+				value = ethic_militarist
+				value = ethic_fanatic_militarist
+			}
+			NOT = { value = ethic_fanatic_xenophile }
+		}
+		civics = { NOT = { value = civic_fanatic_purifiers } }
+	}
+	modifier = {
+		ship_fire_rate_mult = 0.1
+		ship_speed_mult = 0.1
+		pop_ethic_militarist_attraction_mult = 0.2
+	}
+	random_weight = { base = 100 }
+}
+
+civic_hostile_occupation = {
+	description = "civic_tooltip_hostile_occupation_effects"
+	modification = no
+	icon = "gfx/interface/icons/traits/trait_strong.dds"
+	potential = { always = yes }
+	#potential = {
+	#	ethics = { NOT = { value = ethic_gestalt_consciousness } }
+	#}
+	possible = {
+		origin = { value = origin_homeworld_occupiers }
+		ethics = { NOT = { value = ethic_gestalt_consciousness } }
+		civics = {
+			NOT = { value = civic_fanatic_purifiers }
+			#NOR = {
+			#	value = civic_machine_terminator
+			#	value = civic_machine_servitor
+			#	value = civic_machine_assimilator
+			#	value = civic_hive_devouring_swarm
+			#}
+		}
+	}
+	random_weight = {
+		base = 0
+		modifier = {
+			factor = 0
+			OR = {
+				has_global_flag = game_started
+				NOT = { has_global_flag = game_started }
+			}
+		}
+	}
+	has_secondary_species = {	# see game_start.11
+		title = civic_hostile_occupation_secondary_species
+	}
+}

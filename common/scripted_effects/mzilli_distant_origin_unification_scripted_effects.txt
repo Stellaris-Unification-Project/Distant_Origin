@@ -1,0 +1,2484 @@
+# Chooses the planet that becomes a lost colony
+create_vestigial_colony = {
+	if = {
+		limit = {
+			any_galaxy_planet = {
+				is_valid_vestigial_colony_site = yes
+				habitability = {
+					who = root.owner_species
+					value >= 0.55
+				}
+			}
+		}
+		random_galaxy_planet = {
+			limit = {
+				is_valid_vestigial_colony_site = yes
+				habitability = {
+					who = root.owner_species
+					value >= 0.55
+				}
+			}
+			distribute_colonies = yes
+		}
+	}
+	else = {
+		random_galaxy_planet = {
+			limit = {
+				OR = {
+					is_planet_class = pc_barren
+					is_planet_class = pc_barren_cold
+					is_planet_class = pc_toxic
+				}
+				NOR = {
+					has_planet_flag = machine_world_1
+					has_planet_flag = machine_world_2
+					has_planet_flag = machine_world_3
+					has_planet_flag = machine_world_4
+				}
+				is_valid_vestigial_colony_site = yes
+			}
+			if = {
+				limit = { root = { ideal_planet_class = pc_methane } }
+				change_pc = pc_methane
+			}
+			else_if = {
+				limit = { root = { ideal_planet_class = pc_ammonia } }
+				change_pc = pc_ammonia
+			}
+			else = { change_pc = rl_habitable_normal }
+			reroll_planet = yes
+			solar_system = { set_star_flag = added_more_vestigial_planets }
+			distribute_colonies = yes
+		}
+	}
+}
+
+distribute_colonies = {
+	set_planet_flag = vestigial_colony_of_@root
+	set_planet_flag = colony_event
+	prevent_anomaly = yes
+	random_list = {
+		10 = { # Nuked colony
+			modifier = {
+				factor = 0.1
+				any_system = { any_system_planet = { has_planet_flag = vestigial_empire_nuked_2 } }
+			}
+			if = {
+				limit = { any_system = { any_system_planet = { has_planet_flag = vestigial_empire_nuked_1 } } }
+				set_planet_flag = vestigial_empire_nuked_2
+			}
+			else = { set_planet_flag = vestigial_empire_nuked_1 }
+			solar_system = { set_star_flag = vestigial_empire_nuked }
+			create_dead_colony = yes
+			change_pc = pc_nuked
+			reroll_planet = yes
+		}
+		5 = { # Shrouded colony
+			modifier = {
+				factor = 0
+				any_galaxy_planet = { has_planet_flag = vestigial_empire_shrouded }
+			}
+			set_planet_flag = vestigial_empire_shrouded
+			solar_system = { set_star_flag = vestigial_empire_shrouded }
+			create_dead_colony = yes
+			change_pc = pc_shrouded
+			reroll_deposits = yes
+			clear_planet_modifiers = yes
+		}
+		5 = { # Shielded colony
+			modifier = {
+				factor = 0
+				any_galaxy_planet = { has_planet_flag = vestigial_empire_shielded }
+			}
+			modifier = {
+				factor = 0
+				OR = {
+					is_planet_class = pc_subterranean_dry
+					is_planet_class = pc_subterranean_wet
+					is_planet_class = pc_subterranean_cold
+				}
+			}
+			set_planet_flag = vestigial_empire_shielded
+			solar_system = { set_star_flag = vestigial_empire_shielded }
+			create_dead_colony = yes
+			random_list = {
+				70 = { }
+				30 = { change_pc = pc_relic }
+			}
+			change_pc = {
+				class = pc_shielded
+				inherit_entity = yes
+			}
+			set_deposit = d_engineering_3
+			add_deposit = d_physics_3
+			clear_planet_modifiers = yes
+		}
+		5 = { # Broken colony
+			modifier = {
+				factor = 0.1
+				any_galaxy_planet = { has_planet_flag = vestigial_empire_broken }
+			}
+			set_planet_flag = vestigial_empire_broken
+			solar_system = { set_star_flag = vestigial_empire_broken }
+			create_dead_colony = yes
+			change_pc = pc_broken
+			clear_planet_modifiers = yes
+			if = {
+				limit = { has_ring = yes }
+				set_ring = no
+			}
+		}
+		10 = { # Primitive colony
+			modifier = {
+				factor = 0.1
+				any_galaxy_planet = { has_planet_flag = vestigial_empire_primitive_2 }
+			}
+			if = {
+				limit = { any_galaxy_planet = { has_planet_flag = vestigial_empire_primitive_1 } }
+				set_planet_flag = vestigial_empire_primitive_2
+			}
+			else = { set_planet_flag = vestigial_empire_primitive_1 }
+			solar_system = { set_star_flag = vestigial_empire_primitive }
+			create_primitive_vestigial_colony = yes
+		}
+		10 = { # Spacefaring colony
+			modifier = {
+				factor = 0
+				any_galaxy_planet = { has_planet_flag = vestigial_empire_spacefaring_3 }
+			}
+			modifier = {
+				factor = 0
+				exists = space_owner
+			}
+			if = {
+				limit = { any_galaxy_planet = { has_planet_flag = vestigial_empire_spacefaring_2 } }
+				set_planet_flag = vestigial_empire_spacefaring_3
+			}
+			else_if = {
+				limit = { any_galaxy_planet = { has_planet_flag = vestigial_empire_spacefaring_1 } }
+				set_planet_flag = vestigial_empire_spacefaring_2
+			}
+			else = { set_planet_flag = vestigial_empire_spacefaring_1 }
+			solar_system = {
+				generate_home_system_resources = yes
+				set_star_flag = vestigial_empire_spacefaring
+			}
+			create_spacefaring_vestigial_colony = yes
+		}
+		2 = { # Hive Mind
+			modifier = {
+				factor = 0
+				any_galaxy_planet = { has_planet_flag = vestigial_empire_hive }
+			}
+			modifier = {
+				factor = 0
+				exists = space_owner
+			}
+			modifier = {
+				factor = 0
+				NOT = { host_has_dlc = "Utopia" }
+			}
+			modifier = {
+				factor = 5
+				is_planet_class = pc_gaia
+			}
+			set_planet_flag = vestigial_empire_hive
+			solar_system = {
+				generate_home_system_resources = yes
+				set_star_flag = vestigial_empire_hive
+			}
+			create_hive_mind_vestigial_colony = yes
+		}
+		5 = { # Machine Empire
+			modifier = {
+				factor = 0
+				any_galaxy_planet = { has_planet_flag = vestigial_empire_machine }
+			}
+			modifier = {
+				factor = 0
+				exists = space_owner
+			}
+			modifier = {
+				factor = 0
+				NOT = { host_has_dlc = "Synthetic Dawn Story Pack" }
+			}
+			set_planet_flag = vestigial_empire_machine
+			solar_system = {
+				generate_home_system_resources = yes
+				set_star_flag = vestigial_empire_machine
+			}
+			create_machine_vestigial_colony = yes
+		}
+		5 = { # Gas giant
+			modifier = {
+				factor = 0.1
+				any_galaxy_planet = { has_planet_flag = vestigial_empire_jovian }
+			}
+			modifier = {
+				factor = 0
+				is_moon = yes
+			}
+			modifier = {
+				factor = 3
+				solar_system = { has_star_flag = added_more_vestigial_planets }
+			}
+			set_planet_flag = vestigial_empire_jovian
+			solar_system = { set_star_flag = vestigial_empire_jovian }
+			create_dead_colony = yes
+			change_pc = pc_gas_giant
+			if = {
+				limit = { any_galaxy_planet = { is_planet_class = pc_ice_giant } }
+				random_list = {
+					50 = { }
+					50 = { change_pc = pc_ice_giant }
+				}
+			}
+			set_planet_size = 30
+			reroll_planet = yes
+		}
+	}
+}
+
+create_dead_colony = {
+	if = {
+		limit = { ROOT = { species_portrait = human } }
+		random_list = {
+			35 = { create_country = { type = default name_list = "HUMAN1" } }
+			35 = { create_country = { type = default name_list = "HUMAN2" } }
+			30 = { create_country = { type = default name_list = "HUMAN3" } }
+		}
+	}
+	else_if = {
+		limit = {
+			ROOT = {
+				is_species_class = HUM
+				NOT = { species_portrait = human }
+			}
+		}
+		random_list = {
+			25 = { create_country = { type = default name_list = "HUM1" } }
+			25 = { create_country = { type = default name_list = "HUM2" } }
+			25 = { create_country = { type = default name_list = "HUM3" } }
+			25 = { create_country = { type = default name_list = "HUM4" } }
+		}
+	}
+	else_if = {
+		limit = { ROOT = { is_species_class = MAM } }
+		random_list = {
+			25 = { create_country = { type = default name_list = "MAM1" } }
+			25 = { create_country = { type = default name_list = "MAM2" } }
+			25 = { create_country = { type = default name_list = "MAM3" } }
+			25 = { create_country = { type = default name_list = "MAM4" } }
+		}
+	}
+	else_if = {
+		limit = { ROOT = { is_species_class = AVI } }
+		random_list = {
+			25 = { create_country = { type = default name_list = "AVI1" } }
+			25 = { create_country = { type = default name_list = "AVI2" } }
+			25 = { create_country = { type = default name_list = "AVI3" } }
+			25 = { create_country = { type = default name_list = "AVI4" } }
+		}
+	}
+	else_if = {
+		limit = { ROOT = { is_species_class = ART } }
+		random_list = {
+			25 = { create_country = { type = default name_list = "ART1" } }
+			25 = { create_country = { type = default name_list = "ART2" } }
+			25 = { create_country = { type = default name_list = "ART3" } }
+			25 = { create_country = { type = default name_list = "ART4" } }
+		}
+	}
+	else_if = {
+		limit = { ROOT = { is_species_class = MOL } }
+		random_list = {
+			25 = { create_country = { type = default name_list = "MOL1" } }
+			25 = { create_country = { type = default name_list = "MOL2" } }
+			25 = { create_country = { type = default name_list = "MOL3" } }
+			25 = { create_country = { type = default name_list = "MOL4" } }
+		}
+	}
+	else_if = {
+		limit = { ROOT = { is_species_class = FUN } }
+		random_list = {
+			25 = { create_country = { type = default name_list = "FUN1" } }
+			25 = { create_country = { type = default name_list = "FUN2" } }
+			25 = { create_country = { type = default name_list = "FUN3" } }
+			25 = { create_country = { type = default name_list = "FUN4" } }
+		}
+	}
+	else_if = {
+		limit = { ROOT = { is_species_class = PLANT } }
+		random_list = {
+			25 = { create_country = { type = default name_list = "PLANT1" } }
+			25 = { create_country = { type = default name_list = "PLANT2" } }
+			25 = { create_country = { type = default name_list = "PLANT3" } }
+			25 = { create_country = { type = default name_list = "PLANT4" } }
+		}
+	}
+	else_if = {
+		limit = { ROOT = { is_species_class = LITHOID } }
+		random_list = {
+			25 = { create_country = { type = default name_list = "LITH1" } }
+			25 = { create_country = { type = default name_list = "LITH2" } }
+			25 = { create_country = { type = default name_list = "LITH3" } }
+			25 = { create_country = { type = default name_list = "LITH4" } }
+		}
+	}
+	else_if = {
+		limit = { ROOT = { is_species_class = NECROID } }
+		random_list = {
+			25 = { create_country = { type = default name_list = "NECROID1" } }
+			25 = { create_country = { type = default name_list = "NECROID2" } }
+			25 = { create_country = { type = default name_list = "NECROID3" } }
+			25 = { create_country = { type = default name_list = "NECROID4" } }
+		}
+	}
+	else_if = {
+		limit = { ROOT = { is_species_class = AQUATIC } }
+		random_list = {
+			25 = { create_country = { type = default name_list = "AQUATIC1" } }
+			25 = { create_country = { type = default name_list = "AQUATIC2" } }
+			25 = { create_country = { type = default name_list = "AQUATIC3" } }
+			25 = { create_country = { type = default name_list = "AQUATIC4" } }
+		}
+	}
+	else = {
+		random_list = {
+			25 = { create_country = { type = default name_list = "REP1" } }
+			25 = { create_country = { type = default name_list = "REP2" } }
+			25 = { create_country = { type = default name_list = "REP3" } }
+			25 = { create_country = { type = default name_list = "REP4" } }
+		}
+	}
+	set_owner = last_created_country
+	random_list = {
+		90 = { set_name = random }
+		0 = {
+			modifier = {
+				add = 10
+				NOT = { is_moon = yes }
+				root = { species_portrait = human }
+				solar_system = { NOT = { any_system_planet = { has_planet_flag = prime_name } } }
+			}
+			set_name = "[This.System.GetName] Prime"
+			set_planet_flag = prime_name
+		}
+	}
+}
+
+# Regressed (primitive) lost colony
+create_primitive_vestigial_colony = {
+	random_list = {
+		70 = { }
+		10 = {
+			modifier = {
+				factor = 0
+				OR = {
+					ideal_planet_class = pc_methane
+					ideal_planet_class = pc_ammonia
+				}
+			}
+			change_pc = rl_habitable_normal
+			reroll_planet = yes
+			solar_system = { set_star_flag = changed_pc }
+		}
+		15 = {
+			change_pc = pc_nuked
+			reroll_planet = yes
+		}
+		5 = {
+			change_pc = pc_relic
+			relic_world_deposits = yes
+			add_deposit = d_fungal_caves
+		}
+	}
+	if = {
+		limit = { is_planet_class = pc_subterranean_wet }
+		set_planet_entity = { picture = pc_subterranean_wet }
+	}
+	else_if = {
+		limit = { is_planet_class = pc_subterranean_dry }
+		set_planet_entity = { picture = pc_subterranean_dry }
+	}
+	else_if = {
+		limit = { is_planet_class = pc_subterranean_cold }
+		set_planet_entity = { picture = pc_subterranean_cold }
+	}
+	solar_system = { set_star_flag = primitive_system }
+	random_list = {
+		# Medieval Civilization
+		50 = {
+			create_country = {
+				name = random
+				authority = random
+				civics = {
+					civic = civic_landed_nobility
+					civic = civic_flat_world_theory
+				}
+				species = root.owner_species
+				ethos = random
+				flag = {
+					icon = {
+						category = "special"
+						file = "primitive.dds"
+					}
+					background= {
+						category = "backgrounds"
+						file = "new_dawn.dds"
+					}
+					colors={
+						"turquoise"
+						"green"
+						"null"
+						"null"
+					}
+				}
+				type = primitive
+				origin = "origin_enlightened"
+			}
+			last_created_country = {
+				set_graphical_culture = preindustrial_01
+				random_list = {
+					10 = {
+						set_country_flag = bronze_age 
+						set_primitive_age = bronze_age
+						change_government = {
+							authority = random
+							civics = {
+								civic = civic_secret_of_fire
+								civic = civic_the_wheel
+							}
+						}
+						change_country_flag = {
+							icon = {
+								category = "special"
+								file = "primitive.dds"
+							}
+							background= {
+								category = "backgrounds"
+								file = "new_dawn.dds"
+							}
+							colors={
+								"green"
+								"dark_green"
+								"null"
+								"null"
+							}
+						}
+					}
+					10 = {
+						set_country_flag = iron_age 
+						set_primitive_age = iron_age
+						change_country_flag = {
+							icon = {
+								category = "special"
+								file = "primitive.dds"
+							}
+							background= {
+								category = "backgrounds"
+								file = "new_dawn.dds"
+							}
+							colors={
+								"purple"
+								"dark_purple"
+								"null"
+								"null"
+							}
+						}
+					}
+					15 = {
+						set_country_flag = late_medieval_age 
+						set_primitive_age = late_medieval_age
+						change_country_flag = {
+							icon = {
+								category = "special"
+								file = "primitive.dds"
+							}
+							background= {
+								category = "backgrounds"
+								file = "new_dawn.dds"
+							}
+							colors={
+								"light_blue"
+								"blue"
+								"null"
+								"null"
+							}
+						}
+					}
+					20 = {
+						set_country_flag = renaissance_age 
+						set_primitive_age = renaissance_age
+						change_country_flag = {
+							icon = {
+								category = "special"
+								file = "primitive.dds"
+							}
+							background= {
+								category = "backgrounds"
+								file = "new_dawn.dds"
+							}
+							colors={
+								"pink"
+								"burgundy"
+								"null"
+								"null"
+							}
+						}
+					}
+					20 = {
+						set_country_flag = steam_age 
+						set_primitive_age = steam_age
+						change_country_flag = {
+							icon = {
+								category = "special"
+								file = "primitive.dds"
+							}
+							background= {
+								category = "backgrounds"
+								file = "new_dawn.dds"
+							}
+							colors={
+								"orange"
+								"red"
+								"null"
+								"null"
+							}
+						}
+					}
+				}
+			}
+		}
+		# Industrial Civilization
+		50 = {
+			create_country = {
+				name = random
+				authority = random
+				civics = {
+					civic = civic_increasing_urbanization
+					civic = civic_atmospheric_pollution
+				}
+				species = root.owner_species
+				ethos = random
+				flag = {
+					icon = {
+						category = "spherical"
+						file = "flag_spherical_22.dds"
+					}
+					background= {
+						category = "backgrounds"
+						file = "new_dawn.dds"
+					}
+					colors={
+						"turquoise"
+						"green"
+						"null"
+						"null"
+					}
+				}
+				type = primitive
+				origin = "origin_enlightened"
+			}
+			last_created_country = {
+				set_graphical_culture = industrial_01
+				random_list = {
+					25 = {
+						set_country_flag = industrial_age 
+						set_primitive_age = industrial_age
+						change_country_flag = {
+							icon = {
+								category = "special"
+								file = "primitive.dds"
+							}
+							background= {
+								category = "backgrounds"
+								file = "new_dawn.dds"
+							}
+							colors={
+								"beige"
+								"yellow"
+								"null"
+								"null"
+							}
+						}
+					}
+					25 = { 
+						set_country_flag = machine_age
+						set_primitive_age = machine_age
+						change_country_flag = {
+							icon = {
+								category = "special"
+								file = "primitive.dds"
+							}
+							background= {
+								category = "backgrounds"
+								file = "new_dawn.dds"
+							}
+							colors={
+								"yellow"
+								"orange"
+								"null"
+								"null"
+							}
+						}
+					}
+					15 = { 
+						set_country_flag = atomic_age 
+						set_primitive_age = atomic_age
+						change_country_flag = {
+							icon = {
+								category = "special"
+								file = "primitive.dds"
+							}
+							background= {
+								category = "backgrounds"
+								file = "new_dawn.dds"
+							}
+							colors={
+								"beige"
+								"brown"
+								"null"
+								"null"
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+	set_owner = last_created_country
+	set_capital = yes
+	
+	last_created_country = {
+		if = {
+			limit = { has_country_flag = stone_age }
+			prev = {
+				while = {
+					count = 4
+					create_pop = {
+						species = owner_species
+					}					
+				}
+				add_building = building_crude_huts
+				remove_building = building_colony_shelter
+			}
+		}					
+		if = {
+			limit = { has_country_flag = bronze_age }
+			prev = {
+				while = {
+					count = 8
+					create_pop = {
+						species = owner_species
+					}					
+				}
+				add_building = building_primitive_dwellings
+				add_building = building_stone_palace
+				remove_building = building_colony_shelter
+			}
+		}
+		if = {
+			limit = { has_country_flag = iron_age }
+			prev = {
+				while = {
+					count = 9
+					create_pop = {
+						species = owner_species
+					}					
+				}
+				add_building = building_primitive_dwellings
+				add_building = building_stone_palace
+				remove_building = building_colony_shelter
+			}
+		}
+		if = {
+			limit = { has_country_flag = late_medieval_age }
+			prev = {
+				while = {
+					count = 10
+					create_pop = {
+						species = owner_species
+					}					
+				}
+				add_building = building_primitive_dwellings
+				add_building = building_primitive_dwellings
+				add_building = building_stone_palace
+				remove_building = building_colony_shelter
+			}
+		}
+		if = {
+			limit = { has_country_flag = renaissance_age }
+			prev = {
+				while = {
+					count = 12
+					create_pop = {
+						species = owner_species
+					}					
+				}
+				add_building = building_primitive_dwellings
+				add_building = building_primitive_dwellings
+				add_building = building_stone_palace
+				remove_building = building_colony_shelter
+			}
+		}
+		if = {
+			limit = { has_country_flag = steam_age }
+			prev = {
+				while = {
+					count = 16
+					create_pop = {
+						species = owner_species
+					}					
+				}
+				add_building = building_urban_dwellings
+				add_building = building_primitive_factory
+				add_building = building_primitive_mine
+				add_building = building_stone_palace
+				remove_building = building_colony_shelter
+			}
+		}
+		if = {
+			limit = { has_country_flag = industrial_age }
+			prev = {
+				while = {
+					count = 22
+					create_pop = {
+						species = owner_species
+					}					
+				}
+				add_building = building_primitive_farm
+				add_building = building_primitive_factory
+				add_building = building_primitive_mine
+				add_building = building_primitive_power_plant
+				add_building = building_primitive_capital
+				add_building = building_urban_dwellings
+				remove_building = building_colony_shelter
+			}
+		}
+		if = {
+			limit = { has_country_flag = machine_age }
+			prev = {
+				while = {
+					count = 24
+					create_pop = {
+						species = owner_species
+					}					
+				}
+				add_building = building_primitive_farm
+				add_building = building_primitive_factory
+				add_building = building_primitive_mine
+				add_building = building_primitive_power_plant
+				add_building = building_primitive_capital
+				add_building = building_urban_dwellings
+				remove_building = building_colony_shelter
+			}
+		}
+		if = {
+			limit = { has_country_flag = atomic_age }
+			prev = {
+				while = {
+					count = 26
+					create_pop = {
+						species = owner_species
+					}					
+				}
+				add_building = building_primitive_farm
+				add_building = building_primitive_factory
+				add_building = building_primitive_mine
+				add_building = building_primitive_power_plant
+				add_building = building_primitive_capital
+				add_building = building_urban_dwellings
+				remove_building = building_colony_shelter
+			}
+		}
+		if = {
+			limit = { has_country_flag = early_space_age }
+			prev = {
+				while = {
+					count = 28
+					create_pop = {
+						species = owner_species
+					}					
+				}
+				add_building = building_primitive_farm
+				add_building = building_primitive_factory
+				add_building = building_primitive_mine
+				add_building = building_primitive_power_plant
+				add_building = building_primitive_capital
+				add_building = building_urban_dwellings
+				remove_building = building_colony_shelter
+			}
+		}		
+	}
+	
+	if = {
+		limit = {
+			last_created_country = {
+				OR = {
+					has_country_flag = machine_age
+					has_country_flag = atomic_age
+					has_country_flag = early_space_age				
+				}
+			}
+		}
+		create_primitive_blockers = yes
+	}
+	fix_nuked_habitability = yes
+	random_list = {
+		90 = { set_name = random }
+		0 = {
+			modifier = {
+				add = 10
+				NOT = { is_moon = yes }
+				owner = { species_portrait = human }
+				solar_system = { NOT = { any_system_planet = { has_planet_flag = prime_name } } }
+			}
+			set_name = "[This.System.GetName] Prime"
+			set_planet_flag = prime_name
+		}
+	}
+	owner = { set_name = random }
+}
+
+# Recovered, space-faring lost colony
+create_spacefaring_vestigial_colony = {
+	random_list = {
+		75 = { }
+		#15 = {
+		0 = {
+			modifier = {
+				factor = 0
+				OR = {
+					ideal_planet_class = pc_methane
+					ideal_planet_class = pc_ammonia
+				}
+			}
+			change_pc = rl_habitable_normal
+			reroll_planet = yes
+			solar_system = { set_star_flag = changed_pc }
+		}
+		10 = {
+			change_pc = pc_nuked
+			reroll_planet = yes
+			solar_system = { set_star_flag = changed_pc }
+		}
+	}
+	if = {
+		limit = { is_planet_class = pc_subterranean_wet }
+		set_planet_entity = { picture = pc_subterranean_wet }
+	}
+	else_if = {
+		limit = { is_planet_class = pc_subterranean_dry }
+		set_planet_entity = { picture = pc_subterranean_dry }
+	}
+	else_if = {
+		limit = { is_planet_class = pc_subterranean_cold }
+		set_planet_entity = { picture = pc_subterranean_cold }
+	}
+	# Tedious workaround for civics and name lists, because Stellaris lacks a set_name_list effect for some reason
+	if = {
+		# Humans
+		limit = { ROOT = { species_portrait = human } }
+		random_list = {
+			35 = {
+				create_country = {
+					species = root.owner_species
+					name = random
+					name_list = "HUMAN1"
+					authority = random
+					civics = random
+					ethos = random
+					flag = random
+					type = default
+					origin = "origin_lost_colony"
+				}
+			}
+			35 = {
+				create_country = {
+					species = root.owner_species
+					name = random
+					name_list = "HUMAN2"
+					authority = random
+					civics = random
+					ethos = random
+					flag = random
+					type = default
+					origin = "origin_lost_colony"
+				}
+			}
+			30 = {
+				create_country = {
+					species = root.owner_species
+					name = random
+					name_list = "HUMAN3"
+					authority = random
+					civics = random
+					ethos = random
+					flag = random
+					type = default
+					origin = "origin_lost_colony"
+				}
+			}
+		}
+	}
+	else_if = {
+		# Humanoids
+		limit = {
+			ROOT = {
+				is_species_class = HUM
+				NOT = { species_portrait = human }
+			}
+		}
+		random_list = {
+			25 = {
+				create_country = {
+					species = root.owner_species
+					name = random
+					name_list = "HUM1"
+					authority = random
+					civics = random
+					ethos = random
+					flag = random
+					type = default
+					origin = "origin_lost_colony"
+				}
+			}
+			25 = {
+				create_country = {
+					species = root.owner_species
+					name = random
+					name_list = "HUM2"
+					authority = random
+					civics = random
+					ethos = random
+					flag = random
+					type = default
+					origin = "origin_lost_colony"
+				}
+			}
+			25 = {
+				create_country = {
+					species = root.owner_species
+					name = random
+					name_list = "HUM3"
+					authority = random
+					civics = random
+					ethos = random
+					flag = random
+					type = default
+					origin = "origin_lost_colony"
+				}
+			}
+			25 = {
+				create_country = {
+					species = root.owner_species
+					name = random
+					name_list = "HUM4"
+					authority = random
+					civics = random
+					ethos = random
+					flag = random
+					type = default
+					origin = "origin_lost_colony"
+				}
+			}
+		}
+	}
+	else_if = {
+		# Mammalians
+		limit = { ROOT = { is_species_class = MAM } }
+		random_list = {
+			25 = {
+				create_country = {
+					species = root.owner_species
+					name = random
+					name_list = "MAM1"
+					authority = random
+					civics = random
+					ethos = random
+					flag = random
+					type = default
+					origin = "origin_lost_colony"
+				}
+			}
+			25 = {
+				create_country = {
+					species = root.owner_species
+					name = random
+					name_list = "MAM2"
+					authority = random
+					civics = random
+					ethos = random
+					flag = random
+					type = default
+					origin = "origin_lost_colony"
+				}
+			}
+			25 = {
+				create_country = {
+					species = root.owner_species
+					name = random
+					name_list = "MAM3"
+					authority = random
+					civics = random
+					ethos = random
+					flag = random
+					type = default
+					origin = "origin_lost_colony"
+				}
+			}
+			25 = {
+				create_country = {
+					species = root.owner_species
+					name = random
+					name_list = "MAM4"
+					authority = random
+					civics = random
+					ethos = random
+					flag = random
+					type = default
+					origin = "origin_lost_colony"
+				}
+			}
+		}
+	}
+	else_if = {
+		# Avians
+		limit = { ROOT = { is_species_class = AVI } }
+		random_list = {
+			25 = {
+				create_country = {
+					species = root.owner_species
+					name = random
+					name_list = "AVI1"
+					authority = random
+					civics = random
+					ethos = random
+					flag = random
+					type = default
+					origin = "origin_lost_colony"
+				}
+			}
+			25 = {
+				create_country = {
+					species = root.owner_species
+					name = random
+					name_list = "AVI2"
+					authority = random
+					civics = random
+					ethos = random
+					flag = random
+					type = default
+					origin = "origin_lost_colony"
+				}
+			}
+			25 = {
+				create_country = {
+					species = root.owner_species
+					name = random
+					name_list = "AVI3"
+					authority = random
+					civics = random
+					ethos = random
+					flag = random
+					type = default
+					origin = "origin_lost_colony"
+				}
+			}
+			25 = {
+				create_country = {
+					species = root.owner_species
+					name = random
+					name_list = "AVI4"
+					authority = random
+					civics = random
+					ethos = random
+					flag = random
+					type = default
+					origin = "origin_lost_colony"
+				}
+			}
+		}
+	}
+	else_if = {
+		# Arthropods
+		limit = { ROOT = { is_species_class = ART } }
+		random_list = {
+			25 = {
+				create_country = {
+					species = root.owner_species
+					name = random
+					name_list = "ART1"
+					authority = random
+					civics = random
+					ethos = random
+					flag = random
+					type = default
+					origin = "origin_lost_colony"
+				}
+			}
+			25 = {
+				create_country = {
+					species = root.owner_species
+					name = random
+					name_list = "ART2"
+					authority = random
+					civics = random
+					ethos = random
+					flag = random
+					type = default
+					origin = "origin_lost_colony"
+				}
+			}
+			25 = {
+				create_country = {
+					species = root.owner_species
+					name = random
+					name_list = "ART3"
+					authority = random
+					civics = random
+					ethos = random
+					flag = random
+					type = default
+					origin = "origin_lost_colony"
+				}
+			}
+			25 = {
+				create_country = {
+					species = root.owner_species
+					name = random
+					name_list = "ART4"
+					authority = random
+					civics = random
+					ethos = random
+					flag = random
+					type = default
+					origin = "origin_lost_colony"
+				}
+			}
+		}
+	}
+	else_if = {
+		# Molluscoids
+		limit = { ROOT = { is_species_class = MOL } }
+		random_list = {
+			25 = {
+				create_country = {
+					species = root.owner_species
+					name = random
+					name_list = "MOL1"
+					authority = random
+					civics = random
+					ethos = random
+					flag = random
+					type = default
+					origin = "origin_lost_colony"
+				}
+			}
+			25 = {
+				create_country = {
+					species = root.owner_species
+					name = random
+					name_list = "MOL2"
+					authority = random
+					civics = random
+					ethos = random
+					flag = random
+					type = default
+					origin = "origin_lost_colony"
+				}
+			}
+			25 = {
+				create_country = {
+					species = root.owner_species
+					name = random
+					name_list = "MOL3"
+					authority = random
+					civics = random
+					ethos = random
+					flag = random
+					type = default
+					origin = "origin_lost_colony"
+				}
+			}
+			25 = {
+				create_country = {
+					species = root.owner_species
+					name = random
+					name_list = "MOL4"
+					authority = random
+					civics = random
+					ethos = random
+					flag = random
+					type = default
+					origin = "origin_lost_colony"
+				}
+			}
+		}
+	}
+	else_if = {
+		# Fungoids
+		limit = { ROOT = { is_species_class = FUN } }
+		random_list = {
+			25 = {
+				create_country = {
+					species = root.owner_species
+					name = random
+					name_list = "FUN1"
+					authority = random
+					civics = random
+					ethos = random
+					flag = random
+					type = default
+					origin = "origin_lost_colony"
+				}
+			}
+			25 = {
+				create_country = {
+					species = root.owner_species
+					name = random
+					name_list = "FUN2"
+					authority = random
+					civics = random
+					ethos = random
+					flag = random
+					type = default
+					origin = "origin_lost_colony"
+				}
+			}
+			25 = {
+				create_country = {
+					species = root.owner_species
+					name = random
+					name_list = "FUN3"
+					authority = random
+					civics = random
+					ethos = random
+					flag = random
+					type = default
+					origin = "origin_lost_colony"
+				}
+			}
+			25 = {
+				create_country = {
+					species = root.owner_species
+					name = random
+					name_list = "FUN4"
+					authority = random
+					civics = random
+					ethos = random
+					flag = random
+					type = default
+					origin = "origin_lost_colony"
+				}
+			}
+		}
+	}
+	else_if = {
+		# Plantoids
+		limit = { ROOT = { is_species_class = PLANT } }
+		random_list = {
+			25 = {
+				create_country = {
+					species = root.owner_species
+					name = random
+					name_list = "PLANT1"
+					authority = random
+					civics = random
+					ethos = random
+					flag = random
+					type = default
+					origin = "origin_lost_colony"
+				}
+			}
+			25 = {
+				create_country = {
+					species = root.owner_species
+					name = random
+					name_list = "PLANT2"
+					authority = random
+					civics = random
+					ethos = random
+					flag = random
+					type = default
+					origin = "origin_lost_colony"
+				}
+			}
+			25 = {
+				create_country = {
+					species = root.owner_species
+					name = random
+					name_list = "PLANT3"
+					authority = random
+					civics = random
+					ethos = random
+					flag = random
+					type = default
+					origin = "origin_lost_colony"
+				}
+			}
+			25 = {
+				create_country = {
+					species = root.owner_species
+					name = random
+					name_list = "PLANT4"
+					authority = random
+					civics = random
+					ethos = random
+					flag = random
+					type = default
+					origin = "origin_lost_colony"
+				}
+			}
+		}
+	}
+	else_if = {
+		# Lithoids
+		limit = { ROOT = { is_species_class = LITHOID } }
+		random_list = {
+			25 = {
+				create_country = {
+					species = root.owner_species
+					name = random
+					name_list = "LITH1"
+					authority = random
+					civics = random
+					ethos = random
+					flag = random
+					type = default
+					origin = "origin_lost_colony"
+				}
+			}
+			25 = {
+				create_country = {
+					species = root.owner_species
+					name = random
+					name_list = "LITH2"
+					authority = random
+					civics = random
+					ethos = random
+					flag = random
+					type = default
+					origin = "origin_lost_colony"
+				}
+			}
+			25 = {
+				create_country = {
+					species = root.owner_species
+					name = random
+					name_list = "LITH3"
+					authority = random
+					civics = random
+					ethos = random
+					flag = random
+					type = default
+					origin = "origin_lost_colony"
+				}
+			}
+			25 = {
+				create_country = {
+					species = root.owner_species
+					name = random
+					name_list = "LITH4"
+					authority = random
+					civics = random
+					ethos = random
+					flag = random
+					type = default
+					origin = "origin_lost_colony"
+				}
+			}
+		}
+	}
+	else_if = {
+		# Necroids
+		limit = { ROOT = { is_species_class = NECROID } }
+		random_list = {
+			25 = {
+				create_country = {
+					species = root.owner_species
+					name = random
+					name_list = "NECROID1"
+					authority = random
+					civics = random
+					ethos = random
+					flag = random
+					type = default
+					origin = "origin_lost_colony"
+				}
+			}
+			25 = {
+				create_country = {
+					species = root.owner_species
+					name = random
+					name_list = "NECROID2"
+					authority = random
+					civics = random
+					ethos = random
+					flag = random
+					type = default
+					origin = "origin_lost_colony"
+				}
+			}
+			25 = {
+				create_country = {
+					species = root.owner_species
+					name = random
+					name_list = "NECROID3"
+					authority = random
+					civics = random
+					ethos = random
+					flag = random
+					type = default
+					origin = "origin_lost_colony"
+				}
+			}
+			25 = {
+				create_country = {
+					species = root.owner_species
+					name = random
+					name_list = "NECROID4"
+					authority = random
+					civics = random
+					ethos = random
+					flag = random
+					type = default
+					origin = "origin_lost_colony"
+				}
+			}
+		}
+	}
+	else_if = {
+		# Aquatics
+		limit = { ROOT = { is_species_class = AQUATIC } }
+		random_list = {
+			25 = {
+				create_country = {
+					species = root.owner_species
+					name = random
+					name_list = "AQUATIC1"
+					authority = random
+					civics = random
+					ethos = random
+					flag = random
+					type = default
+					origin = "origin_lost_colony"
+				}
+			}
+			25 = {
+				create_country = {
+					species = root.owner_species
+					name = random
+					name_list = "AQUATIC2"
+					authority = random
+					civics = random
+					ethos = random
+					flag = random
+					type = default
+					origin = "origin_lost_colony"
+				}
+			}
+			25 = {
+				create_country = {
+					species = root.owner_species
+					name = random
+					name_list = "AQUATIC3"
+					authority = random
+					civics = random
+					ethos = random
+					flag = random
+					type = default
+					origin = "origin_lost_colony"
+				}
+			}
+			25 = {
+				create_country = {
+					species = root.owner_species
+					name = random
+					name_list = "AQUATIC4"
+					authority = random
+					civics = random
+					ethos = random
+					flag = random
+					type = default
+					origin = "origin_lost_colony"
+				}
+			}
+		}
+	}
+	else = { # Reptilians and modded species classes
+		random_list = {
+			25 = {
+				create_country = {
+					species = root.owner_species
+					name = random
+					name_list = "REP1"
+					authority = random
+					civics = random
+					ethos = random
+					flag = random
+					type = default
+					origin = "origin_lost_colony"
+				}
+			}
+			25 = {
+				create_country = {
+					species = root.owner_species
+					name = random
+					name_list = "REP2"
+					authority = random
+					civics = random
+					ethos = random
+					flag = random
+					type = default
+					origin = "origin_lost_colony"
+				}
+			}
+			25 = {
+				create_country = {
+					species = root.owner_species
+					name = random
+					name_list = "REP3"
+					authority = random
+					civics = random
+					ethos = random
+					flag = random
+					type = default
+					origin = "origin_lost_colony"
+				}
+			}
+			25 = {
+				create_country = {
+					species = root.owner_species
+					name = random
+					name_list = "REP4"
+					authority = random
+					civics = random
+					ethos = random
+					flag = random
+					type = default
+					origin = "origin_lost_colony"
+				}
+			}
+		}
+	}
+	last_created_country = {
+		set_country_flag = vestigial_colony_owner_of_@prev
+		set_country_flag = distant_origin_empire
+		set_country_flag = lost_colony_of_@root
+		root = {
+			set_country_flag = lost_colony_parent_of@prev
+			set_country_flag = special_intro_for@prev
+			home_planet = {
+				set_planet_flag = homeworld_of_@prevprev
+				solar_system = { set_star_flag = homeworld_of_@prevprevprev }
+			}
+		}
+	}
+	while = {
+		count = 26
+		create_pop = {
+			species = root.owner_species
+		}
+	}
+	set_owner = last_created_country
+	set_capital = yes
+	generate_start_deposits_and_blockers = yes
+	generate_start_buildings_and_districts = yes
+	if = {
+		limit = {
+			OR = {
+				is_planet_class = pc_nuked
+				is_planet_class = pc_gaia
+			}
+		}
+		reroll_deposits = yes
+	}
+
+	random_list = {
+		90 = { set_name = random }
+		0 = {
+			modifier = {
+				add = 10
+				NOT = { is_moon = yes }
+				owner = { species_portrait = human }
+				solar_system = { NOT = { any_system_planet = { has_planet_flag = prime_name } } }
+			}
+			set_name = "[This.System.GetName] Prime"
+			set_planet_flag = prime_name
+		}
+	}
+	remove_planet_flag = human_name_list
+	remove_planet_flag = human_name_list_3
+	owner = {
+		set_name = random	#In case planet name changed
+		randomize_graphical_culture = yes
+		add_resource = {
+			minerals = 200
+			energy = 200
+			food = 200
+			alloys = 100
+			consumer_goods = 100
+			influence = 100
+		}
+	}
+	fix_nuked_habitability = yes
+	solar_system = {
+		create_starbase = {
+			size = starbase_starport
+			module = shipyard
+			owner = last_created_country
+		}
+	}
+	#science
+	create_fleet = {
+		effect = {
+			set_owner = last_created_country
+			create_ship = {
+				name = random
+				random_existing_design = science
+			}
+			set_fleet_stance = evasive				
+			#set_location = last_created_country.capital_star
+			set_location = last_created_country.capital_scope.star	
+			owner = {
+				create_leader = {
+					class = scientist
+					sub_type = survey
+					name = random
+					species = owner_main_species
+				}
+			}
+			set_leader = last_created_leader
+		}			
+	}
+	#constructor
+	create_fleet = {
+		effect = {
+			set_owner = last_created_country
+			create_ship = {
+				name = random
+				random_existing_design = constructor
+			}
+			set_fleet_stance = evasive
+			set_location = last_created_country.capital_star
+		}
+	}
+	#military
+	create_fleet = {
+		set_take_point = yes
+		effect = {
+			set_owner = last_created_country
+			while = {
+				count = 3
+				create_ship = {
+					name = random
+					random_existing_design = corvette
+				}
+			}
+			set_location = last_created_country.capital_star
+		}
+	}
+}
+
+# Applies/removes Survivor species trait if applicable
+fix_nuked_habitability = {
+	if = {
+		limit = {
+			owner = {
+				has_trait = trait_survivor
+				NOT = { has_origin = origin_post_apocalyptic }
+			}
+		}
+		owner = {
+			every_owned_pop = {
+				modify_species = {
+					species = this
+					remove_trait = trait_survivor
+				}
+			}
+			random_owned_pop = { prev = { change_dominant_species = { species = prev } } }
+		}
+	}
+	else_if = {
+		limit = { owner = { has_origin = origin_post_apocalyptic } }
+		owner = {
+			every_owned_pop = {
+				modify_species = {
+					species = this
+					add_trait = trait_survivor
+				}
+			}
+			random_owned_pop = { prev = { change_dominant_species = { species = prev } } }
+		}
+	}
+	else_if = {
+		limit = {
+			is_planet_class = pc_nuked
+			NOT = { owner = { has_origin = origin_post_apocalyptic } }
+		}
+		owner = {
+			every_owned_pop = {
+				modify_species = {
+					species = this
+					add_trait = trait_survivor
+				}
+			}
+			random_owned_pop = { prev = { change_dominant_species = { species = prev } } }
+		}
+	}
+}
+
+create_hive_mind_vestigial_colony = {
+	if = {
+		limit = { is_planet_class = pc_subterranean_wet }
+		set_planet_entity = { picture = pc_subterranean_wet }
+	}
+	else_if = {
+		limit = { is_planet_class = pc_subterranean_dry }
+		set_planet_entity = { picture = pc_subterranean_dry }
+	}
+	else_if = {
+		limit = { is_planet_class = pc_subterranean_cold }
+		set_planet_entity = { picture = pc_subterranean_cold }
+	}
+	if = {
+		limit = { ROOT = { species_portrait = human } }
+		random_list = {
+			35 = { create_country = { type = default name_list = "HUMAN1" } }
+			35 = { create_country = { type = default name_list = "HUMAN2" } }
+			30 = { create_country = { type = default name_list = "HUMAN3" } }
+		}
+	}
+	else_if = {
+		limit = {
+			ROOT = {
+				is_species_class = HUM
+				NOT = { species_portrait = human }
+			}
+		}
+		random_list = {
+			25 = { create_country = { type = default name_list = "HUM1" } }
+			25 = { create_country = { type = default name_list = "HUM2" } }
+			25 = { create_country = { type = default name_list = "HUM3" } }
+			25 = { create_country = { type = default name_list = "HUM4" } }
+		}
+	}
+	else_if = {
+		limit = { ROOT = { is_species_class = MAM } }
+		random_list = {
+			25 = { create_country = { type = default name_list = "MAM1" } }
+			25 = { create_country = { type = default name_list = "MAM2" } }
+			25 = { create_country = { type = default name_list = "MAM3" } }
+			25 = { create_country = { type = default name_list = "MAM4" } }
+		}
+	}
+	else_if = {
+		limit = { ROOT = { is_species_class = AVI } }
+		random_list = {
+			25 = { create_country = { type = default name_list = "AVI1" } }
+			25 = { create_country = { type = default name_list = "AVI2" } }
+			25 = { create_country = { type = default name_list = "AVI3" } }
+			25 = { create_country = { type = default name_list = "AVI4" } }
+		}
+	}
+	else_if = {
+		limit = { ROOT = { is_species_class = ART } }
+		random_list = {
+			25 = { create_country = { type = default name_list = "ART1" } }
+			25 = { create_country = { type = default name_list = "ART2" } }
+			25 = { create_country = { type = default name_list = "ART3" } }
+			25 = { create_country = { type = default name_list = "ART4" } }
+		}
+	}
+	else_if = {
+		limit = { ROOT = { is_species_class = MOL } }
+		random_list = {
+			25 = { create_country = { type = default name_list = "MOL1" } }
+			25 = { create_country = { type = default name_list = "MOL2" } }
+			25 = { create_country = { type = default name_list = "MOL3" } }
+			25 = { create_country = { type = default name_list = "MOL4" } }
+		}
+	}
+	else_if = {
+		limit = { ROOT = { is_species_class = FUN } }
+		random_list = {
+			25 = { create_country = { type = default name_list = "FUN1" } }
+			25 = { create_country = { type = default name_list = "FUN2" } }
+			25 = { create_country = { type = default name_list = "FUN3" } }
+			25 = { create_country = { type = default name_list = "FUN4" } }
+		}
+	}
+	else_if = {
+		limit = { ROOT = { is_species_class = PLANT } }
+		random_list = {
+			25 = { create_country = { type = default name_list = "PLANT1" } }
+			25 = { create_country = { type = default name_list = "PLANT2" } }
+			25 = { create_country = { type = default name_list = "PLANT3" } }
+			25 = { create_country = { type = default name_list = "PLANT4" } }
+		}
+	}
+	else_if = {
+		limit = { ROOT = { is_species_class = LITHOID } }
+		random_list = {
+			25 = { create_country = { type = default name_list = "LITH1" } }
+			25 = { create_country = { type = default name_list = "LITH2" } }
+			25 = { create_country = { type = default name_list = "LITH3" } }
+			25 = { create_country = { type = default name_list = "LITH4" } }
+		}
+	}
+	else_if = {
+		limit = { ROOT = { is_species_class = NECROID } }
+		random_list = {
+			25 = { create_country = { type = default name_list = "NECROID1" } }
+			25 = { create_country = { type = default name_list = "NECROID2" } }
+			25 = { create_country = { type = default name_list = "NECROID3" } }
+			25 = { create_country = { type = default name_list = "NECROID4" } }
+		}
+	}
+	else_if = {
+		limit = { ROOT = { is_species_class = AQUATIC } }
+		random_list = {
+			25 = { create_country = { type = default name_list = "AQUATIC1" } }
+			25 = { create_country = { type = default name_list = "AQUATIC2" } }
+			25 = { create_country = { type = default name_list = "AQUATIC3" } }
+			25 = { create_country = { type = default name_list = "AQUATIC4" } }
+		}
+	}
+	else = {
+		random_list = {
+			25 = { create_country = { type = default name_list = "REP1" } }
+			25 = { create_country = { type = default name_list = "REP2" } }
+			25 = { create_country = { type = default name_list = "REP3" } }
+			25 = { create_country = { type = default name_list = "REP4" } }
+		}
+	}
+	set_name = random
+	create_country = {
+		name_list = "HIVE"
+		type = default
+		species = root.owner_species
+		ignore_initial_colony_error = yes
+		day_zero_contact = no
+		ethos = { ethic = ethic_gestalt_consciousness }
+		authority = auth_hive_mind
+		civics = {
+			civic = civic_hive_natural_neural_network
+			civic = civic_hive_pooled_knowledge
+		}
+		flag = random
+		origin = "origin_default"
+	}
+	last_created_country = {
+		set_country_flag = vestigial_colony_owner_of_@prev
+		set_country_flag = distant_origin_empire
+		set_country_flag = lost_colony_of_@root
+		root = {
+			set_country_flag = lost_colony_parent_of@prev
+			set_country_flag = special_intro_for@prev
+			home_planet = {
+				set_planet_flag = homeworld_of_@prevprev
+				solar_system = { set_star_flag = homeworld_of_@prevprevprev }
+			}
+		}
+	}
+	while = {
+		count = 34
+		create_pop = {
+			species = owner_species
+		}
+	}
+	every_owned_pop = {
+		modify_species = {
+			species = this
+			add_trait = trait_hive_mind
+			add_traits_at_start_of_list = yes
+		}
+	}
+	last_created_country = {
+		random_owned_pop = { prev = { change_dominant_species = { species = prev } } }
+		owner_species = { set_species_homeworld = prevprev }
+	}
+	set_owner = last_created_country
+	set_capital = yes
+
+	generate_start_deposits_and_blockers = yes
+	generate_start_buildings_and_districts = yes
+	if = {
+		limit = {
+			OR = {
+				is_planet_class = pc_nuked
+				is_planet_class = pc_gaia
+			}
+		}
+		reroll_deposits = yes
+	}
+
+	owner = {
+		set_name = random	#In case planet name changed
+		set_ship_prefix = ""
+		randomize_graphical_culture = yes
+		add_resource = {
+			minerals = 200
+			energy = 200
+			food = 200
+			alloys = 100
+			consumer_goods = 100
+			influence = 100
+		}
+	}
+	fix_nuked_habitability = yes
+
+	solar_system = {
+		create_starbase = {
+			size = starbase_starport
+			module = shipyard
+			owner = last_created_country
+		}
+	}
+	#science
+	create_fleet = {
+		effect = {
+			set_owner = last_created_country
+			create_ship = {
+				name = random
+				random_existing_design = science
+			}
+			set_fleet_stance = evasive				
+			#set_location = last_created_country.capital_star
+			set_location = last_created_country.capital_scope.star	
+			owner = {
+				create_leader = {
+					class = scientist
+					sub_type = survey
+					name = random
+					species = owner_main_species
+				}
+			}
+			set_leader = last_created_leader
+		}			
+	}
+	#constructor
+	create_fleet = {
+		effect = {
+			set_owner = last_created_country
+			create_ship = {
+				name = random
+				random_existing_design = constructor
+			}
+			set_fleet_stance = evasive
+			set_location = last_created_country.capital_star
+		}
+	}
+	#military
+	create_fleet = {
+		set_take_point = yes
+		effect = {
+			set_owner = last_created_country
+			while = {
+				count = 3
+				create_ship = {
+					name = random
+					random_existing_design = corvette
+				}
+			}
+			set_location = last_created_country.capital_star
+		}
+	}
+}
+
+create_machine_vestigial_colony = {
+	if = {
+		limit = { is_planet_class = pc_subterranean_wet }
+		set_planet_entity = { picture = pc_subterranean_wet }
+	}
+	else_if = {
+		limit = { is_planet_class = pc_subterranean_dry }
+		set_planet_entity = { picture = pc_subterranean_dry }
+	}
+	else_if = {
+		limit = { is_planet_class = pc_subterranean_cold }
+		set_planet_entity = { picture = pc_subterranean_cold }
+	}
+	if = {
+		limit = { ROOT = { species_portrait = human } }
+		random_list = {
+			35 = { create_country = { type = default name_list = "HUMAN1" } }
+			35 = { create_country = { type = default name_list = "HUMAN2" } }
+			30 = { create_country = { type = default name_list = "HUMAN3" } }
+		}
+		create_species = {
+			name = random
+			class = MACHINE
+			traits = { trait = trait_machine_unit trait = random_traits }
+			portrait = sd_hum_robot
+			homeworld = THIS
+			traits = { trait = random_traits }
+		}
+	}
+	else_if = {
+		limit = {
+			ROOT = {
+				is_species_class = HUM
+				NOT = { species_portrait = human }
+			}
+		}
+		random_list = {
+			25 = { create_country = { type = default name_list = "HUM1" } }
+			25 = { create_country = { type = default name_list = "HUM2" } }
+			25 = { create_country = { type = default name_list = "HUM3" } }
+			25 = { create_country = { type = default name_list = "HUM4" } }
+		}
+		create_species = {
+			name = random
+			class = MACHINE
+			traits = { trait = trait_machine_unit trait = random_traits }
+			portrait = sd_hum_robot
+			homeworld = THIS
+			traits = { trait = random_traits }
+		}
+	}
+	else_if = {
+		limit = { ROOT = { is_species_class = MAM } }
+		random_list = {
+			25 = { create_country = { type = default name_list = "MAM1" } }
+			25 = { create_country = { type = default name_list = "MAM2" } }
+			25 = { create_country = { type = default name_list = "MAM3" } }
+			25 = { create_country = { type = default name_list = "MAM4" } }
+		}
+		create_species = {
+			name = random
+			class = MACHINE
+			traits = { trait = trait_machine_unit trait = random_traits }
+			portrait = sd_mam_robot
+			homeworld = THIS
+			traits = { trait = random_traits }
+		}
+	}
+	else_if = {
+		limit = { ROOT = { is_species_class = AVI } }
+		random_list = {
+			25 = { create_country = { type = default name_list = "AVI1" } }
+			25 = { create_country = { type = default name_list = "AVI2" } }
+			25 = { create_country = { type = default name_list = "AVI3" } }
+			25 = { create_country = { type = default name_list = "AVI4" } }
+		}
+		create_species = {
+			name = random
+			class = MACHINE
+			traits = { trait = trait_machine_unit trait = random_traits }
+			portrait = sd_avi_robot
+			homeworld = THIS
+			traits = { trait = random_traits }
+		}
+	}
+	else_if = {
+		limit = { ROOT = { is_species_class = ART } }
+		random_list = {
+			25 = { create_country = { type = default name_list = "ART1" } }
+			25 = { create_country = { type = default name_list = "ART2" } }
+			25 = { create_country = { type = default name_list = "ART3" } }
+			25 = { create_country = { type = default name_list = "ART4" } }
+		}
+		create_species = {
+			name = random
+			class = MACHINE
+			traits = { trait = trait_machine_unit trait = random_traits }
+			portrait = sd_art_robot
+			homeworld = THIS
+			traits = { trait = random_traits }
+		}
+	}
+	else_if = {
+		limit = { ROOT = { is_species_class = MOL } }
+		random_list = {
+			25 = { create_country = { type = default name_list = "MOL1" } }
+			25 = { create_country = { type = default name_list = "MOL2" } }
+			25 = { create_country = { type = default name_list = "MOL3" } }
+			25 = { create_country = { type = default name_list = "MOL4" } }
+		}
+		create_species = {
+			name = random
+			class = MACHINE
+			traits = { trait = trait_machine_unit trait = random_traits }
+			portrait = sd_mol_robot
+			homeworld = THIS
+			traits = { trait = random_traits }
+		}
+	}
+	else_if = {
+		limit = { ROOT = { is_species_class = FUN } }
+		random_list = {
+			25 = { create_country = { type = default name_list = "FUN1" } }
+			25 = { create_country = { type = default name_list = "FUN2" } }
+			25 = { create_country = { type = default name_list = "FUN3" } }
+			25 = { create_country = { type = default name_list = "FUN4" } }
+		}
+		create_species = {
+			name = random
+			class = MACHINE
+			traits = { trait = trait_machine_unit trait = random_traits }
+			portrait = sd_fun_robot
+			homeworld = THIS
+			traits = { trait = random_traits }
+		}
+	}
+	else_if = {
+		limit = { ROOT = { is_species_class = PLANT } }
+		random_list = {
+			25 = { create_country = { type = default name_list = "PLANT1" } }
+			25 = { create_country = { type = default name_list = "PLANT2" } }
+			25 = { create_country = { type = default name_list = "PLANT3" } }
+			25 = { create_country = { type = default name_list = "PLANT4" } }
+		}
+		create_species = {
+			name = random
+			class = MACHINE
+			traits = { trait = trait_machine_unit trait = random_traits }
+			portrait = sd_pla_robot
+			homeworld = THIS
+			traits = { trait = random_traits }
+		}
+	}
+	else_if = {
+		limit = { ROOT = { is_species_class = LITHOID } }
+		random_list = {
+			25 = { create_country = { type = default name_list = "LITH1" } }
+			25 = { create_country = { type = default name_list = "LITH2" } }
+			25 = { create_country = { type = default name_list = "LITH3" } }
+			25 = { create_country = { type = default name_list = "LITH4" } }
+		}
+		create_species = {
+			name = random
+			class = MACHINE
+			traits = { trait = trait_machine_unit trait = random_traits }
+			portrait = lith_machine
+			homeworld = THIS
+			traits = { trait = random_traits }
+		}
+	}
+	else_if = {
+		limit = { ROOT = { is_species_class = NECROID } }
+		random_list = {
+			25 = { create_country = { type = default name_list = "NECROID1" } }
+			25 = { create_country = { type = default name_list = "NECROID2" } }
+			25 = { create_country = { type = default name_list = "NECROID3" } }
+			25 = { create_country = { type = default name_list = "NECROID4" } }
+		}
+		create_species = {
+			name = random
+			class = MACHINE
+			traits = { trait = trait_machine_unit trait = random_traits }
+			portrait = nec_machine
+			homeworld = THIS
+			traits = { trait = random_traits }
+		}
+	}
+	else_if = {
+		limit = { ROOT = { is_species_class = AQUATIC } }
+		random_list = {
+			25 = { create_country = { type = default name_list = "AQUATIC1" } }
+			25 = { create_country = { type = default name_list = "AQUATIC2" } }
+			25 = { create_country = { type = default name_list = "AQUATIC3" } }
+			25 = { create_country = { type = default name_list = "AQUATIC4" } }
+		}
+		create_species = {
+			name = random
+			class = MACHINE
+			traits = { trait = trait_machine_unit trait = random_traits }
+			portrait = aqu_machine
+			homeworld = THIS
+			traits = { trait = random_traits }
+		}
+	}
+	else = {
+		random_list = {
+			25 = { create_country = { type = default name_list = "REP1" } }
+			25 = { create_country = { type = default name_list = "REP2" } }
+			25 = { create_country = { type = default name_list = "REP3" } }
+			25 = { create_country = { type = default name_list = "REP4" } }
+		}
+		create_species = {
+			name = random
+			class = MACHINE
+			traits = { trait = trait_machine_unit trait = random_traits }
+			portrait = sd_rep_robot
+			homeworld = THIS
+			traits = { trait = random_traits }
+		}
+	}
+	set_name = random
+	random_list = {
+		50 = {
+			create_country = {
+				name_list = "MACHINE2"
+				type = default
+				species = last_created
+				ignore_initial_colony_error = yes
+				day_zero_contact = no
+				ethos = { ethic = ethic_gestalt_consciousness }
+				authority = auth_machine_intelligence
+				civics = {
+					civic = civic_machine_assimilator
+					civic = civic_machine_introspective
+				}
+				flag = random
+				origin = "origin_default"
+			}
+		}
+		50 = {
+			modifier = {
+				factor = 5
+				is_planet_class = pc_gaia
+			}
+			create_country = {
+				name_list = "MACHINE3"
+				type = default
+				species = last_created
+				ignore_initial_colony_error = yes
+				day_zero_contact = no
+				ethos = { ethic = ethic_gestalt_consciousness }
+				authority = auth_machine_intelligence
+				civics = {
+					civic = civic_machine_servitor
+					civic = civic_machine_introspective
+				}
+				flag = random
+				origin = "origin_default"
+			}
+		}
+	}
+	last_created_country = {
+		set_country_flag = vestigial_colony_owner_of_@prev
+		set_country_flag = distant_origin_empire
+		set_country_flag = lost_colony_of_@root
+		set_ship_prefix = ""
+		root = {
+			set_country_flag = lost_colony_parent_of@prev
+			set_country_flag = special_intro_for@prev
+			home_planet = {
+				set_planet_flag = homeworld_of_@prevprev
+				solar_system = { set_star_flag = homeworld_of_@prevprevprev }
+			}
+		}
+	}
+	while = {
+		count = 16
+		create_pop = {
+			species = owner_species
+		}
+	}
+	while = {
+		count = 10
+		create_pop = {
+			species = root.owner_species
+		}
+	}
+	set_owner = last_created_country
+	set_capital = yes
+	generate_start_deposits_and_blockers = yes
+	generate_start_buildings_and_districts = yes
+	if = {
+		limit = {
+			OR = {
+				is_planet_class = pc_nuked
+				is_planet_class = pc_gaia
+			}
+		}
+		reroll_deposits = yes
+	}
+
+	owner = {
+		set_name = random	#In case planet name changed
+		if = {
+			limit = { has_civic = civic_machine_assimilator }
+			every_owned_pop = {
+				limit = { NOT = { species = last_created } }
+				modify_species = {
+					species = this
+					add_trait = trait_cybernetic
+					add_traits_at_start_of_list = yes
+					#change_scoped_species = yes # change only this pop's species
+				}
+			}
+		}
+		add_resource = {
+			minerals = 200
+			energy = 200
+			food = 200
+			alloys = 100
+			consumer_goods = 100
+			influence = 100
+		}
+		if = {
+			limit = { species_portrait = "sd_mam_robot" }
+			set_graphical_culture = mammalian_01
+		}
+		else_if = {
+			limit = { species_portrait = "sd_hum_robot" }
+			set_graphical_culture = humanoid_01
+		}
+		else_if = {
+			limit = { species_portrait = "sd_avi_robot" }
+			set_graphical_culture = avian_01
+		}
+		else_if = {
+			limit = { species_portrait = "sd_mol_robot" }
+			set_graphical_culture = molluscoid_01
+		}
+		else_if = {
+			limit = { species_portrait = "sd_pla_robot" }
+			set_graphical_culture = plantoid_01
+		}
+		else_if = {
+			limit = { species_portrait = "sd_fun_robot" }
+			set_graphical_culture = fungoid_01
+		}
+		else_if = {
+			limit = { species_portrait = "sd_art_robot" }
+			set_graphical_culture = arthropoid_01
+		}
+		else_if = {
+			limit = { species_portrait = "lith_machine" }
+			set_graphical_culture = lithoid_01
+		}
+		else_if = {
+			limit = { species_portrait = "nec_machine" }
+			set_graphical_culture = necroid_01
+		}
+		else_if = {
+			limit = { species_portrait = "aqu_machine" }
+			set_graphical_culture = aquatic_01
+		}
+		else = { set_graphical_culture = reptilian_01 }
+	}
+	solar_system = {
+		create_starbase = {
+			size = starbase_starport
+			module = shipyard
+			owner = last_created_country
+		}
+	}
+	#science
+	create_fleet = {
+		effect = {
+			set_owner = last_created_country
+			create_ship = {
+				name = random
+				random_existing_design = science
+			}
+			set_fleet_stance = evasive				
+			#set_location = last_created_country.capital_star
+			set_location = last_created_country.capital_scope.star	
+			owner = {
+				create_leader = {
+					class = scientist
+					sub_type = survey
+					name = random
+					species = owner_main_species
+				}
+			}
+			set_leader = last_created_leader
+		}			
+	}
+	#constructor
+	create_fleet = {
+		effect = {
+			set_owner = last_created_country
+			create_ship = {
+				name = random
+				random_existing_design = constructor
+			}
+			set_fleet_stance = evasive
+			set_location = last_created_country.capital_star
+		}
+	}
+	#military
+	create_fleet = {
+		set_take_point = yes
+		effect = {
+			set_owner = last_created_country
+			while = {
+				count = 3
+				create_ship = {
+					name = random
+					random_existing_design = corvette
+				}
+			}
+			set_location = last_created_country.capital_star
+		}
+	}
+}
+
+randomize_graphical_culture = {
+	random_list = {
+		10 = { set_graphical_culture = mammalian_01 }
+		10 = { set_graphical_culture = reptilian_01 }
+		10 = { set_graphical_culture = avian_01 }
+		10 = { set_graphical_culture = arthropoid_01 }
+		10 = { set_graphical_culture = molluscoid_01 }
+		10 = { set_graphical_culture = fungoid_01 }
+		10 = {
+			modifier = {
+				factor = 0
+				NOT = { host_has_dlc = "Plantoids Species Pack" }
+			}
+			modifier = {
+				factor = 0
+				has_origin = origin_post_apocalyptic
+			}
+			set_graphical_culture = plantoid_01
+		}
+		10 = {
+			modifier = {
+				factor = 0
+				NOT = { host_has_dlc = "Humanoids Species Pack" }
+			}
+			set_graphical_culture = humanoid_01
+		}
+		10 = {
+			modifier = {
+				factor = 0
+				NOT = { host_has_dlc = "Necroids Species Pack" }
+			}
+			set_graphical_culture = necroid_01
+		}
+	}
+}
+
+vestigial_colonies_add = {
+	add_event_chain_counter = { 
+		event_chain = "vestigial_colony_search" 
+		counter = "vestigial_colonies" 
+		amount = 1 
+	}
+	if = {
+		limit = {
+			has_completed_event_chain_counter = {
+				event_chain = "vestigial_colony_search" 
+				counter = "vestigial_colonies" 
+			}
+		}
+		country_event = { id = mzilli_distant_origin_unification.19 }
+	}
+}
+
+add_unification_rewards = {
+	add_monthly_resource_mult = {
+		resource = society_research
+		value = @tier3researchreward
+		min = @tier3researchmin
+		max = @tier3researchmax
+	}
+	add_monthly_resource_mult = {
+		resource = unity
+		value = 120
+		min = 240
+		max = 9999
+	}
+	add_modifier = {
+		modifier = mzilli_distant_origin_outcome
+		days = -1
+	}
+}

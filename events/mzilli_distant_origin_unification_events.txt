@@ -1,0 +1,2335 @@
+namespace = mzilli_distant_origin_unification
+
+# Creates vestigial Empires' lost colonies
+country_event = {
+	id = mzilli_distant_origin_unification.2
+	title = OK
+	desc = OK
+	hide_window = yes
+	is_triggered_only = yes
+	
+	immediate = {
+		#save_global_event_target_as = vestigial_empire
+		set_country_flag = vestigial_empire
+		set_country_flag = lost_colony_parent
+		# Sets up precursors
+		random_list = {
+			25 = {
+				# Xenophobe precursors
+				create_country = {
+					species = root.owner_species
+					type = global_event
+				}
+				last_created_country = {
+					set_country_flag = ethic_fanatic_xenophobe
+					if = {
+						limit = {
+							root = { capital_scope = { solar_system = { has_star_flag = sol } } }
+							species_portrait = human
+						}
+						random_list = {
+							25 = { set_name = "Terran Galactic Empire" }
+							25 = { set_name = "Terran Supremacy" }
+							25 = { set_name = "Imperium of [root.home_planet.GetName]" }
+							25 = { set_name = "[root.home_planet.System.GetName] Imperium" }
+						}
+					}
+					else = {
+						random_list = {
+							25 = { set_name = "[root.GetSpeciesAdj] Galactic Empire" }
+							25 = { set_name = "[root.GetSpeciesAdj] Supremacy" }
+							25 = { set_name = "Imperium of [root.home_planet.GetName]" }
+							25 = { set_name = "[root.home_planet.System.GetName] Imperium" }
+						}
+					}
+				}
+			}
+			25 = {
+				# Xenophile precursors
+				create_country = {
+					species = root.owner_species
+					type = global_event
+				}
+				last_created_country = {
+					set_country_flag = ethic_fanatic_xenophile
+					if = {
+						limit = {
+							root = { capital_scope = { solar_system = { has_star_flag = sol } } }
+							species_portrait = human
+						}
+						random_list = {
+							25 = { set_name = "Terran Galactic Republic" }
+							25 = { set_name = "Terran Federation" }
+							25 = { set_name = "Federation of [root.home_planet.GetName]" }
+							25 = { set_name = "[root.home_planet.System.GetName] Federation" }
+						}
+					}
+					else = {
+						random_list = {
+							25 = { set_name = "[root.GetSpeciesAdj] Galactic Republic" }
+							25 = { set_name = "[root.GetSpeciesAdj] Federation" }
+							25 = { set_name = "Federation of [root.home_planet.GetName]" }
+							25 = { set_name = "[root.home_planet.System.GetName] Federation" }
+						}
+					}
+				}	
+			}
+			25 = {
+				# Spiritualist precursors
+				create_country = {
+					species = root.owner_species
+					type = global_event
+				}
+				last_created_country = {
+					set_country_flag = ethic_fanatic_spiritualist
+					if = {
+						limit = {
+							root = { capital_scope = { solar_system = { has_star_flag = sol } } }
+							species_portrait = human
+						}
+						random_list = {
+							50 = { set_name = "Terran Axiom" }
+							50 = { set_name = "Amity of [root.home_planet.GetName]" }
+						}
+					}
+					else = {
+						random_list = {
+							50 = { set_name = "[root.GetSpeciesAdj] Axiom" }
+							50 = { set_name = "Amity of [root.home_planet.GetName]" }
+						}
+					}
+				}
+			}
+			25 = {
+				# Materialist precursors
+				create_country = {
+					species = root.owner_species
+					type = global_event
+				}
+				last_created_country = {
+					set_country_flag = ethic_fanatic_materialist
+					if = {
+						limit = {
+							root = { capital_scope = { solar_system = { has_star_flag = sol } } }
+							species_portrait = human
+						}
+						random_list = {
+							50 = { set_name = "[root.home_planet.System.GetName] Technocracy" }
+							50 = { set_name = "Terran Assembly" }
+						}
+					}
+					else = {
+						random_list = {
+							50 = { set_name = "[root.home_planet.System.GetName] Technocracy" }
+							50 = { set_name = "[root.GetSpeciesAdj] Assembly" }
+						}
+					}
+				}
+			}
+		}
+		last_created_country = { set_country_flag = precursors_of_@root }
+		while = {
+			count = 10
+			if = {
+				limit = {
+					any_country = {
+						root.home_planet = {
+							has_planet_flag = homeworld_of_@prev
+							exists = space_owner
+							space_owner = { is_same_value = root }
+						}
+						capital_scope = { NOT = { has_planet_flag = vestigial_colony_of_@root } }
+					}
+				}
+				random_country = {
+					limit = {
+						prev.home_planet = {
+							has_planet_flag = homeworld_of_@prev
+							exists = space_owner
+							space_owner = { is_country = root }
+						}
+						capital_scope = { NOT = { has_planet_flag = vestigial_colony_of_@root } }
+					}
+					capital_scope = {
+						set_planet_flag = vestigial_colony_of_@root
+						if = {
+							limit = { prev = { has_authority = auth_hive_mind } }
+							set_planet_flag = vestigial_empire_hive
+						}
+						if = {
+							limit = { prev = { has_authority = auth_machine_intelligence } }
+							set_planet_flag = vestigial_empire_machine
+						}
+						else = {
+							solar_system = { set_star_flag = vestigial_empire_spacefaring }
+							if = {
+								limit = { any_galaxy_planet = { has_planet_flag = vestigial_empire_spacefaring_2 } }
+								set_planet_flag = vestigial_empire_spacefaring_3
+							}
+							else_if = {
+								limit = { any_galaxy_planet = { has_planet_flag = vestigial_empire_spacefaring_1 } }
+								set_planet_flag = vestigial_empire_spacefaring_2
+							}
+							else = { set_planet_flag = vestigial_empire_spacefaring_1 }
+						}
+					}
+					set_country_flag = vestigial_colony_owner_of_@capital_scope
+					set_country_flag = distant_origin_empire
+					set_country_flag = lost_colony_of_@root
+					ROOT = {
+						set_country_flag = lost_colony_parent_of@prev
+						set_country_flag = special_intro_for@prev
+					}
+				}
+			}
+			else = { create_vestigial_colony = yes }
+			if = {
+				limit = { NOT = { has_country_flag = lost_colony_parent } }
+				set_country_flag = lost_colony_parent
+			}
+		}
+		country_event = {
+			id = "mzilli_distant_origin_unification.3"
+			days = 3 random = 30
+		}
+	}
+}
+
+# Starts search for lost colonies
+country_event = {
+	id = mzilli_distant_origin_unification.3
+	title = mzilli_distant_origin_unification.3.name
+	is_triggered_only = yes
+
+	desc = mzilli_distant_origin_unification.3.desc
+
+	picture = GFX_evt_federation_fleet
+	show_sound = event_radio_chatter
+	location = root
+
+	immediate = {
+		set_country_flag = lost_colony_parent
+		while = {
+			count = 10
+			random_galaxy_planet = {
+				limit = {
+					has_planet_flag = vestigial_colony_of_@root
+					NOT = { has_planet_flag = lost_colony_confirmed }
+				}
+				set_planet_flag = lost_colony_confirmed
+				if = {
+					limit = { NOT = { exists = event_target:lost_colony_1 } }
+					save_event_target_as = lost_colony_1
+				}
+				else_if = {
+					limit = { NOT = { exists = event_target:lost_colony_2 } }
+					save_event_target_as = lost_colony_2
+				}
+				else_if = {
+					limit = { NOT = { exists = event_target:lost_colony_3 } }
+					save_event_target_as = lost_colony_3
+				}
+				else_if = {
+					limit = { NOT = { exists = event_target:lost_colony_4 } }
+					save_event_target_as = lost_colony_4
+				}
+				else_if = {
+					limit = { NOT = { exists = event_target:lost_colony_5 } }
+					save_event_target_as = lost_colony_5
+				}
+				else_if = {
+					limit = { NOT = { exists = event_target:lost_colony_6 } }
+					save_event_target_as = lost_colony_6
+				}
+				else_if = {
+					limit = { NOT = { exists = event_target:lost_colony_7 } }
+					save_event_target_as = lost_colony_7
+				}
+				else_if = {
+					limit = { NOT = { exists = event_target:lost_colony_8 } }
+					save_event_target_as = lost_colony_8
+				}
+				else_if = {
+					limit = { NOT = { exists = event_target:lost_colony_9 } }
+					save_event_target_as = lost_colony_9
+				}
+				else_if = {
+					limit = { NOT = { exists = event_target:lost_colony_10 } }
+					save_event_target_as = lost_colony_10
+				}
+			}
+		}
+		every_galaxy_planet = {
+			limit = { has_planet_flag = lost_colony_confirmed }
+			remove_planet_flag = lost_colony_confirmed
+		}
+	}
+
+	# "We must find them. Let us begin a search."
+	option = {
+		name = mzilli_distant_origin_unification.3.a
+		begin_event_chain = {
+			event_chain = "vestigial_colony_search"
+			target = ROOT
+		}
+		hidden_effect = {
+			event_target:lost_colony_1 = { planet_event = { id = mzilli_distant_origin_unification.4 } }
+			event_target:lost_colony_2 = { planet_event = { id = mzilli_distant_origin_unification.4 } }
+			event_target:lost_colony_3 = { planet_event = { id = mzilli_distant_origin_unification.4 } }
+			event_target:lost_colony_4 = { planet_event = { id = mzilli_distant_origin_unification.4 } }
+			event_target:lost_colony_5 = { planet_event = { id = mzilli_distant_origin_unification.4 } }
+			event_target:lost_colony_6 = { planet_event = { id = mzilli_distant_origin_unification.4 } }
+			event_target:lost_colony_7 = { planet_event = { id = mzilli_distant_origin_unification.4 } }
+			event_target:lost_colony_8 = { planet_event = { id = mzilli_distant_origin_unification.4 } }
+			event_target:lost_colony_9 = { planet_event = { id = mzilli_distant_origin_unification.4 } }
+			event_target:lost_colony_10 = { planet_event = { id = mzilli_distant_origin_unification.4 } }
+		}
+	}
+}
+
+planet_event = {
+	id = mzilli_distant_origin_unification.4
+	title = OK
+	desc = OK
+	hide_window = yes
+	is_triggered_only = yes
+	
+	immediate = {
+		FROM = {
+			enable_special_project = {
+				name  = DISTANT_ORIGIN_LOST_COLONY_PROJECT
+				location = ROOT
+				owner = FROM
+			}
+		}
+	}
+}
+
+### Re-discovering lost colonies
+# Special project is completed
+planet_event = {
+	id = mzilli_distant_origin_unification.5
+	title = OK
+	desc = OK
+	hide_window = yes
+	is_triggered_only = yes
+	
+	immediate = {
+		if = {
+			limit = {
+				OR = {
+					is_planet_class = pc_gas_giant
+					is_planet_class = pc_ice_giant
+				}
+			}
+			FROM = { ship_event = { id = mzilli_distant_origin_unification.6 } }
+		}
+		else_if = {
+			limit = {
+				OR = {
+					is_planet_class = pc_shrouded
+					is_planet_class = pc_shielded
+				}
+			}
+			FROM = { ship_event = { id = mzilli_distant_origin_unification.7 } }
+		}
+		else_if = {
+			limit = {
+				OR = {
+					is_planet_class = pc_broken
+					is_planet_class = pc_shattered
+					is_planet_class = pc_shattered_2
+				}
+			}
+			FROM = { ship_event = { id = mzilli_distant_origin_unification.8 } }
+		}
+		else_if = {
+			limit = {
+				exists = owner
+				owner = { is_country_type = primitive }
+			}
+			owner = {
+				establish_contact = { who = FROM.owner }
+				establish_communications = FROM.owner
+			}
+			FROM = { ship_event = { id = mzilli_distant_origin_unification.9 } }
+		}
+		else_if = {
+			limit = {
+				exists = space_owner
+				space_owner = { has_country_flag = vestigial_colony_owner_of_@prev }
+			}
+			space_owner = {
+				establish_contact = { who = FROM.owner }
+				establish_communications = FROM.owner
+			}
+			FROM = { ship_event = { id = mzilli_distant_origin_unification.10 } }
+		}
+		else = { FROM = { ship_event = { id = mzilli_distant_origin_unification.11 } } }
+	}
+}
+
+# Gas Giant
+ship_event = {
+	id = mzilli_distant_origin_unification.6
+	title = mzilli_distant_origin_unification.6.name
+	is_triggered_only = yes
+	desc = {
+		trigger = { owner = { NOT = { has_country_flag = found_ancient_empire } } }
+		text = mzilli_distant_origin_unification.6.a.desc
+	}
+	desc = {
+		trigger = { owner = { has_country_flag = found_ancient_empire } }
+		text = mzilli_distant_origin_unification.6.b.desc
+	}
+	picture = GFX_evt_gas_giant
+	location = FROM
+	
+	immediate = {
+		owner = {
+			if = {
+				limit = { NOT = { has_country_flag = found_ancient_empire } }
+				random_country = {
+					limit = { has_country_flag = precursors_of_@prev }
+					country_event = { id = mzilli_distant_origin_unification.12 days = 60 random = 30 }
+				}
+			}
+		}
+	}
+	option = {
+		name = mzilli_distant_origin_unification.6.phobe_mil
+		trigger = {
+			owner = {
+				OR = {
+					has_ethic = ethic_xenophobe
+					has_ethic = ethic_fanatic_xenophobe
+					has_ethic = ethic_militarist
+					has_ethic = ethic_fanatic_militarist
+				}
+			}
+		}
+		owner = { vestigial_colonies_add = yes }
+	}
+	option = {
+		name = mzilli_distant_origin_unification.6.other
+		trigger = {
+			owner = {
+				NOR = {
+					has_ethic = ethic_xenophobe
+					has_ethic = ethic_fanatic_xenophobe
+					has_ethic = ethic_militarist
+					has_ethic = ethic_fanatic_militarist
+				}
+			}
+		}
+		owner = { vestigial_colonies_add = yes }
+	}
+}
+
+# Shrouded or Shielded World
+ship_event = {
+	id = mzilli_distant_origin_unification.7
+	title = mzilli_distant_origin_unification.6.name
+	is_triggered_only = yes
+	desc = {
+		trigger = {
+			FROM = { is_planet_class = pc_shrouded }
+			owner = { NOT = { has_country_flag = found_ancient_empire } }
+		}
+		text = mzilli_distant_origin_unification.7.a.desc
+	}
+	desc = {
+		trigger = {
+			FROM = { is_planet_class = pc_shrouded }
+			owner = { has_country_flag = found_ancient_empire }
+		}
+		text = mzilli_distant_origin_unification.7.b.desc
+	}
+	desc = {
+		trigger = {
+			FROM = { is_planet_class = pc_shielded }
+			owner = { NOT = { has_country_flag = found_ancient_empire } }
+		}
+		text = mzilli_distant_origin_unification.7.c.desc
+	}
+	desc = {
+		trigger = {
+			FROM = { is_planet_class = pc_shielded }
+			owner = { has_country_flag = found_ancient_empire }
+		}
+		text = mzilli_distant_origin_unification.7.d.desc
+	}
+	picture = {
+		trigger = { FROM = { is_planet_class = pc_shrouded } }
+		picture = GFX_evt_shrouded_planet
+	}
+	picture = {
+		trigger = { FROM = { NOT = { is_planet_class = pc_shrouded } } }
+		picture = GFX_evt_shielded_planet
+	}
+	location = FROM
+	
+	immediate = {
+		owner = {
+			if = {
+				limit = { NOT = { has_country_flag = found_ancient_empire } }
+				random_country = {
+					limit = { has_country_flag = precursors_of_@prev }
+					country_event = { id = mzilli_distant_origin_unification.12 days = 60 random = 30 }
+				}
+			}
+		}
+	}
+	# Xenophobe - both
+	option = {
+		name = mzilli_distant_origin_unification.6.phobe_mil
+		trigger = {
+			owner = {
+				OR = {
+					has_ethic = ethic_xenophobe
+					has_ethic = ethic_fanatic_xenophobe
+				}
+			}
+		}
+		owner = { vestigial_colonies_add = yes }
+	}
+	# Xenophile - Shrouded
+	option = {
+		name = mzilli_distant_origin_unification.7.a.phile
+		trigger = {
+			FROM = { is_planet_class = pc_shrouded }
+			owner = {
+				OR = {
+					has_ethic = ethic_xenophile
+					has_ethic = ethic_fanatic_xenophile
+				}
+			}
+		}
+		owner = { vestigial_colonies_add = yes }
+	}
+	# Xenophile - Shielded
+	option = {
+		name = mzilli_distant_origin_unification.7.c.phile
+		trigger = {
+			FROM = { NOT = { is_planet_class = pc_shrouded } }
+			owner = {
+				OR = {
+					has_ethic = ethic_xenophile
+					has_ethic = ethic_fanatic_xenophile
+				}
+			}
+		}
+		owner = { vestigial_colonies_add = yes }
+	}
+	# Spiritualist - both
+	option = {
+		name = mzilli_distant_origin_unification.7.spir
+		trigger = {
+			owner = {
+				OR = {
+					has_ethic = ethic_spiritualist
+					has_ethic = ethic_fanatic_spiritualist
+				}
+			}
+		}
+		owner = { vestigial_colonies_add = yes }
+	}
+	# Materialist - Shrouded
+	option = {
+		name = mzilli_distant_origin_unification.7.a.mat
+		trigger = {
+			FROM = { is_planet_class = pc_shrouded }
+			owner = {
+				OR = {
+					has_ethic = ethic_materialist
+					has_ethic = ethic_fanatic_materialist
+				}
+			}
+		}
+		owner = { vestigial_colonies_add = yes }
+	}
+	# Materialist - Shielded
+	option = {
+		name = mzilli_distant_origin_unification.7.c.mat
+		trigger = {
+			FROM = { NOT = { is_planet_class = pc_shrouded } }
+			owner = {
+				OR = {
+					has_ethic = ethic_materialist
+					has_ethic = ethic_fanatic_materialist
+				}
+			}
+		}
+		owner = { vestigial_colonies_add = yes }
+	}
+	# Militarist - Shrouded
+	option = {
+		name = mzilli_distant_origin_unification.7.a.mil
+		trigger = {
+			FROM = { is_planet_class = pc_shrouded }
+			owner = {
+				OR = {
+					has_ethic = ethic_militarist
+					has_ethic = ethic_fanatic_militarist
+				}
+			}
+		}
+		owner = { vestigial_colonies_add = yes }
+	}
+	# Militarist - Shielded
+	option = {
+		name = mzilli_distant_origin_unification.7.c.mil
+		trigger = {
+			FROM = { NOT = { is_planet_class = pc_shrouded } }
+			owner = {
+				OR = {
+					has_ethic = ethic_militarist
+					has_ethic = ethic_fanatic_militarist
+				}
+			}
+		}
+		owner = { vestigial_colonies_add = yes }
+	}
+	# Pacifist - Shrouded
+	option = {
+		name = mzilli_distant_origin_unification.7.a.pac
+		trigger = {
+			FROM = { is_planet_class = pc_shrouded }
+			owner = {
+				OR = {
+					has_ethic = ethic_pacifist
+					has_ethic = ethic_fanatic_authoritarian
+				}
+			}
+		}
+		owner = { vestigial_colonies_add = yes }
+	}
+	# Pacifist - Shielded
+	option = {
+		name = mzilli_distant_origin_unification.7.c.pac
+		trigger = {
+			FROM = { NOT = { is_planet_class = pc_shrouded } }
+			owner = {
+				OR = {
+					has_ethic = ethic_pacifist
+					has_ethic = ethic_fanatic_pacifist
+				}
+			}
+		}
+		owner = { vestigial_colonies_add = yes }
+	}
+	# Egalitarian - both
+	option = {
+		name = mzilli_distant_origin_unification.7.egal
+		trigger = {
+			owner = {
+				OR = {
+					has_ethic = ethic_egalitarian
+					has_ethic = ethic_fanatic_egalitarian
+				}
+			}
+		}
+		owner = { vestigial_colonies_add = yes }
+	}
+	# Authoritarian - both
+	option = {
+		name = mzilli_distant_origin_unification.7.auth
+		trigger = {
+			owner = {
+				OR = {
+					has_ethic = ethic_authoritarian
+					has_ethic = ethic_fanatic_authoritarian
+				}
+			}
+		}
+		owner = { vestigial_colonies_add = yes }
+	}
+	# Other - Shrouded
+	option = {
+		name = mzilli_distant_origin_unification.7.a.pac
+		trigger = {
+			FROM = { is_planet_class = pc_shrouded }
+			owner = {
+				NOR = {
+					has_ethic = ethic_xenophobe
+					has_ethic = ethic_fanatic_xenophobe
+					has_ethic = ethic_xenophile
+					has_ethic = ethic_fanatic_xenophile
+					has_ethic = ethic_spiritualist
+					has_ethic = ethic_fanatic_spiritualist
+					has_ethic = ethic_materialist
+					has_ethic = ethic_fanatic_materialist
+					has_ethic = ethic_militarist
+					has_ethic = ethic_fanatic_militarist
+					has_ethic = ethic_pacifist
+					has_ethic = ethic_fanatic_pacifist
+					has_ethic = ethic_egalitarian
+					has_ethic = ethic_fanatic_egalitarian
+					has_ethic = ethic_authoritarian
+					has_ethic = ethic_fanatic_authoritarian
+				}
+			}
+		}
+		owner = { vestigial_colonies_add = yes }
+	}
+	# Other - Shielded
+	option = {
+		name = mzilli_distant_origin_unification.7.c.pac
+		trigger = {
+			FROM = { NOT = { is_planet_class = pc_shrouded } }
+			owner = {
+				NOR = {
+					has_ethic = ethic_xenophobe
+					has_ethic = ethic_fanatic_xenophobe
+					has_ethic = ethic_xenophile
+					has_ethic = ethic_fanatic_xenophile
+					has_ethic = ethic_spiritualist
+					has_ethic = ethic_fanatic_spiritualist
+					has_ethic = ethic_materialist
+					has_ethic = ethic_fanatic_materialist
+					has_ethic = ethic_militarist
+					has_ethic = ethic_fanatic_militarist
+					has_ethic = ethic_pacifist
+					has_ethic = ethic_fanatic_pacifist
+					has_ethic = ethic_egalitarian
+					has_ethic = ethic_fanatic_egalitarian
+					has_ethic = ethic_authoritarian
+					has_ethic = ethic_fanatic_authoritarian
+				}
+			}
+		}
+		owner = { vestigial_colonies_add = yes }
+	}
+	# Psionic
+	option = {
+		name = mzilli_distant_origin_unification.7.psi
+		trigger = {
+			FROM = { is_planet_class = pc_shrouded }
+			OR = {
+				leader = { has_trait = leader_trait_scientist_psionic }
+				leader = { has_trait = leader_trait_scientist_chosen }
+				owner = { leader = { has_trait = leader_trait_ruler_psionic } }
+				owner = { leader = { has_trait = leader_trait_ruler_chosen } }
+			}
+		}
+		owner = { vestigial_colonies_add = yes }
+	}
+}
+
+# Broken or Shattered World
+ship_event = {
+	id = mzilli_distant_origin_unification.8
+	title = mzilli_distant_origin_unification.6.name
+	is_triggered_only = yes
+	desc = {
+		trigger = {
+			FROM = { is_planet_class = pc_broken }
+			owner = { NOT = { has_country_flag = found_ancient_empire } }
+		}
+		text = mzilli_distant_origin_unification.8.a.desc
+	}
+	desc = {
+		trigger = {
+			FROM = { is_planet_class = pc_broken }
+			owner = { has_country_flag = found_ancient_empire }
+		}
+		text = mzilli_distant_origin_unification.8.b.desc
+	}
+	desc = {
+		trigger = {
+			FROM = { NOT = { is_planet_class = pc_broken } }
+			owner = { NOT = { has_country_flag = found_ancient_empire } }
+		}
+		text = mzilli_distant_origin_unification.8.c.desc
+	}
+	desc = {
+		trigger = {
+			FROM = { NOT = { is_planet_class = pc_broken } }
+			owner = { has_country_flag = found_ancient_empire }
+		}
+		text = mzilli_distant_origin_unification.8.d.desc
+	}
+	picture = GFX_evt_shattered_planet
+	location = FROM
+	
+	immediate = {
+		owner = {
+			if = {
+				limit = { NOT = { has_country_flag = found_ancient_empire } }
+				random_country = {
+					limit = { has_country_flag = precursors_of_@prev }
+					country_event = { id = mzilli_distant_origin_unification.12 days = 60 random = 30 }
+				}
+			}
+		}
+	}
+	option = {
+		name = mzilli_distant_origin_unification.6.phobe_mil
+		trigger = {
+			owner = {
+				OR = {
+					has_ethic = ethic_xenophobe
+					has_ethic = ethic_fanatic_xenophobe
+					has_ethic = ethic_militarist
+					has_ethic = ethic_fanatic_militarist
+				}
+			}
+		}
+		owner = { vestigial_colonies_add = yes }
+	}
+	option = {
+		name = mzilli_distant_origin_unification.6.other
+		trigger = {
+			owner = {
+				NOR = {
+					has_ethic = ethic_xenophobe
+					has_ethic = ethic_fanatic_xenophobe
+					has_ethic = ethic_militarist
+					has_ethic = ethic_fanatic_militarist
+				}
+			}
+		}
+		owner = { vestigial_colonies_add = yes }
+	}
+}
+
+# Primitive World
+ship_event = {
+	id = mzilli_distant_origin_unification.9
+	title = mzilli_distant_origin_unification.6.name
+	is_triggered_only = yes
+	desc = {
+		trigger = { owner = { NOT = { has_country_flag = found_ancient_empire } } }
+		text = mzilli_distant_origin_unification.9.a.desc
+	}
+	desc = {
+		trigger = { owner = { has_country_flag = found_ancient_empire } }
+		text = mzilli_distant_origin_unification.9.b.desc
+	}
+	picture = GFX_evt_medieval_alien_civilization
+	location = FROM
+	
+	immediate = {
+		owner = {
+			if = {
+				limit = { NOT = { has_country_flag = found_ancient_empire } }
+				random_country = {
+					limit = { has_country_flag = precursors_of_@prev }
+					country_event = { id = mzilli_distant_origin_unification.12 days = 60 random = 30 }
+				}
+			}
+		}
+	}
+	# Xenophobe
+	option = {
+		name = mzilli_distant_origin_unification.9.phobe
+		trigger = {
+			owner = {
+				OR = {
+					has_ethic = ethic_xenophobe
+					has_ethic = ethic_fanatic_xenophobe
+				}
+			}
+		}
+		owner = { vestigial_colonies_add = yes }
+	}
+	# Xenophile
+	option = {
+		name = mzilli_distant_origin_unification.9.phile
+		trigger = {
+			owner = {
+				OR = {
+					has_ethic = ethic_xenophile
+					has_ethic = ethic_fanatic_xenophile
+				}
+			}
+		}
+		owner = { vestigial_colonies_add = yes }
+	}
+	# Spiritualist
+	option = {
+		name = mzilli_distant_origin_unification.9.spir
+		trigger = {
+			owner = {
+				OR = {
+					has_ethic = ethic_spiritualist
+					has_ethic = ethic_fanatic_spiritualist
+				}
+			}
+		}
+		owner = { vestigial_colonies_add = yes }
+	}
+	# Materialist
+	option = {
+		name = mzilli_distant_origin_unification.9.mat
+		trigger = {
+			owner = {
+				OR = {
+					has_ethic = ethic_materialist
+					has_ethic = ethic_fanatic_materialist
+				}
+			}
+		}
+		owner = { vestigial_colonies_add = yes }
+	}
+	# Militarist
+	option = {
+		name = mzilli_distant_origin_unification.9.mil
+		trigger = {
+			owner = {
+				OR = {
+					has_ethic = ethic_militarist
+					has_ethic = ethic_fanatic_militarist
+				}
+			}
+		}
+		owner = { vestigial_colonies_add = yes }
+	}
+	# Pacifist
+	option = {
+		name = mzilli_distant_origin_unification.9.pac
+		trigger = {
+			owner = {
+				OR = {
+					has_ethic = ethic_pacifist
+					has_ethic = ethic_fanatic_pacifist
+				}
+			}
+		}
+		owner = { vestigial_colonies_add = yes }
+	}
+	# Egalitarian
+	option = {
+		name = mzilli_distant_origin_unification.9.egal
+		trigger = {
+			owner = {
+				OR = {
+					has_ethic = ethic_egalitarian
+					has_ethic = ethic_fanatic_egalitarian
+				}
+			}
+		}
+		owner = { vestigial_colonies_add = yes }
+	}
+	# Authoritarian
+	option = {
+		name = mzilli_distant_origin_unification.9.auth
+		trigger = {
+			owner = {
+				OR = {
+					has_ethic = ethic_authoritarian
+					has_ethic = ethic_fanatic_authoritarian
+				}
+			}
+		}
+		owner = { vestigial_colonies_add = yes }
+	}
+	# Other
+	option = {
+		name = mzilli_distant_origin_unification.9.phile
+		trigger = {
+			owner = {
+				NOR = {
+					has_ethic = ethic_xenophobe
+					has_ethic = ethic_fanatic_xenophobe
+					has_ethic = ethic_xenophile
+					has_ethic = ethic_fanatic_xenophile
+					has_ethic = ethic_spiritualist
+					has_ethic = ethic_fanatic_spiritualist
+					has_ethic = ethic_materialist
+					has_ethic = ethic_fanatic_materialist
+					has_ethic = ethic_militarist
+					has_ethic = ethic_fanatic_militarist
+					has_ethic = ethic_pacifist
+					has_ethic = ethic_fanatic_pacifist
+					has_ethic = ethic_egalitarian
+					has_ethic = ethic_fanatic_egalitarian
+					has_ethic = ethic_authoritarian
+					has_ethic = ethic_fanatic_authoritarian
+				}
+			}
+		}
+		owner = { vestigial_colonies_add = yes }
+	}
+}
+
+# Spacefaring World
+ship_event = {
+	id = mzilli_distant_origin_unification.10
+	title = mzilli_distant_origin_unification.10.name
+	is_triggered_only = yes
+	desc = {
+		trigger = {
+			FROM.space_owner = {
+				NOT = { has_ethic = ethic_gestalt_consciousness }
+				OR = {
+					is_friendly_to = ROOT
+					is_cordial_to = ROOT
+					is_protective_to = ROOT
+				}
+			}
+			owner = { NOT = { has_country_flag = found_ancient_empire } }
+		}
+		text = mzilli_distant_origin_unification.10.desc.friendly.a
+	}
+	desc = {
+		trigger = {
+			FROM.space_owner = {
+				NOT = { has_ethic = ethic_gestalt_consciousness }
+				OR = {
+					is_friendly_to = ROOT
+					is_cordial_to = ROOT
+					is_protective_to = ROOT
+				}
+			}
+			owner = { has_country_flag = found_ancient_empire }
+		}
+		text = mzilli_distant_origin_unification.10.desc.friendly.b
+	}
+	desc = {
+		trigger = {
+			FROM.space_owner = {
+				NOT = { has_ethic = ethic_gestalt_consciousness }
+				OR = {
+					is_neutral_to = ROOT
+					is_threatened_to = ROOT
+				}
+			}
+			owner = { NOT = { has_country_flag = found_ancient_empire } }
+		}
+		text = mzilli_distant_origin_unification.10.desc.neutral.a
+	}
+	desc = {
+		trigger = {
+			FROM.space_owner = {
+				NOT = { has_ethic = ethic_gestalt_consciousness }
+				OR = {
+					is_neutral_to = ROOT
+					is_threatened_to = ROOT
+				}
+			}
+			owner = { has_country_flag = found_ancient_empire }
+		}
+		text = mzilli_distant_origin_unification.10.desc.neutral.b
+	}
+	desc = {
+		trigger = {
+			FROM.space_owner = {
+				NOT = { has_ethic = ethic_gestalt_consciousness }
+				OR = {
+					is_hostile_to = ROOT
+					is_domineering_to = ROOT
+					is_unfriendly_to = ROOT
+				}
+			}
+			owner = { NOT = { has_country_flag = found_ancient_empire } }
+		}
+		text = mzilli_distant_origin_unification.10.desc.hostile.a
+	}
+	desc = {
+		trigger = {
+			FROM.space_owner = {
+				NOT = { has_ethic = ethic_gestalt_consciousness }
+				OR = {
+					is_hostile_to = ROOT
+					is_domineering_to = ROOT
+					is_unfriendly_to = ROOT
+				}
+			}
+			owner = { has_country_flag = found_ancient_empire }
+		}
+		text = mzilli_distant_origin_unification.10.desc.hostile.b
+	}
+	desc = {
+		trigger = { FROM.space_owner = { has_authority = auth_hive_mind } }
+		text = mzilli_distant_origin_unification.10.desc.hive
+	}
+	desc = {
+		trigger = { FROM.space_owner = { has_civic = civic_machine_terminator } }
+		text = mzilli_distant_origin_unification.10.desc.term
+	}
+	desc = {
+		trigger = { FROM.space_owner = { has_civic = civic_machine_assimilator } }
+		text = mzilli_distant_origin_unification.10.desc.ass
+	}
+	desc = {
+		trigger = { FROM.space_owner = { has_civic = civic_machine_servitor } }
+		text = mzilli_distant_origin_unification.10.desc.serv
+	}
+	desc = {
+		trigger = {
+			FROM.space_owner = {
+				has_authority = auth_machine_intelligence
+				NOR = {
+					has_civic = civic_machine_terminator
+					has_civic = civic_machine_assimilator
+					has_civic = civic_machine_servitor
+				}
+			}
+		}
+		text = mzilli_distant_origin_unification.10.desc.mach
+	}
+	picture = {
+		trigger = { FROM.space_owner = { NOT = { has_ethic = ethic_gestalt_consciousness } } }
+		picture = GFX_evt_arguing_senate
+	}
+	picture = {
+		trigger = { FROM.space_owner = { has_authority = auth_hive_mind } }
+		picture = GFX_evt_aggressive_flora
+	}
+	picture = {
+		trigger = { FROM.space_owner = { has_authority = auth_machine_intelligence } }
+		picture = GFX_evt_robot_encounter
+	}
+	show_sound = event_mystic_reveal
+	location = FROM
+	
+	immediate = {
+		owner = {
+			if = {
+				limit = { NOT = { has_country_flag = found_ancient_empire } }
+				random_country = {
+					limit = { has_country_flag = precursors_of_@prev }
+					country_event = { id = mzilli_distant_origin_unification.12 days = 60 random = 30 }
+				}
+			}
+		}
+	}
+	# Xenophobe
+	option = {
+		name = mzilli_distant_origin_unification.9.phobe
+		trigger = {
+			FROM.space_owner = { NOT = { has_ethic = ethic_gestalt_consciousness } }
+			owner = {
+				OR = {
+					has_ethic = ethic_xenophobe
+					has_ethic = ethic_fanatic_xenophobe
+				}
+			}
+		}
+		owner = { vestigial_colonies_add = yes }
+	}
+	# Xenophile
+	option = {
+		name = mzilli_distant_origin_unification.9.phile
+		trigger = {
+			FROM.space_owner = { NOT = { has_ethic = ethic_gestalt_consciousness } }
+			owner = {
+				OR = {
+					has_ethic = ethic_xenophile
+					has_ethic = ethic_fanatic_xenophile
+				}
+			}
+		}
+		owner = { vestigial_colonies_add = yes }
+	}
+	# Spiritualist
+	option = {
+		name = mzilli_distant_origin_unification.9.spir
+		trigger = {
+			FROM.space_owner = { NOT = { has_ethic = ethic_gestalt_consciousness } }
+			owner = {
+				OR = {
+					has_ethic = ethic_spiritualist
+					has_ethic = ethic_fanatic_spiritualist
+				}
+			}
+		}
+		owner = { vestigial_colonies_add = yes }
+	}
+	# Materialist
+	option = {
+		name = mzilli_distant_origin_unification.9.mat
+		trigger = {
+			FROM.space_owner = { NOT = { has_ethic = ethic_gestalt_consciousness } }
+			owner = {
+				OR = {
+					has_ethic = ethic_materialist
+					has_ethic = ethic_fanatic_materialist
+				}
+			}
+		}
+		owner = { vestigial_colonies_add = yes }
+	}
+	# Militarist
+	option = {
+		name = mzilli_distant_origin_unification.9.mil
+		trigger = {
+			FROM.space_owner = { NOT = { has_ethic = ethic_gestalt_consciousness } }
+			owner = {
+				OR = {
+					has_ethic = ethic_militarist
+					has_ethic = ethic_fanatic_militarist
+				}
+			}
+		}
+		owner = { vestigial_colonies_add = yes }
+	}
+	# Pacifist
+	option = {
+		name = mzilli_distant_origin_unification.9.pac
+		trigger = {
+			FROM.space_owner = { NOT = { has_ethic = ethic_gestalt_consciousness } }
+			owner = {
+				OR = {
+					has_ethic = ethic_pacifist
+					has_ethic = ethic_fanatic_pacifist
+				}
+			}
+		}
+		owner = { vestigial_colonies_add = yes }
+	}
+	# Egalitarian
+	option = {
+		name = mzilli_distant_origin_unification.9.egal
+		trigger = {
+			FROM.space_owner = { NOT = { has_ethic = ethic_gestalt_consciousness } }
+			owner = {
+				OR = {
+					has_ethic = ethic_egalitarian
+					has_ethic = ethic_fanatic_egalitarian
+				}
+			}
+		}
+		owner = { vestigial_colonies_add = yes }
+	}
+	# Authoritarian
+	option = {
+		name = mzilli_distant_origin_unification.9.auth
+		trigger = {
+			FROM.space_owner = { NOT = { has_ethic = ethic_gestalt_consciousness } }
+			owner = {
+				OR = {
+					has_ethic = ethic_authoritarian
+					has_ethic = ethic_fanatic_authoritarian
+				}
+			}
+		}
+		owner = { vestigial_colonies_add = yes }
+	}
+	# Other
+	option = {
+		name = mzilli_distant_origin_unification.9.phile
+		trigger = {
+			FROM.space_owner = { NOT = { has_ethic = ethic_gestalt_consciousness } }
+			owner = {
+				NOR = {
+					has_ethic = ethic_xenophobe
+					has_ethic = ethic_fanatic_xenophobe
+					has_ethic = ethic_xenophile
+					has_ethic = ethic_fanatic_xenophile
+					has_ethic = ethic_spiritualist
+					has_ethic = ethic_fanatic_spiritualist
+					has_ethic = ethic_materialist
+					has_ethic = ethic_fanatic_materialist
+					has_ethic = ethic_militarist
+					has_ethic = ethic_fanatic_militarist
+					has_ethic = ethic_pacifist
+					has_ethic = ethic_fanatic_pacifist
+					has_ethic = ethic_egalitarian
+					has_ethic = ethic_fanatic_egalitarian
+					has_ethic = ethic_authoritarian
+					has_ethic = ethic_fanatic_authoritarian
+				}
+			}
+		}
+		owner = { vestigial_colonies_add = yes }
+	}
+	# Reacting to Hive Mind
+	option = {
+		name = mzilli_distant_origin_unification.10.amazing
+		trigger = { FROM.space_owner = { has_ethic = ethic_gestalt_consciousness } }
+		owner = { vestigial_colonies_add = yes }
+	}
+	option = {
+		name = mzilli_distant_origin_unification.10.disturbing
+		trigger = { FROM.space_owner = { has_ethic = ethic_gestalt_consciousness } }
+		owner = { vestigial_colonies_add = yes }
+	}
+	option = {
+		name = mzilli_distant_origin_unification.10.wtf
+		trigger = {
+			FROM.space_owner = { has_ethic = ethic_gestalt_consciousness }
+			owner = {
+				NOR = {
+					has_ethic = ethic_xenophobe
+					has_ethic = ethic_fanatic_xenophobe
+					has_ethic = ethic_egalitarian
+					has_ethic = ethic_fanatic_egalitarian
+				}
+			}
+		}
+		owner = { vestigial_colonies_add = yes }
+	}
+	option = {
+		name = mzilli_distant_origin_unification.10.lib
+		trigger = {
+			FROM.space_owner = { has_ethic = ethic_gestalt_consciousness }
+			owner = {
+				OR = {
+					has_ethic = ethic_xenophobe
+					has_ethic = ethic_fanatic_xenophobe
+					has_ethic = ethic_egalitarian
+					has_ethic = ethic_fanatic_egalitarian
+				}
+			}
+		}
+		owner = {
+			vestigial_colonies_add = yes
+			add_modifier = {
+				modifier = distant_origin_unacceptable_hive_mind
+				days = 3600
+			}
+		}
+	}
+}
+
+# Tomb/Relic World, uninhabitable, or other
+ship_event = {
+	id = mzilli_distant_origin_unification.11
+	title = mzilli_distant_origin_unification.6.name
+	is_triggered_only = yes
+	desc = {
+		trigger = {
+			FROM = {
+				OR = {
+					is_planet_class = pc_nuked
+					is_planet_class = pc_relic
+				}
+			}
+			owner = { NOT = { has_country_flag = found_ancient_empire } }
+		}
+		text = mzilli_distant_origin_unification.11.a.desc
+	}
+	desc = {
+		trigger = {
+			FROM = {
+				OR = {
+					is_planet_class = pc_nuked
+					is_planet_class = pc_relic
+				}
+			}
+			owner = { has_country_flag = found_ancient_empire }
+		}
+		text = mzilli_distant_origin_unification.11.b.desc
+	}
+	desc = {
+		trigger = {
+			FROM = {
+				NOR = {
+					exists = owner
+					is_colonizable = yes
+				}
+			}
+			owner = { NOT = { has_country_flag = found_ancient_empire } }
+		}
+		text = mzilli_distant_origin_unification.11.c.desc
+	}
+	desc = {
+		trigger = {
+			FROM = {
+				NOR = {
+					exists = owner
+					is_colonizable = yes
+				}
+			}
+			owner = { has_country_flag = found_ancient_empire }
+		}
+		text = mzilli_distant_origin_unification.11.d.desc
+	}
+	desc = {
+		trigger = {
+			FROM = {
+				NOR = {
+					is_planet_class = pc_nuked
+					is_planet_class = pc_relic
+				}
+				OR = {
+					exists = owner
+					is_colonizable = yes
+				}
+			}
+			owner = { NOT = { has_country_flag = found_ancient_empire } }
+		}
+		text = mzilli_distant_origin_unification.11.e.desc
+	}
+	desc = {
+		trigger = {
+			FROM = {
+				NOR = {
+					is_planet_class = pc_nuked
+					is_planet_class = pc_relic
+				}
+				OR = {
+					exists = owner
+					is_colonizable = yes
+				}
+			}
+			owner = { has_country_flag = found_ancient_empire }
+		}
+		text = mzilli_distant_origin_unification.11.f.desc
+	}
+
+	picture = GFX_evt_city_ruins
+	location = FROM
+	
+	immediate = {
+		owner = {
+			if = {
+				limit = { NOT = { has_country_flag = found_ancient_empire } }
+				random_country = {
+					limit = { has_country_flag = precursors_of_@prev }
+					country_event = { id = mzilli_distant_origin_unification.12 days = 60 random = 30 }
+				}
+			}
+		}
+	}
+	option = {
+		name = mzilli_distant_origin_unification.6.phobe_mil
+		trigger = {
+			owner = {
+				OR = {
+					has_ethic = ethic_xenophobe
+					has_ethic = ethic_fanatic_xenophobe
+					has_ethic = ethic_militarist
+					has_ethic = ethic_fanatic_militarist
+				}
+			}
+		}
+		owner = { vestigial_colonies_add = yes }
+	}
+	option = {
+		name = mzilli_distant_origin_unification.6.other
+		trigger = {
+			owner = {
+				NOR = {
+					has_ethic = ethic_xenophobe
+					has_ethic = ethic_fanatic_xenophobe
+					has_ethic = ethic_militarist
+					has_ethic = ethic_fanatic_militarist
+				}
+			}
+		}
+		owner = { vestigial_colonies_add = yes }
+	}
+}
+
+### Precursors discovered
+country_event = {
+	id = mzilli_distant_origin_unification.12
+	title = OK
+	desc = OK
+	hide_window = yes
+	is_triggered_only = yes
+	
+	immediate = {
+		FROM.owner = {
+			if = {
+				limit = { NOT = { has_country_flag = found_ancient_empire } }
+				set_country_flag = found_ancient_empire
+				if = {
+					limit = { ROOT = { has_country_flag = ethic_fanatic_xenophobe } }
+					country_event = { id = mzilli_distant_origin_unification.13 }
+				}
+				else_if = {
+					limit = { ROOT = { has_country_flag = ethic_fanatic_xenophile } }
+					country_event = { id = mzilli_distant_origin_unification.14 }
+				}
+				else_if = {
+					limit = { ROOT = { has_country_flag = ethic_fanatic_spiritualist } }
+					country_event = { id = mzilli_distant_origin_unification.15 }
+				}
+				else = { country_event = { id = mzilli_distant_origin_unification.16 } }
+			}
+		}
+	}
+}
+
+# Xenophobic precursors
+country_event = {
+	id = mzilli_distant_origin_unification.13
+	title = mzilli_distant_origin_unification.13.name
+	desc = {
+		trigger = {
+			OR = {
+				has_ethic = ethic_xenophobe
+				has_ethic = ethic_fanatic_xenophobe
+			}
+			NOT = { has_civic = civic_inward_perfection }
+		}
+		text = mzilli_distant_origin_unification.13.desc.phobe
+	}
+	desc = {
+		trigger = {
+			OR = {
+				has_civic = civic_inward_perfection
+				NOR = {
+					has_ethic = ethic_xenophobe
+					has_ethic = ethic_fanatic_xenophobe
+				}
+			}
+		}
+		text = mzilli_distant_origin_unification.13.desc
+	}
+	is_triggered_only = yes
+	picture = GFX_evt_victorious_army
+	show_sound = event_radio_chatter
+
+	# Xenophobe
+	option = {
+		name = mzilli_distant_origin_unification.13.phobe
+		trigger = {
+			OR = {
+				has_ethic = ethic_xenophobe
+				has_ethic = ethic_fanatic_xenophobe
+			}
+			NOT = { has_civic = civic_inward_perfection }
+		}
+		add_monthly_resource_mult = { resource = society_research value = @tier3researchreward min = @tier3researchmin max = @tier3researchmax }
+	}
+	# Inward Perfection
+	option = {
+		name = mzilli_distant_origin_unification.13.phobe.inwards
+		trigger = { has_civic = civic_inward_perfection }
+		add_monthly_resource_mult = { resource = society_research value = @tier3researchreward min = @tier3researchmin max = @tier3researchmax }
+	}
+	# Xenophile
+	option = {
+		name = mzilli_distant_origin_unification.13.phile
+		trigger = {
+			OR = {
+				has_ethic = ethic_xenophile
+				has_ethic = ethic_fanatic_xenophile
+			}
+		}
+		add_monthly_resource_mult = { resource = society_research value = @tier3researchreward min = @tier3researchmin max = @tier3researchmax }
+	}
+	# Spiritualist
+	option = {
+		name = mzilli_distant_origin_unification.13.spir
+		trigger = {
+			OR = {
+				has_ethic = ethic_spiritualist
+				has_ethic = ethic_fanatic_spiritualist
+			}
+		}
+		add_monthly_resource_mult = { resource = society_research value = @tier3researchreward min = @tier3researchmin max = @tier3researchmax }
+	}
+	# Materialist
+	option = {
+		name = mzilli_distant_origin_unification.13.mat
+		trigger = {
+			OR = {
+				has_ethic = ethic_materialist
+				has_ethic = ethic_fanatic_materialist
+			}
+		}
+		add_monthly_resource_mult = { resource = society_research value = @tier3researchreward min = @tier3researchmin max = @tier3researchmax }
+	}
+	# Militarist
+	option = {
+		name = mzilli_distant_origin_unification.13.mil
+		trigger = {
+			OR = {
+				has_ethic = ethic_militarist
+				has_ethic = ethic_fanatic_militarist
+			}
+		}
+		add_monthly_resource_mult = { resource = society_research value = @tier3researchreward min = @tier3researchmin max = @tier3researchmax }
+	}
+	# Pacifist
+	option = {
+		name = mzilli_distant_origin_unification.13.pac
+		trigger = {
+			OR = {
+				has_ethic = ethic_pacifist
+				has_ethic = ethic_fanatic_pacifist
+			}
+		}
+		add_monthly_resource_mult = { resource = society_research value = @tier3researchreward min = @tier3researchmin max = @tier3researchmax }
+	}
+	# Egalitarian
+	option = {
+		name = mzilli_distant_origin_unification.13.egal
+		trigger = {
+			OR = {
+				has_ethic = ethic_egalitarian
+				has_ethic = ethic_fanatic_egalitarian
+			}
+		}
+		add_monthly_resource_mult = { resource = society_research value = @tier3researchreward min = @tier3researchmin max = @tier3researchmax }
+	}
+	# Authoritarian
+	option = {
+		name = mzilli_distant_origin_unification.13.auth
+		trigger = {
+			OR = {
+				has_ethic = ethic_authoritarian
+				has_ethic = ethic_fanatic_authoritarian
+			}
+		}
+		add_monthly_resource_mult = { resource = society_research value = @tier3researchreward min = @tier3researchmin max = @tier3researchmax }
+	}
+	# Other
+	option = {
+		name = FASCINATING
+		trigger = {
+			NOR = {
+				has_ethic = ethic_xenophobe
+				has_ethic = ethic_fanatic_xenophobe
+				has_ethic = ethic_xenophile
+				has_ethic = ethic_fanatic_xenophile
+				has_ethic = ethic_spiritualist
+				has_ethic = ethic_fanatic_spiritualist
+				has_ethic = ethic_materialist
+				has_ethic = ethic_fanatic_materialist
+				has_ethic = ethic_militarist
+				has_ethic = ethic_fanatic_militarist
+				has_ethic = ethic_pacifist
+				has_ethic = ethic_fanatic_pacifist
+				has_ethic = ethic_egalitarian
+				has_ethic = ethic_fanatic_egalitarian
+				has_ethic = ethic_authoritarian
+				has_ethic = ethic_fanatic_authoritarian
+			}
+		}
+		add_monthly_resource_mult = { resource = society_research value = @tier3researchreward min = @tier3researchmin max = @tier3researchmax }
+	}
+}
+
+# Xenophilic precursors
+country_event = {
+	id = mzilli_distant_origin_unification.14
+	title = mzilli_distant_origin_unification.13.name
+	desc = mzilli_distant_origin_unification.14.desc
+	is_triggered_only = yes
+	picture = GFX_evt_tradestation_interior
+	show_sound = event_radio_chatter
+
+	# Xenophobe
+	option = {
+		name = mzilli_distant_origin_unification.14.phobe
+		trigger = {
+			OR = {
+				has_ethic = ethic_xenophobe
+				has_ethic = ethic_fanatic_xenophobe
+			}
+		}
+		add_monthly_resource_mult = { resource = society_research value = @tier3researchreward min = @tier3researchmin max = @tier3researchmax }
+	}
+	# Xenophile
+	option = {
+		name = mzilli_distant_origin_unification.14.phile
+		trigger = {
+			OR = {
+				has_ethic = ethic_xenophile
+				has_ethic = ethic_fanatic_xenophile
+			}
+		}
+		add_monthly_resource_mult = { resource = society_research value = @tier3researchreward min = @tier3researchmin max = @tier3researchmax }
+	}
+	# Spiritualist
+	option = {
+		name = mzilli_distant_origin_unification.14.spir
+		trigger = {
+			OR = {
+				has_ethic = ethic_spiritualist
+				has_ethic = ethic_fanatic_spiritualist
+			}
+		}
+		add_monthly_resource_mult = { resource = society_research value = @tier3researchreward min = @tier3researchmin max = @tier3researchmax }
+	}
+	# Materialist
+	option = {
+		name = mzilli_distant_origin_unification.14.mat
+		trigger = {
+			OR = {
+				has_ethic = ethic_materialist
+				has_ethic = ethic_fanatic_materialist
+			}
+		}
+		add_monthly_resource_mult = { resource = society_research value = @tier3researchreward min = @tier3researchmin max = @tier3researchmax }
+	}
+	# Militarist
+	option = {
+		name = mzilli_distant_origin_unification.14.mil
+		trigger = {
+			OR = {
+				has_ethic = ethic_militarist
+				has_ethic = ethic_fanatic_militarist
+			}
+		}
+		add_monthly_resource_mult = { resource = society_research value = @tier3researchreward min = @tier3researchmin max = @tier3researchmax }
+	}
+	# Pacifist
+	option = {
+		name = mzilli_distant_origin_unification.14.pac
+		trigger = {
+			OR = {
+				has_ethic = ethic_pacifist
+				has_ethic = ethic_fanatic_pacifist
+			}
+		}
+		add_monthly_resource_mult = { resource = society_research value = @tier3researchreward min = @tier3researchmin max = @tier3researchmax }
+	}
+	# Egalitarian
+	option = {
+		name = mzilli_distant_origin_unification.14.egal
+		trigger = {
+			OR = {
+				has_ethic = ethic_egalitarian
+				has_ethic = ethic_fanatic_egalitarian
+			}
+		}
+		add_monthly_resource_mult = { resource = society_research value = @tier3researchreward min = @tier3researchmin max = @tier3researchmax }
+	}
+	# Authoritarian
+	option = {
+		name = mzilli_distant_origin_unification.14.auth
+		trigger = {
+			OR = {
+				has_ethic = ethic_authoritarian
+				has_ethic = ethic_fanatic_authoritarian
+			}
+		}
+		add_monthly_resource_mult = { resource = society_research value = @tier3researchreward min = @tier3researchmin max = @tier3researchmax }
+	}
+	# Other
+	option = {
+		name = FASCINATING
+		trigger = {
+			NOR = {
+				has_ethic = ethic_xenophobe
+				has_ethic = ethic_fanatic_xenophobe
+				has_ethic = ethic_xenophile
+				has_ethic = ethic_fanatic_xenophile
+				has_ethic = ethic_spiritualist
+				has_ethic = ethic_fanatic_spiritualist
+				has_ethic = ethic_materialist
+				has_ethic = ethic_fanatic_materialist
+				has_ethic = ethic_militarist
+				has_ethic = ethic_fanatic_militarist
+				has_ethic = ethic_pacifist
+				has_ethic = ethic_fanatic_pacifist
+				has_ethic = ethic_egalitarian
+				has_ethic = ethic_fanatic_egalitarian
+				has_ethic = ethic_authoritarian
+				has_ethic = ethic_fanatic_authoritarian
+			}
+		}
+		add_monthly_resource_mult = { resource = society_research value = @tier3researchreward min = @tier3researchmin max = @tier3researchmax }
+	}
+}
+
+# Spiritualistic precursors
+country_event = {
+	id = mzilli_distant_origin_unification.15
+	title = mzilli_distant_origin_unification.13.name
+	desc = mzilli_distant_origin_unification.15.desc
+	is_triggered_only = yes
+	picture = GFX_evt_huge_monument
+	show_sound = event_radio_chatter
+
+	# Xenophobe
+	option = {
+		name = mzilli_distant_origin_unification.15.phobe
+		trigger = {
+			OR = {
+				has_ethic = ethic_xenophobe
+				has_ethic = ethic_fanatic_xenophobe
+			}
+		}
+		add_monthly_resource_mult = { resource = society_research value = @tier3researchreward min = @tier3researchmin max = @tier3researchmax }
+	}
+	# Xenophile
+	option = {
+		name = mzilli_distant_origin_unification.15.phile
+		trigger = {
+			OR = {
+				has_ethic = ethic_xenophile
+				has_ethic = ethic_fanatic_xenophile
+			}
+		}
+		add_monthly_resource_mult = { resource = society_research value = @tier3researchreward min = @tier3researchmin max = @tier3researchmax }
+	}
+	# Spiritualist
+	option = {
+		name = mzilli_distant_origin_unification.15.spir
+		trigger = {
+			OR = {
+				has_ethic = ethic_spiritualist
+				has_ethic = ethic_fanatic_spiritualist
+			}
+		}
+		add_monthly_resource_mult = { resource = society_research value = @tier3researchreward min = @tier3researchmin max = @tier3researchmax }
+	}
+	# Materialist
+	option = {
+		name = mzilli_distant_origin_unification.15.mat
+		trigger = {
+			OR = {
+				has_ethic = ethic_materialist
+				has_ethic = ethic_fanatic_materialist
+			}
+		}
+		add_monthly_resource_mult = { resource = society_research value = @tier3researchreward min = @tier3researchmin max = @tier3researchmax }
+	}
+	# Militarist
+	option = {
+		name = mzilli_distant_origin_unification.15.mil
+		trigger = {
+			OR = {
+				has_ethic = ethic_militarist
+				has_ethic = ethic_fanatic_militarist
+			}
+		}
+		add_monthly_resource_mult = { resource = society_research value = @tier3researchreward min = @tier3researchmin max = @tier3researchmax }
+	}
+	# Pacifist
+	option = {
+		name = mzilli_distant_origin_unification.15.pac
+		trigger = {
+			OR = {
+				has_ethic = ethic_pacifist
+				has_ethic = ethic_fanatic_pacifist
+			}
+		}
+		add_monthly_resource_mult = { resource = society_research value = @tier3researchreward min = @tier3researchmin max = @tier3researchmax }
+	}
+	# Egalitarian
+	option = {
+		name = mzilli_distant_origin_unification.15.egal
+		trigger = {
+			OR = {
+				has_ethic = ethic_egalitarian
+				has_ethic = ethic_fanatic_egalitarian
+			}
+		}
+		add_monthly_resource_mult = { resource = society_research value = @tier3researchreward min = @tier3researchmin max = @tier3researchmax }
+	}
+	# Authoritarian
+	option = {
+		name = mzilli_distant_origin_unification.15.auth
+		trigger = {
+			OR = {
+				has_ethic = ethic_authoritarian
+				has_ethic = ethic_fanatic_authoritarian
+			}
+		}
+		add_monthly_resource_mult = { resource = society_research value = @tier3researchreward min = @tier3researchmin max = @tier3researchmax }
+	}
+	# Other
+	option = {
+		name = FASCINATING
+		trigger = {
+			NOR = {
+				has_ethic = ethic_xenophobe
+				has_ethic = ethic_fanatic_xenophobe
+				has_ethic = ethic_xenophile
+				has_ethic = ethic_fanatic_xenophile
+				has_ethic = ethic_spiritualist
+				has_ethic = ethic_fanatic_spiritualist
+				has_ethic = ethic_materialist
+				has_ethic = ethic_fanatic_materialist
+				has_ethic = ethic_militarist
+				has_ethic = ethic_fanatic_militarist
+				has_ethic = ethic_pacifist
+				has_ethic = ethic_fanatic_pacifist
+				has_ethic = ethic_egalitarian
+				has_ethic = ethic_fanatic_egalitarian
+				has_ethic = ethic_authoritarian
+				has_ethic = ethic_fanatic_authoritarian
+			}
+		}
+		add_monthly_resource_mult = { resource = society_research value = @tier3researchreward min = @tier3researchmin max = @tier3researchmax }
+	}
+}
+
+# Materialistic precursors
+country_event = {
+	id = mzilli_distant_origin_unification.16
+	title = mzilli_distant_origin_unification.13.name
+	desc = mzilli_distant_origin_unification.16.desc
+	is_triggered_only = yes
+	picture = GFX_evt_think_tank
+	show_sound = event_radio_chatter
+
+	# Xenophobe
+	option = {
+		name = mzilli_distant_origin_unification.16.phobe
+		trigger = {
+			OR = {
+				has_ethic = ethic_xenophobe
+				has_ethic = ethic_fanatic_xenophobe
+			}
+		}
+		add_monthly_resource_mult = { resource = society_research value = @tier3researchreward min = @tier3researchmin max = @tier3researchmax }
+	}
+	# Xenophile
+	option = {
+		name = mzilli_distant_origin_unification.16.phile
+		trigger = {
+			OR = {
+				has_ethic = ethic_xenophile
+				has_ethic = ethic_fanatic_xenophile
+			}
+		}
+		add_monthly_resource_mult = { resource = society_research value = @tier3researchreward min = @tier3researchmin max = @tier3researchmax }
+	}
+	# Spiritualist
+	option = {
+		name = mzilli_distant_origin_unification.16.spir
+		trigger = {
+			OR = {
+				has_ethic = ethic_spiritualist
+				has_ethic = ethic_fanatic_spiritualist
+			}
+		}
+		add_monthly_resource_mult = { resource = society_research value = @tier3researchreward min = @tier3researchmin max = @tier3researchmax }
+	}
+	# Materialist
+	option = {
+		name = mzilli_distant_origin_unification.16.mat
+		trigger = {
+			OR = {
+				has_ethic = ethic_materialist
+				has_ethic = ethic_fanatic_materialist
+			}
+		}
+		add_monthly_resource_mult = { resource = society_research value = @tier3researchreward min = @tier3researchmin max = @tier3researchmax }
+	}
+	# Militarist
+	option = {
+		name = mzilli_distant_origin_unification.16.mil
+		trigger = {
+			OR = {
+				has_ethic = ethic_militarist
+				has_ethic = ethic_fanatic_militarist
+			}
+		}
+		add_monthly_resource_mult = { resource = society_research value = @tier3researchreward min = @tier3researchmin max = @tier3researchmax }
+	}
+	# Pacifist
+	option = {
+		name = mzilli_distant_origin_unification.16.pac
+		trigger = {
+			OR = {
+				has_ethic = ethic_pacifist
+				has_ethic = ethic_fanatic_pacifist
+			}
+		}
+		add_monthly_resource_mult = { resource = society_research value = @tier3researchreward min = @tier3researchmin max = @tier3researchmax }
+	}
+	# Egalitarian
+	option = {
+		name = mzilli_distant_origin_unification.15.egal
+		trigger = {
+			OR = {
+				has_ethic = ethic_egalitarian
+				has_ethic = ethic_fanatic_egalitarian
+			}
+		}
+		add_monthly_resource_mult = { resource = society_research value = @tier3researchreward min = @tier3researchmin max = @tier3researchmax }
+	}
+	# Authoritarian
+	option = {
+		name = mzilli_distant_origin_unification.15.auth
+		trigger = {
+			OR = {
+				has_ethic = ethic_authoritarian
+				has_ethic = ethic_fanatic_authoritarian
+			}
+		}
+		add_monthly_resource_mult = { resource = society_research value = @tier3researchreward min = @tier3researchmin max = @tier3researchmax }
+	}
+	# Other
+	option = {
+		name = FASCINATING
+		trigger = {
+			NOR = {
+				has_ethic = ethic_xenophobe
+				has_ethic = ethic_fanatic_xenophobe
+				has_ethic = ethic_xenophile
+				has_ethic = ethic_fanatic_xenophile
+				has_ethic = ethic_spiritualist
+				has_ethic = ethic_fanatic_spiritualist
+				has_ethic = ethic_materialist
+				has_ethic = ethic_fanatic_materialist
+				has_ethic = ethic_militarist
+				has_ethic = ethic_fanatic_militarist
+				has_ethic = ethic_pacifist
+				has_ethic = ethic_fanatic_pacifist
+				has_ethic = ethic_egalitarian
+				has_ethic = ethic_fanatic_egalitarian
+				has_ethic = ethic_authoritarian
+				has_ethic = ethic_fanatic_authoritarian
+			}
+		}
+		add_monthly_resource_mult = { resource = society_research value = @tier3researchreward min = @tier3researchmin max = @tier3researchmax }
+	}
+}
+
+### Passively discover spacefaring lost colony
+event = {
+	id = mzilli_distant_origin_unification.17
+
+	hide_window = yes
+	is_triggered_only = yes
+
+	trigger = {
+		any_country = {
+			has_origin = origin_remnants
+			has_event_chain = vestigial_colony_search
+			any_galaxy_planet = {
+				has_planet_flag = vestigial_colony_of_@prev
+				exists = space_owner
+				space_owner = {
+					has_country_flag = vestigial_colony_owner_of_@prev
+					has_communications = prevprev
+				}
+			}
+		}
+	}
+
+	immediate = {
+		random_country = {
+			limit = {
+				has_origin = origin_remnants
+				has_event_chain = vestigial_colony_search
+				any_galaxy_planet = {
+					has_planet_flag = vestigial_colony_of_@prev
+					exists = space_owner
+					space_owner = {
+						has_country_flag = vestigial_colony_owner_of_@prev
+						has_communications = prevprev
+					}
+				}
+			}
+			set_country_flag = found_col
+			random_galaxy_planet = {
+				limit = {
+					has_planet_flag = vestigial_colony_of_@prev
+					exists = space_owner
+					space_owner = {
+						has_country_flag = vestigial_colony_owner_of_@prev
+						has_communications = prevprev
+					}
+				}
+				planet_event = { id = mzilli_distant_origin_unification.18 }
+			}
+		}
+	}
+}
+
+planet_event = {
+	id = mzilli_distant_origin_unification.18
+
+	hide_window = yes
+	is_triggered_only = yes
+
+	immediate = {
+		random_country = {
+			limit = { has_country_flag = found_col }
+			remove_country_flag = found_col
+			if = {
+				limit = { has_country_flag = found_ancient_empire }
+				random_country = {
+					limit = { has_country_flag = precursors_of_@prev }
+					save_global_event_target_as = mzilli_ancient_empire
+				}
+			}
+			abort_special_project = {
+				type = DISTANT_ORIGIN_LOST_COLONY_PROJECT
+				location = ROOT
+			}
+			random_owned_ship = { ship_event = { id = mzilli_distant_origin_unification.10 } }
+			ROOT = {
+				remove_planet_flag = vestigial_colony_of_@prev
+				set_surveyed = { surveyed = yes surveyor = prev }
+			}
+		}
+	}
+}
+
+### Found all ten lost colonies
+country_event = {
+	id = mzilli_distant_origin_unification.19
+
+	hide_window = yes
+	is_triggered_only = yes
+
+	immediate = {
+		clear_global_event_target = mzilli_fallen
+		random_country = {
+			limit = {
+				OR = {
+					is_country_type = fallen_empire
+					is_country_type = awakened_fallen_empire
+				}
+				NOT = { has_country_flag = fallen_empire_machine }
+			}
+			owner_species = {
+				save_global_event_target_as = mzilli_fallen
+				set_species_flag = mzilli_fallen_of_@root
+				home_planet = { set_planet_flag = homeworld_of_@prev }
+			}
+		}
+		random_country = {
+			limit = { has_country_flag = precursors_of_@root }
+			save_global_event_target_as = mzilli_ancient_empire
+			if = {
+				limit = { has_country_flag = ethic_fanatic_xenophobe }
+				random_rim_system = { spawn_system = { initializer = distant_origin_homeworld_07 } }
+				random_system = {
+					limit = { has_star_flag = distant_origin_homeworld_blank }
+					remove_star_flag = distant_origin_homeworld
+					remove_star_flag = distant_origin_homeworld_blank
+					remove_star_flag = distant_origin_supernova
+					while = {
+						count = 12
+						create_ambient_object = {
+							type = "large_debris_object"
+							location = solar_system
+						}
+					}
+					while = {
+						count = 16
+						create_ambient_object = {
+							type = "medium_debris_01_object"
+							location = solar_system
+						}
+					}
+					while = {
+						count = 10
+						create_ambient_object = {
+							type = "small_debris_object"
+							location = solar_system
+						}
+					}
+					random_system_planet = {
+						limit = { has_planet_flag = distant_origin_homeworld_blank }
+						remove_planet_flag = distant_origin_homeworld_blank
+						set_planet_flag = mzilli_ancient_cache
+						save_global_event_target_as = mzilli_ancient_cache
+					}
+				}
+			}
+			else_if = {
+				limit = { has_country_flag = ethic_fanatic_spiritualist }
+				random_galaxy_planet = {
+					limit = { has_planet_flag = mzilli_nuked }
+					set_planet_flag = mzilli_ancient_cache
+					save_global_event_target_as = mzilli_ancient_cache
+				}
+			}
+			else = {
+				if = {
+					limit = { exists = event_target:mzilli_fallen }
+					event_target:mzilli_fallen = {
+						home_planet = {
+							set_planet_flag = mzilli_ancient_cache
+							save_global_event_target_as = mzilli_ancient_cache
+						}
+					}
+				}
+				else = {
+					random_galaxy_planet = {
+						limit = { has_planet_flag = mzilli_nuked }
+						set_planet_flag = mzilli_ancient_cache
+						save_global_event_target_as = mzilli_ancient_cache
+					}
+				}
+			}
+		}
+		country_event = { id = mzilli_distant_origin_unification.20 days = 2 }
+	}
+}
+
+country_event = {
+	id = mzilli_distant_origin_unification.20
+	title = mzilli_distant_origin_unification.20.name
+	desc = {
+		trigger = {
+			event_target:mzilli_ancient_empire = { has_country_flag = ethic_fanatic_xenophobe }
+			exists = event_target:mzilli_fallen
+		}
+		text = mzilli_distant_origin_unification.20.desc.phobe.a
+	}
+	desc = {
+		trigger = {
+			event_target:mzilli_ancient_empire = { has_country_flag = ethic_fanatic_xenophobe }
+			NOT = { exists = event_target:mzilli_fallen }
+		}
+		text = mzilli_distant_origin_unification.20.desc.phobe.b
+	}
+	desc = {
+		trigger = {
+			event_target:mzilli_ancient_empire = { has_country_flag = ethic_fanatic_xenophile }
+			exists = event_target:mzilli_fallen
+		}
+		text = mzilli_distant_origin_unification.20.desc.phile.a
+	}
+	desc = {
+		trigger = {
+			event_target:mzilli_ancient_empire = { has_country_flag = ethic_fanatic_xenophile }
+			NOT = { exists = event_target:mzilli_fallen }
+		}
+		text = mzilli_distant_origin_unification.20.desc.phile.b
+	}
+	desc = {
+		trigger = {
+			event_target:mzilli_ancient_empire = { has_country_flag = ethic_fanatic_spiritualist }
+			exists = event_target:mzilli_fallen
+		}
+		text = mzilli_distant_origin_unification.20.desc.spir.a
+	}
+	desc = {
+		trigger = {
+			event_target:mzilli_ancient_empire = { has_country_flag = ethic_fanatic_spiritualist }
+			NOT = { exists = event_target:mzilli_fallen }
+		}
+		text = mzilli_distant_origin_unification.20.desc.spir.b
+	}
+	desc = {
+		trigger = {
+			event_target:mzilli_ancient_empire = { has_country_flag = ethic_fanatic_materialist }
+			exists = event_target:mzilli_fallen
+		}
+		text = mzilli_distant_origin_unification.20.desc.mat.a
+	}
+	desc = {
+		trigger = {
+			event_target:mzilli_ancient_empire = { has_country_flag = ethic_fanatic_materialist }
+			NOT = { exists = event_target:mzilli_fallen }
+		}
+		text = mzilli_distant_origin_unification.20.desc.mat.b
+	}
+	is_triggered_only = yes
+	location = event_target:mzilli_ancient_cache
+
+	picture = {
+		trigger = { event_target:mzilli_ancient_empire = { has_country_flag = ethic_fanatic_xenophobe } }
+		picture = GFX_evt_burning_city
+	}
+	picture = {
+		trigger = { event_target:mzilli_ancient_empire = { has_country_flag = ethic_fanatic_xenophile } }
+		picture = GFX_evt_civil_action
+	}
+	picture = {
+		trigger = { event_target:mzilli_ancient_empire = { has_country_flag = ethic_fanatic_spiritualist } }
+		picture = GFX_evt_conclave
+	}
+	picture = {
+		trigger = { event_target:mzilli_ancient_empire = { has_country_flag = ethic_fanatic_materialist } }
+		picture = GFX_evt_interstellar_assembly
+	}
+	show_sound = event_radio_chatter
+
+	option = {
+		name = "precursor.100.a"
+		end_event_chain = "vestigial_colony_search"
+		enable_special_project = {
+			name  = MZILLI_ANCIENT_CACHE
+			location = event_target:mzilli_ancient_cache
+			owner = ROOT
+		}
+	}
+}
+
+# Finished cache project
+### Xenophobes
+ship_event = {
+	id = mzilli_distant_origin_unification.21
+	title = mzilli_distant_origin_unification.21.name
+	desc = {
+		trigger = { exists = event_target:mzilli_fallen }
+		text = mzilli_distant_origin_unification.21.desc.a
+	}
+	desc = {
+		trigger = { NOT = { exists = event_target:mzilli_fallen } }
+		text = mzilli_distant_origin_unification.21.desc.b
+	}
+	is_triggered_only = yes
+	location = event_target:mzilli_ancient_cache
+
+	picture = GFX_evt_supernova
+
+	show_sound = event_radio_chatter
+
+	option = {
+		name = mzilli_distant_origin_unification.21.a
+		owner = { add_unification_rewards = yes }
+	}
+}
+
+### Xenophiles
+ship_event = {
+	id = mzilli_distant_origin_unification.22
+	title = mzilli_distant_origin_unification.21.name
+	desc = {
+		trigger = { exists = event_target:mzilli_fallen }
+		text = mzilli_distant_origin_unification.22.desc.a
+	}
+	desc = {
+		trigger = { NOT = { exists = event_target:mzilli_fallen } }
+		text = mzilli_distant_origin_unification.22.desc.b
+	}
+	is_triggered_only = yes
+	location = event_target:mzilli_ancient_cache
+
+	picture = GFX_evt_assembly_fight
+	show_sound = event_radio_chatter
+
+	option = {
+		name = mzilli_distant_origin_unification.21.a
+		owner = { add_unification_rewards = yes }
+	}
+}
+
+### Spiritualists
+ship_event = {
+	id = mzilli_distant_origin_unification.23
+	title = mzilli_distant_origin_unification.21.name
+	desc = {
+		trigger = { exists = event_target:mzilli_fallen }
+		text = mzilli_distant_origin_unification.23.desc.a
+	}
+	desc = {
+		trigger = { NOT = { exists = event_target:mzilli_fallen } }
+		text = mzilli_distant_origin_unification.23.desc.b
+	}
+	is_triggered_only = yes
+	location = event_target:mzilli_ancient_cache
+
+	picture = GFX_evt_alien_segregation
+	show_sound = event_radio_chatter
+
+	option = {
+		name = mzilli_distant_origin_unification.21.a
+		owner = { add_unification_rewards = yes }
+	}
+}
+
+### Materialists
+ship_event = {
+	id = mzilli_distant_origin_unification.24
+	title = mzilli_distant_origin_unification.21.name
+	desc = {
+		trigger = { exists = event_target:mzilli_fallen }
+		text = mzilli_distant_origin_unification.24.desc.a
+	}
+	desc = {
+		trigger = { NOT = { exists = event_target:mzilli_fallen } }
+		text = mzilli_distant_origin_unification.24.desc.b
+	}
+	is_triggered_only = yes
+	location = event_target:mzilli_ancient_cache
+
+	picture = GFX_evt_ruined_system
+	show_sound = event_radio_chatter
+
+	option = {
+		name = mzilli_distant_origin_unification.21.a
+		owner = { add_unification_rewards = yes }
+	}
+}

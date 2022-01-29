@@ -1,0 +1,1060 @@
+namespace = mzilli_distant_origin
+
+##### Lost Colony interactions
+# Passively discover lost homeworld
+event = {
+	id = mzilli_distant_origin.1
+
+	hide_window = yes
+	is_triggered_only = yes
+
+	trigger = {
+		any_country = {
+			has_country_flag = distant_origin_empire
+			NOT = { has_country_flag = found_lost_homeworld }
+			any_galaxy_planet = {
+				has_planet_flag = homeworld_of_@prev
+				OR = {
+					prev = { is_in_sensor_range = prev }
+					AND = {
+						exists = space_owner
+						space_owner = { has_communications = prevprev }
+					}
+				}
+			}
+		}
+	}
+
+	immediate = {
+		random_country = {
+			limit = {
+				has_country_flag = distant_origin_empire
+				NOT = { has_country_flag = found_lost_homeworld }
+				any_galaxy_planet = {
+					has_planet_flag = homeworld_of_@prev
+					OR = {
+						prev = { is_in_sensor_range = prev }
+						AND = {
+							exists = space_owner
+							space_owner = { has_communications = prevprev }
+						}
+					}
+				}
+			}
+			set_country_flag = found_lost_homeworld
+			if = { # Refugees contact their invaders
+				limit = {
+					has_origin = origin_mzilli_exiles
+					home_planet = {
+						exists = space_owner
+						space_owner = { has_origin = origin_homeworld_occupiers }
+					}
+				}
+				establish_communications = home_planet.space_owner
+				country_event = { id = mzilli_distant_origin.12 days = 10 }
+				#home_planet.space_owner = { country_event = { id = mzilli_distant_origin.13 days = 10 } }
+			}
+			else = {
+				random_galaxy_planet = {
+					limit = { has_planet_flag = homeworld_of_@prev }
+					if = { # Lost colony child rediscovers their parents
+						limit = {
+							exists = space_owner
+							space_owner = { has_country_flag = lost_colony_parent }
+						}
+						prev = {
+							set_country_flag = found_homeworld_@prev
+							establish_communications = prev.space_owner
+						}
+						planet_event = { id = mzilli_distant_origin.8 days = 15 }
+					}
+					else = {
+						prev = { set_country_flag = found_homeworld_@prev }
+						planet_event = { id = mzilli_distant_origin.2 days = 3 }
+					}
+				}
+			}
+		}
+	}
+}
+
+planet_event = {
+	id = mzilli_distant_origin.2
+
+	hide_window = yes
+	is_triggered_only = yes
+
+	immediate = {
+		random_country = {
+			limit = { has_country_flag = found_homeworld_@root }
+			remove_country_flag = found_homeworld_@root
+			country_event = { id = mzilli_distant_origin.3 }
+		}
+	}
+}
+
+country_event = {
+	id = mzilli_distant_origin.3
+	title = mzilli_distant_origin.3.name
+	desc = {
+		trigger = { NOT = { has_ethic = ethic_gestalt_consciousness } }
+		text = mzilli_distant_origin.3.desc.a
+	}
+	desc = {
+		trigger = { has_ethic = ethic_gestalt_consciousness }
+		text = mzilli_distant_origin.3.desc.b
+	}
+
+	picture = GFX_evt_star_chart
+	show_sound = event_radio_chatter
+
+	is_triggered_only = yes
+	location = FROM
+
+	option = {
+		name = mzilli_distant_origin.3.a
+		enable_special_project = {
+			name  = DISTANT_ORIGIN_HOMEWORLD_PROJECT
+			location = FROM
+			owner = root
+		}
+	}
+}
+
+### After analysing the lost homeworld
+# Tomb or Relic world
+ship_event = {
+	id = mzilli_distant_origin.4
+	title = "PROJECT_COMPLETE"
+	desc = {
+		trigger = { owner = { NOT = { has_authority = auth_machine_intelligence } } }
+		text = mzilli_distant_origin.4.desc
+	}
+	desc = {
+		# Machine
+		trigger = { owner = { has_authority = auth_machine_intelligence } }
+		text = mzilli_distant_origin.4.desc.mach
+	}
+	picture = GFX_evt_city_ruins
+	show_sound = event_laboratory_sound
+	location = FROMFROMFROM
+	
+	is_triggered_only = yes
+
+	# Suppress findings
+	option = {
+		name = mzilli_distant_origin.4.b
+		trigger = { owner = { NOT = { has_authority = auth_machine_intelligence } } }
+		leader = { add_experience = 1000 }
+	}
+	# Reveal findings
+	option = {
+		name = mzilli_distant_origin.4.a
+		trigger = { owner = { NOT = { has_authority = auth_machine_intelligence } } }
+		leader = { add_experience = 1000 }
+		owner = {
+			add_monthly_resource_mult = {
+				resource = society_research
+				value = @tier2researchreward
+				min = @tier2researchmin
+				max = @tier2researchmax
+			}
+			add_modifier = {
+				modifier = distant_origin_homeworld_found_dead
+				days = 3600
+			}
+			owner_species = { set_species_homeworld = FROMFROMFROM }
+		}
+	}
+	# Machine
+	option = {
+		name = ACKNOWLEDGED
+		trigger = { owner = { has_authority = auth_machine_intelligence } }
+		leader = { add_experience = 1000 }
+		owner = {
+			add_monthly_resource_mult = {
+				resource = society_research
+				value = @tier2researchreward
+				min = @tier2researchmin
+				max = @tier2researchmax
+			}
+			owner_species = { set_species_homeworld = FROMFROMFROM }
+		}
+	}
+}
+
+# Lifeless or Machine world, including post-supernova and post-Sol
+ship_event = {
+	id = mzilli_distant_origin.5
+	title = "PROJECT_COMPLETE"
+	desc = {
+		trigger = {
+			owner = { NOT = { has_authority = auth_machine_intelligence } }
+			FROMFROMFROM = {
+				NOR = {
+					solar_system = { is_star_class = sc_black_hole }
+					solar_system = { is_star_class = sc_neutron_star }
+					solar_system = { is_star_class = sc_pulsar }
+					has_planet_flag = red_giant_earth
+				}
+			}
+		}
+		text = mzilli_distant_origin.5.desc.a
+	}
+	desc = {
+		# Machine
+		trigger = {
+			owner = { has_authority = auth_machine_intelligence }
+			FROMFROMFROM = {
+				NOR = {
+					solar_system = { is_star_class = sc_black_hole }
+					solar_system = { is_star_class = sc_neutron_star }
+					solar_system = { is_star_class = sc_pulsar }
+					has_planet_flag = red_giant_earth
+				}
+			}
+		}
+		text = mzilli_distant_origin.5.desc.a.mach
+	}
+	desc = {
+		trigger = {
+			owner = { NOT = { has_authority = auth_machine_intelligence } }
+			FROMFROMFROM = {
+				solar_system = {
+					OR = {
+						is_star_class = sc_black_hole
+						is_star_class = sc_pulsar
+						is_star_class = sc_neutron_star
+					}
+				}
+			}
+		}
+		text = mzilli_distant_origin.5.desc.b
+	}
+	desc = {
+		# Machine
+		trigger = {
+			owner = { has_authority = auth_machine_intelligence }
+			FROMFROMFROM = {
+				solar_system = {
+					OR = {
+						is_star_class = sc_black_hole
+						is_star_class = sc_pulsar
+						is_star_class = sc_neutron_star
+					}
+				}
+			}
+		}
+		text = mzilli_distant_origin.5.desc.b.mach
+	}
+	desc = {
+		trigger = {
+			owner = { NOT = { has_authority = auth_machine_intelligence } }
+			FROMFROMFROM = { has_planet_flag = red_giant_earth }
+		}
+		text = mzilli_distant_origin.5.desc.c
+	}
+	desc = {
+		trigger = {
+			owner = { has_authority = auth_machine_intelligence }
+			FROMFROMFROM = { has_planet_flag = red_giant_earth }
+		}
+		text = mzilli_distant_origin.5.desc.c.mach
+	}
+	picture = GFX_evt_in_the_dark
+	show_sound = event_laboratory_sound
+	location = FROMFROMFROM
+	
+	is_triggered_only = yes
+
+	# Suppress findings
+	option = {
+		name = mzilli_distant_origin.4.b
+		trigger = { owner = { NOT = { has_authority = auth_machine_intelligence } } }
+		leader = { add_experience = 1000 }
+		owner = {
+			add_monthly_resource_mult = {
+				resource = society_research
+				value = @tier2researchreward
+				min = @tier2researchmin
+				max = @tier2researchmax
+			}
+		}
+	}
+	# Reveal findings
+	option = {
+		name = mzilli_distant_origin.4.a
+		trigger = { owner = { NOT = { has_authority = auth_machine_intelligence } } }
+		leader = { add_experience = 1000 }
+		owner = {
+			add_monthly_resource_mult = {
+				resource = society_research
+				value = @tier2researchreward
+				min = @tier2researchmin
+				max = @tier2researchmax
+			}
+			if = {
+				limit = {
+					FROMFROMFROM = {
+						NOR = {
+							has_modifier = terraforming_candidate
+							is_planet_class = pc_machine
+						}
+					}
+				}
+				end_event_chain = "do_homeworld_chain"
+			}
+			add_modifier = {
+				modifier = distant_origin_homeworld_found_dead
+				days = 3600
+			}
+			owner_species = { set_species_homeworld = FROMFROMFROM }
+		}
+	}
+	# Machine
+	option = {
+		name = ACKNOWLEDGED
+		trigger = { owner = { has_authority = auth_machine_intelligence } }
+		leader = { add_experience = 1000 }
+		owner = {
+			add_monthly_resource_mult = {
+				resource = society_research
+				value = @tier2researchreward
+				min = @tier2researchmin
+				max = @tier2researchmax
+			}
+			owner_species = { set_species_homeworld = FROMFROMFROM }
+		}
+	}
+}
+
+# Gaia world
+ship_event = {
+	id = mzilli_distant_origin.6
+	title = "PROJECT_COMPLETE"
+	desc = {
+		trigger = { owner = { NOT = { has_authority = auth_machine_intelligence } } }
+		text = mzilli_distant_origin.6.desc
+	}
+	desc = {
+		# Machine
+		trigger = { owner = { has_authority = auth_machine_intelligence } }
+		text = mzilli_distant_origin.6.desc.mach
+	}
+	picture = GFX_evt_animal_wildlife
+	show_sound = event_laboratory_sound
+	location = FROMFROMFROM
+	
+	is_triggered_only = yes
+
+	option = {
+		name = mzilli_distant_origin.6.a
+		trigger = { owner = { NOT = { has_authority = auth_machine_intelligence } } }
+		leader = { add_experience = 1000 }
+		owner = {
+			add_monthly_resource_mult = {
+				resource = society_research
+				value = @tier2researchreward
+				min = @tier2researchmin
+				max = @tier2researchmax
+			}
+			add_modifier = {
+				modifier = distant_origin_homeworld_found_gaia
+				days = 7200
+			}
+			owner_species = { set_species_homeworld = FROMFROMFROM }
+		}
+	}
+	option = {
+		name = mzilli_distant_origin.4.b
+		trigger = {
+			owner = {
+				OR = {
+					has_ethic = ethic_authoritarian
+					has_ethic = ethic_fanatic_authoritarian
+					has_civic = civic_shadow_council
+				}
+			}
+		}
+		leader = { add_experience = 1000 }
+	}
+	# Machine
+	option = {
+		name = ACKNOWLEDGED
+		trigger = { owner = { has_authority = auth_machine_intelligence } }
+		leader = { add_experience = 1000 }
+		owner = {
+			add_monthly_resource_mult = {
+				resource = society_research
+				value = @tier2researchreward
+				min = @tier2researchmin
+				max = @tier2researchmax
+			}
+			owner_species = { set_species_homeworld = FROMFROMFROM }
+		}
+	}
+}
+
+# Regular habitable climate
+ship_event = {
+	id = mzilli_distant_origin.7
+	title = "PROJECT_COMPLETE"
+	desc = {
+		trigger = {
+			FROMFROMFROM = { is_ideal_planet_class = { who = root.owner status = no } }
+			owner = { NOT = { has_authority = auth_machine_intelligence } }
+		}
+		text = mzilli_distant_origin.7.desc
+	}
+	desc = {
+		trigger = {
+			FROMFROMFROM = { is_ideal_planet_class = { who = root.owner status = yes } }
+			owner = { NOT = { has_authority = auth_machine_intelligence } }
+		}
+		text = mzilli_distant_origin.7.desc.ideal
+	}
+	desc = {
+		# Machine
+		trigger = { owner = { has_authority = auth_machine_intelligence } }
+		text = mzilli_distant_origin.6.desc.mach
+	}
+	picture = GFX_evt_alien_planet
+	show_sound = event_laboratory_sound
+	location = FROMFROMFROM
+	
+	is_triggered_only = yes
+
+	option = {
+		name = mzilli_distant_origin.6.a
+		trigger = { owner = { NOT = { has_authority = auth_machine_intelligence } } }
+		leader = { add_experience = 1000 }
+		owner = {
+			add_monthly_resource_mult = {
+				resource = society_research
+				value = @tier2researchreward
+				min = @tier2researchmin
+				max = @tier2researchmax
+			}
+			add_modifier = {
+				modifier = distant_origin_homeworld_found
+				days = 7200
+			}
+			owner_species = { set_species_homeworld = FROMFROMFROM }
+		}
+	}
+	option = {
+		name = mzilli_distant_origin.4.b
+		trigger = {
+			owner = {
+				OR = {
+					has_ethic = ethic_authoritarian
+					has_ethic = ethic_fanatic_authoritarian
+					has_civic = civic_shadow_council
+				}
+			}
+		}
+		leader = { add_experience = 1000 }
+	}
+	# Machine
+	option = {
+		name = ACKNOWLEDGED
+		trigger = { owner = { has_authority = auth_machine_intelligence } }
+		leader = { add_experience = 1000 }
+		owner = {
+			add_monthly_resource_mult = {
+				resource = society_research
+				value = @tier2researchreward
+				min = @tier2researchmin
+				max = @tier2researchmax
+			}
+			owner_species = { set_species_homeworld = FROMFROMFROM }
+		}
+	}
+}
+
+planet_event = {
+	id = mzilli_distant_origin.8
+
+	hide_window = yes
+	is_triggered_only = yes
+
+	immediate = {
+		random_country = {
+			limit = { has_country_flag = found_homeworld_@root }
+			remove_country_flag = found_homeworld_@root
+			country_event = { id = mzilli_distant_origin.9 }
+		}
+	}
+}
+
+# Lost colony and Parent reconcile
+country_event = {
+	id = mzilli_distant_origin.9
+	title = mzilli_distant_origin.3.name
+	desc = {
+		trigger = {
+			FROM = {
+				NOR = {
+					NOR = {
+						exists = owner
+						is_colonizable = yes
+					}
+					OR = {
+						is_planet_class = pc_nuked
+						is_planet_class = pc_relic
+						is_planet_class = pc_city
+						is_planet_class = pc_machine
+					}
+				}
+			}
+		}
+		text = mzilli_distant_origin.9.desc.a
+	}
+	desc = {
+		trigger = {
+			FROM = {
+				OR = {
+					NOR = {
+						exists = owner
+						is_colonizable = yes
+					}
+					OR = {
+						is_planet_class = pc_nuked
+						is_planet_class = pc_relic
+						is_planet_class = pc_city
+						is_planet_class = pc_machine
+					}
+				}
+			}
+		}
+		text = mzilli_distant_origin.9.desc.b
+	}
+	picture = {
+		trigger = {
+			FROM = {
+				NOR = {
+					is_planet_class = pc_nuked
+					is_planet_class = pc_relic
+					is_planet_class = pc_shattered
+				}
+			}
+		}
+		picture = GFX_evt_dead_city
+	}
+	picture = {
+		trigger = {
+			FROM = {
+				OR = {
+					is_planet_class = pc_nuked
+					is_planet_class = pc_relic
+					is_planet_class = pc_shattered
+				}
+			}
+		}
+		picture = GFX_evt_relic_world_building
+	}
+	show_sound = event_radio_chatter
+	location = FROM
+
+	is_triggered_only = yes
+
+	immediate = {
+		if = {
+			limit = { has_country_flag = passively_scanned_homeworld }
+			remove_country_flag = passively_scanned_homeworld
+		}
+	}
+	option = {
+		name = mzilli_distant_origin.6.a
+		add_monthly_resource_mult = {
+			resource = society_research
+			value = @tier2researchreward
+			min = @tier2researchmin
+			max = @tier2researchmax
+		}
+		add_modifier = {
+			modifier = distant_origin_homeworld_found
+			days = 3600
+		}
+		owner_species = { set_species_homeworld = FROM }
+	}
+	option = {
+		name = mzilli_distant_origin.4.b
+		trigger = {
+			OR = {
+				has_ethic = ethic_authoritarian
+				has_ethic = ethic_fanatic_authoritarian
+				has_civic = civic_shadow_council
+			}
+		}
+		add_monthly_resource_mult = {
+			resource = society_research
+			value = @tier2researchreward
+			min = @tier2researchmin
+			max = @tier2researchmax
+		}
+	}
+}
+
+# Homeworld colonized/re-conquered
+planet_event = {
+	id = mzilli_distant_origin.10
+	hide_window = yes
+
+	is_triggered_only = yes
+
+	trigger = {
+		has_planet_flag = homeworld_of_@FROM
+		FROM = {
+			NOR = {
+				has_country_flag = distant_origin_homeworld_reclaimed
+				has_ethic = ethic_gestalt_consciousness
+			}
+		}
+	}
+
+	immediate = {
+		FROM = { set_country_flag = distant_origin_homeworld_reclaimed }
+		if = {
+			limit = { solar_system = { any_ship_in_system = { is_ship_class = shipclass_transport } } }
+			set_planet_flag = homeworld_reconquered
+		}
+		planet_event = { id = mzilli_distant_origin.11 }
+	}
+}
+
+planet_event = {
+	id = mzilli_distant_origin.11
+	title = mzilli_distant_origin.11.name
+	desc = {
+		trigger = { NOT = { has_planet_flag = homeworld_reconquered } }
+		text = mzilli_distant_origin.11.desc
+	}
+	desc = {
+		trigger = { has_planet_flag = homeworld_reconquered }
+		text = mzilli_distant_origin.11.desc.conquered
+	}
+	picture = {
+		trigger = { NOT = { has_planet_flag = homeworld_reconquered } }
+		picture = GFX_evt_big_landing_ship
+	}
+	picture = {
+		trigger = { has_planet_flag = homeworld_reconquered }
+		picture = GFX_evt_crisis_defeated
+	}
+	show_sound = event_celebration
+	location = root
+
+	is_triggered_only = yes
+
+	option = {
+		name = mzilli_distant_origin.11.a
+		hidden_effect = {
+			if = {
+				limit = {
+					is_point_of_interest = {
+						id = refugees_homeworld_poi
+						event_chain = do_homeworld_chain
+						owner = FROM
+					}
+				}
+				owner = { remove_point_of_interest = refugees_homeworld_poi }
+			}
+		}
+		owner = {
+			end_event_chain = "do_homeworld_chain"
+			if = {
+				limit = { has_modifier = distant_origin_vengeful_refugees }
+				remove_modifier = distant_origin_vengeful_refugees
+			}
+			if = {
+				limit = { ROOT = { has_planet_flag = homeworld_reconquered } }
+				add_modifier = {
+					modifier = distant_origin_homeworld_found
+					days = 3600
+				}
+			}
+			add_monthly_resource_mult = {
+				resource = unity
+				value = 120
+				min = 240
+				max = 9999
+			}
+			add_monthly_resource_mult = {
+				resource = society_research
+				value = 18
+				min = 120
+				max = 350
+			}
+		}
+		hidden_effect = { remove_planet_flag = homeworld_reconquered }
+	}
+}
+
+##### Refugees interactions
+# Distant Origin reacts to their Ancient Invaders
+country_event = {
+	id = mzilli_distant_origin.12
+	title = mzilli_distant_origin.12.name
+	is_triggered_only = yes
+
+	desc = {
+		trigger = { NOT = { has_ethic = ethic_gestalt_consciousness } }
+		text = mzilli_distant_origin.12.desc
+	}
+	desc = {
+		trigger = { has_ethic = ethic_gestalt_consciousness }
+		text = mzilli_distant_origin.12.desc.mach
+	}
+
+	picture = {
+		trigger = { NOT = { has_ethic = ethic_gestalt_consciousness } }
+		picture = GFX_evt_burning_city
+	}
+	picture = {
+		trigger = { has_ethic = ethic_gestalt_consciousness }
+		picture = GFX_evt_fleet_neutral
+	}
+	show_sound = event_radio_chatter
+	location = home_planet
+
+	immediate = { home_planet.space_owner = { country_event = { id = mzilli_distant_origin.13 } } }
+
+	# "We'll approach this situation calmly. Rash action could be dangerous."
+	option = {
+		trigger = { NOT = { has_civic = civic_vengeful_refugees } }
+		name = "mzilli_distant_origin.12.a"
+		add_modifier = { modifier = distant_origin_delayed_action }
+	}
+	# "Put the fleet on permanent standby. We'll be ready to fight."
+	option = {
+		trigger = { NOT = { has_civic = civic_vengeful_refugees } }
+		name = "mzilli_distant_origin.12.b"
+		add_modifier = { modifier = distant_origin_military_buildup }
+	}
+	# "Make preparations to evacuate [Root.Capital.GetName], just in case."
+	option = {
+		trigger = { NOT = { has_civic = civic_vengeful_refugees } }
+		name = "mzilli_distant_origin.12.c"
+		add_modifier = { modifier = distant_origin_exodus }
+	}
+	# "Perhaps we can yet convince them to join us."
+	option = {
+		name = "mzilli_distant_origin.12.d"
+		trigger = {
+			OR = {
+				has_civic = civic_machine_servitor
+				has_civic = civic_machine_assimilator
+			}
+		}
+		home_planet.space_owner = {
+			random_list = {
+				10 = {
+					add_opinion_modifier = {
+						who = root
+						modifier = opinion_distant_origin_olive_branch
+					}
+				}
+				10 = {
+					add_opinion_modifier = {
+						who = root
+						modifier = opinion_distant_origin_rejected_olive_branch
+					}
+				}
+			}
+		}
+	}
+	# "[This.home_planet.GetName] was our world, and it will be again one day!"
+	option = {
+		name = "mzilli_distant_origin.12.e"
+		trigger = { has_civic = civic_vengeful_refugees }
+		custom_tooltip = mzilli_distant_origin.12.tooltip
+		add_modifier = { modifier = distant_origin_vengeful_refugees }
+		hidden_effect = {
+			home_planet = {
+				solar_system = {
+					add_claims = {
+						who = root
+						num_of_claims = 10
+						show_notification = yes
+					}
+				}
+			}
+		}
+	}
+}
+
+# Contested Homeworld reacts to Distant Origin
+country_event = {
+	id = mzilli_distant_origin.13
+	title = mzilli_distant_origin.13.name
+	is_triggered_only = yes
+
+	desc = {
+		trigger = { NOT = { has_ethic = ethic_gestalt_consciousness } }
+		text = mzilli_distant_origin.13.desc
+	}
+	desc = {
+		trigger = { has_ethic = ethic_gestalt_consciousness }
+		text = mzilli_distant_origin.13.desc.mach
+	}
+
+	picture = GFX_evt_burning_settlement
+	show_sound = event_radio_chatter
+	location = FROM
+
+	#immediate = { set_country_flag = confirmed_refugees_found }
+
+	# "Put the fleet on permanent standby. We'll be ready to fight."
+	option = {
+		name = "mzilli_distant_origin.12.b"
+		add_modifier = { modifier = distant_origin_military_buildup }
+	}
+
+	# "Perhaps we can finally make things right between our peoples."
+	option = {
+		name = "mzilli_distant_origin.13.a"
+		trigger = {
+			NOR = {
+				has_ethic = ethic_militarist
+				has_ethic = ethic_xenophobe
+				has_ethic = ethic_fanatic_militarist
+				has_ethic = ethic_fanatic_xenophobe
+				has_civic = civic_machine_servitor
+				has_civic = civic_machine_assimilator
+				has_civic = civic_machine_terminator
+
+				has_civic = civic_hive_devouring_swarm
+			}
+		}
+		FROM = {
+			random_list = {
+				10 = {
+					modifier = {
+						factor = 0
+						has_civic = civic_vengeful_refugees
+					}
+					add_opinion_modifier = {
+						who = root
+						modifier = opinion_distant_origin_olive_branch
+					}
+				}
+				10 = {
+					add_opinion_modifier = {
+						who = root
+						modifier = opinion_distant_origin_rejected_olive_branch
+					}
+				}
+			}
+		}
+	}
+	# "Perhaps we can yet convince them to join us."
+	option = {
+		name = "mzilli_distant_origin.12.d"
+		trigger = {
+			OR = {
+				has_civic = civic_machine_servitor
+				has_civic = civic_machine_assimilator
+			}
+		}
+		FROM = {
+			random_list = {
+				10 = {
+					modifier = {
+						factor = 0
+						has_civic = civic_vengeful_refugees
+					}
+					add_opinion_modifier = {
+						who = root
+						modifier = opinion_distant_origin_olive_branch
+					}
+				}
+				10 = {
+					add_opinion_modifier = {
+						who = root
+						modifier = opinion_distant_origin_rejected_olive_branch
+					}
+				}
+			}
+		}
+	}
+
+	# “Their destruction was incomplete. We will correct that mistake!"
+	option = {
+		name = "mzilli_distant_origin.13.b"
+		trigger = {
+			OR = {
+				has_ethic = ethic_fanatic_xenophobe
+				has_civic = civic_machine_terminator
+				has_civic = civic_machine_assimilator
+				has_civic = civic_hive_devouring_swarm
+			}
+		}
+		FROM = {
+			add_opinion_modifier = {
+				who = root
+				modifier = opinion_distant_origin_old_rivalries
+			}
+		}
+	}
+	# "[home_planet.GetName] is a [Root.GetSpeciesAdj] world, and [Root.GetSpeciesAdj] it will remain!"
+	option = {
+		name = "mzilli_distant_origin.13.d"
+		trigger = {
+			OR = {
+				has_ethic = ethic_militarist
+				has_ethic = ethic_xenophobe
+				has_ethic = ethic_fanatic_militarist
+				has_ethic = ethic_fanatic_xenophobe
+				has_ethic = ethic_gestalt_consciousness
+			}
+			NOR = {
+				has_civic = civic_machine_servitor
+				has_civic = civic_machine_assimilator
+			}
+		}
+		add_modifier = { modifier = distant_origin_line_in_the_sand }
+	}
+
+}
+
+# Fragged/shielded/supernovaed Vengeful Refugees' homeworld
+planet_event = {
+	id = mzilli_distant_origin.14
+	hide_window = yes
+	is_triggered_only = yes
+
+	trigger = {
+		any_country = {
+			has_origin = origin_mzilli_exiles
+			home_planet = {
+				OR = {
+					is_planet = ROOT
+					AND = {
+						ROOT = { is_star = yes }
+						solar_system = { any_system_planet = { is_planet = ROOT } }
+					}
+				}
+			}
+		}
+	}
+
+	immediate = {
+		every_country = {
+			limit = {
+				has_origin = origin_mzilli_exiles
+				home_planet = {
+					OR = {
+						is_planet = ROOT
+						AND = {
+							ROOT = { is_star = yes }
+							solar_system = { any_system_planet = { is_planet = ROOT } }
+						}
+					}
+				}
+				NOT = { is_same_value = from.owner }
+			}
+			if = {
+				limit = { home_planet = { is_planet_class = pc_infested } }
+				from.owner = { set_country_flag = purged_infested_do_homeworld }
+			}
+			country_event = {
+				id = mzilli_distant_origin.15
+				days = 5
+				random = 5
+			}
+		}
+	}
+}
+
+country_event = {
+	id = mzilli_distant_origin.15
+	title = mzilli_distant_origin.15.name
+	desc = {
+		trigger = { FROM = { is_star = yes } } # Star-Eater
+		text = "mzilli_distant_origin.15.desc.a"
+	}
+	desc = {
+		trigger = { FROM = { is_planet_class = pc_shattered } } # World Cracker
+		text = "mzilli_distant_origin.15.desc.b"
+	}
+	desc = {
+		trigger = { FROM = { is_planet_class = pc_shielded } } # Global Pacifier
+		text = "mzilli_distant_origin.15.desc.c"
+	}
+	show_sound = event_yellow_alert
+	picture = {
+		trigger = { FROM = { is_star = yes } }
+		picture = GFX_evt_supernova
+	}
+	picture = {
+		trigger = { FROM = { is_planet_class = pc_shattered } }
+		picture = GFX_evt_exploding_planet
+	}
+	picture = {
+		trigger = { FROM = { is_planet_class = pc_shielded } }
+		picture = GFX_evt_shielded_planet
+	}
+	location = home_planet
+	is_triggered_only = yes
+
+	option = {
+		trigger = { NOT = { has_civic = civic_vengeful_refugees } }
+		name = colony.107.a
+		add_modifier = {
+			modifier = mzilli_dead_homeworld_sad
+			days = 3600
+		}
+	}
+	option = {
+		trigger = { has_civic = civic_vengeful_refugees }
+		name = mzilli_distant_origin.15.b
+		add_modifier = {
+			modifier = mzilli_dead_homeworld_mad
+			#days = 3600
+		}
+		hidden_effect = { FROMFROM.owner = { country_event = { id = mzilli_distant_origin.16 } } }
+	}
+}
+
+country_event = {
+	id = mzilli_distant_origin.16
+	title = mzilli_distant_origin.16.name
+	desc = mzilli_distant_origin.16.desc
+	show_sound = event_ship_bridge
+	location = FROM
+
+	is_triggered_only = yes
+
+	diplomatic = yes
+
+	picture_event_data = {
+		portrait = FROM
+		planet_background = FROM
+		graphical_culture = FROM
+		city_level = FROM
+		room = FROM.ruler
+	}
+
+	option = {
+		name = mzilli_distant_origin.16.a
+		trigger = { NOT = { has_country_flag = purged_infested_do_homeworld } }
+		FROM = {
+			add_opinion_modifier = {
+				who = root
+				modifier = opinion_vengeful_refugees_planet_destroyed
+			}
+		}
+	}
+	option = {
+		name = mzilli_distant_origin.16.b
+		trigger = { has_country_flag = purged_infested_do_homeworld }
+		FROM = {
+			add_opinion_modifier = {
+				who = root
+				modifier = opinion_vengeful_refugees_planet_destroyed
+			}
+		}
+		hidden_effect = { remove_country_flag = purged_infested_do_homeworld }
+	}
+}

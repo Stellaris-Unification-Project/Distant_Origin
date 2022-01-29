@@ -1,0 +1,43 @@
+origin_mzilli_exiles = {
+	description = "origin_tooltip_mzilli_exiles_effects"
+	picture = GFX_origin_exiles
+	max_once_global = yes
+	is_origin = yes
+	icon = "gfx/interface/icons/traits/leader_traits/trait_ruler_world_shaper.dds"
+	modifier = {
+		#pop_environment_tolerance = 0.10
+	}
+	random_weight = {
+		base = 0
+		modifier = {
+			factor = 0
+			OR = {
+				has_global_flag = game_started
+				NOT = { has_global_flag = game_started }
+			}
+		}
+	}
+}
+
+origin_homeworld_occupiers = {
+	description = "origin_tooltip_homeworld_occupiers_effects"
+	picture = GFX_origin_occupiers
+	#max_once_global = yes
+	is_origin = yes
+	icon = "gfx/interface/icons/traits/leader_traits/trait_ruler_expansionist.dds"
+	modifier = {
+		#army_morale = 0.2
+		#army_damage_mult = 0.2
+	}
+	random_weight = {
+		base = 5
+		modifier = {
+			add = 10
+			OR = {
+				has_valid_civic = civic_machine_servitor
+				has_valid_civic = civic_machine_assimilator
+			}
+		}
+	}
+	advanced_start = yes
+}

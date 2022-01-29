@@ -1,0 +1,125 @@
+### PRE-SCRIPTED
+
+# Refugees, Alien Conquerors
+part = {
+	location = 0
+	localization = "START_SCREEN_MZILLI_EXILES_ALIEN"
+
+	trigger = {
+		has_origin = origin_mzilli_exiles
+		NOT = { has_country_flag = custom_start_screen }
+		any_country = {
+			has_origin = origin_homeworld_occupiers
+			capital_scope = { is_same_value = ROOT.home_planet }
+			NOT = { is_same_species = ROOT }
+		}
+	}
+}
+
+# Refugees, Same-Species Conquerors
+part = {
+	location = 0
+	localization = "START_SCREEN_MZILLI_EXILES_SAME"
+
+	trigger = {
+		has_origin = origin_mzilli_exiles
+		NOT = { has_country_flag = custom_start_screen }
+		any_country = {
+			has_origin = origin_homeworld_occupiers
+			capital_scope = { is_same_value = ROOT.home_planet }
+			is_same_species = ROOT
+		}
+	}
+}
+
+# Conquerors, Same-Species Refugeess
+part = {
+	location = 0
+	localization = "START_SCREEN_MZILLI_CONQUERORS_ALIEN"
+
+	trigger = {
+		has_origin = origin_homeworld_occupiers
+		NOT = { has_country_flag = custom_start_screen }
+		OR = {
+			has_country_flag = spawned_refugees
+			any_country = {
+				has_origin = origin_mzilli_exiles
+				home_planet = { is_same_value = ROOT.capital_scope }
+				owner_species = { is_same_species = ROOT.owner_species }
+			}
+		}
+	}
+}
+
+# Conquerors, Alien Refugeess
+part = {
+	location = 0
+	localization = "START_SCREEN_MZILLI_CONQUERORS_ALIEN"
+
+	trigger = {
+		has_origin = origin_homeworld_occupiers
+		NOT = { has_country_flag = custom_start_screen }
+		NOT = { has_country_flag = spawned_refugees }
+		any_country = {
+			has_origin = origin_mzilli_exiles
+			home_planet = { is_same_value = ROOT.capital_scope }
+			NOT = { is_same_species = ROOT.owner_species }
+		}
+	}
+}
+
+# Normal Refugees, Part 3
+part = {
+	location = 2
+	localization = "START_SCREEN_MZILLI_EXILES_3"
+
+	trigger = {
+		has_origin = origin_mzilli_exiles
+		NOR = {
+			has_country_flag = custom_start_screen
+			has_civic = civic_vengeful_refugees
+		}
+	}
+}
+
+# Vengeful Refugees, Part 3
+part = {
+	location = 2
+	localization = "START_SCREEN_MZILLI_VENGEFUL_REFUGEES"
+
+	trigger = {
+		has_origin = origin_mzilli_exiles
+		has_civic = civic_vengeful_refugees
+		NOT = { has_country_flag = custom_start_screen }
+	}
+}
+
+# Xarmiri
+part = {
+	location = 0
+	localization = "custom_xarmiri_start_screen"
+
+	trigger = {
+		has_country_flag = xarmiri
+	}
+}
+
+# Pasceal
+part = {
+	location = 0
+	localization = "custom_pasceal_start_screen"
+
+	trigger = {
+		has_country_flag = pasceal
+	}
+}
+
+# Martian
+part = {
+	location = 0
+	localization = "custom_martian_start_screen"
+
+	trigger = {
+		has_country_flag = martian
+	}
+}

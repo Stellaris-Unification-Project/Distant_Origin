@@ -1,0 +1,215 @@
+trait_mzilli_distant_origin_1 = {
+	cost = 0
+	icon = gfx/interface/icons/traits/leader_traits/trait_ruler_world_shaper.dds
+	sorting_priority = -20
+	modification = no
+	allowed_archetypes = { BIOLOGICAL MACHINE ROBOT LITHOID }
+	opposites = {
+		trait_mzilli_distant_origin_homeworld_1
+		trait_mzilli_distant_origin_2
+		trait_mzilli_distant_origin_3
+		trait_mzilli_distant_origin_4
+		trait_mzilli_distant_origin_5
+		trait_mzilli_distant_origin_xarmir
+		trait_mzilli_distant_origin_sol
+	}
+	ai_weight = { weight = 0 }
+	randomized = no
+}
+
+trait_mzilli_distant_origin_2 = {
+	cost = 0
+	icon = gfx/interface/icons/traits/leader_traits/trait_ruler_world_shaper.dds
+	sorting_priority = -20
+	modification = no
+	allowed_archetypes = { BIOLOGICAL MACHINE ROBOT LITHOID }
+	opposites = {
+		trait_mzilli_distant_origin_homeworld_2
+		trait_mzilli_distant_origin_1
+		trait_mzilli_distant_origin_3
+		trait_mzilli_distant_origin_4
+		trait_mzilli_distant_origin_5
+		trait_mzilli_distant_origin_xarmir
+		trait_mzilli_distant_origin_sol
+	}
+	ai_weight = { weight = 0 }
+	randomized = no
+}
+
+trait_mzilli_distant_origin_3 = {
+	cost = 0
+	icon = gfx/interface/icons/traits/leader_traits/trait_ruler_world_shaper.dds
+	sorting_priority = -20
+	modification = no
+	allowed_archetypes = { BIOLOGICAL MACHINE ROBOT LITHOID }
+	opposites = {
+		trait_mzilli_distant_origin_homeworld_3
+		trait_mzilli_distant_origin_1
+		trait_mzilli_distant_origin_2
+		trait_mzilli_distant_origin_4
+		trait_mzilli_distant_origin_5
+		trait_mzilli_distant_origin_xarmir
+		trait_mzilli_distant_origin_sol
+	}
+	ai_weight = { weight = 0 }
+	randomized = no
+}
+
+trait_mzilli_distant_origin_4 = {
+	cost = 0
+	icon = gfx/interface/icons/traits/leader_traits/trait_ruler_world_shaper.dds
+	sorting_priority = -20
+	modification = no
+	allowed_archetypes = { BIOLOGICAL MACHINE ROBOT LITHOID }
+	opposites = {
+		trait_mzilli_distant_origin_homeworld_4
+		trait_mzilli_distant_origin_1
+		trait_mzilli_distant_origin_2
+		trait_mzilli_distant_origin_3
+		trait_mzilli_distant_origin_5
+		trait_mzilli_distant_origin_xarmir
+		trait_mzilli_distant_origin_sol
+	}
+	ai_weight = { weight = 0 }
+	randomized = no
+}
+
+trait_mzilli_distant_origin_5 = {
+	cost = 0
+	icon = gfx/interface/icons/traits/leader_traits/trait_ruler_world_shaper.dds
+	sorting_priority = -20
+	modification = no
+	allowed_archetypes = { BIOLOGICAL MACHINE ROBOT LITHOID }
+	opposites = {
+		trait_mzilli_distant_origin_homeworld_5
+		trait_mzilli_distant_origin_1
+		trait_mzilli_distant_origin_2
+		trait_mzilli_distant_origin_3
+		trait_mzilli_distant_origin_4
+		trait_mzilli_distant_origin_xarmir
+		trait_mzilli_distant_origin_sol
+	}
+	ai_weight = { weight = 0 }
+	randomized = no
+}
+
+trait_mzilli_distant_origin_sol = {
+	cost = 0
+	icon = gfx/interface/icons/traits/leader_traits/trait_ruler_world_shaper.dds
+	sorting_priority = -20
+	modification = no
+	allowed_archetypes = { BIOLOGICAL MACHINE ROBOT LITHOID }
+	opposites = {
+		trait_mzilli_distant_origin_1
+		trait_mzilli_distant_origin_2
+		trait_mzilli_distant_origin_3
+		trait_mzilli_distant_origin_4
+		trait_mzilli_distant_origin_5
+		trait_mzilli_distant_origin_xarmir
+	}
+	ai_weight = { weight = 0 }
+	randomized = no
+}
+
+trait_mzilli_distant_origin_xarmir = {
+	cost = 0
+	icon = gfx/interface/icons/traits/leader_traits/trait_ruler_world_shaper.dds
+	sorting_priority = -20
+	modification = no
+	allowed_archetypes = { BIOLOGICAL MACHINE ROBOT LITHOID }
+	opposites = {
+		trait_mzilli_distant_origin_1
+		trait_mzilli_distant_origin_2
+		trait_mzilli_distant_origin_3
+		trait_mzilli_distant_origin_4
+		trait_mzilli_distant_origin_5
+		trait_mzilli_distant_origin_sol
+	}
+	ai_weight = { weight = 0 }
+	randomized = no
+}
+
+trait_mzilli_distant_origin_homeworld_1 = {
+	cost = 0
+	icon = "gfx/interface/icons/traits/leader_traits/trait_ruler_expansionist.dds"
+	sorting_priority = -20
+	modification = no
+	allowed_archetypes = { BIOLOGICAL MACHINE ROBOT LITHOID }
+	opposites = {
+		trait_mzilli_distant_origin_1
+		trait_mzilli_distant_origin_homeworld_2
+		trait_mzilli_distant_origin_homeworld_3
+		trait_mzilli_distant_origin_homeworld_4
+		trait_mzilli_distant_origin_homeworld_5
+	}
+	ai_weight = { weight = 0 }
+	randomized = no
+}
+
+trait_mzilli_distant_origin_homeworld_2 = {
+	cost = 0
+	icon = "gfx/interface/icons/traits/leader_traits/trait_ruler_expansionist.dds"
+	sorting_priority = -20
+	modification = no
+	allowed_archetypes = { BIOLOGICAL MACHINE ROBOT LITHOID }
+	opposites = {
+		trait_mzilli_distant_origin_2
+		trait_mzilli_distant_origin_homeworld_1
+		trait_mzilli_distant_origin_homeworld_3
+		trait_mzilli_distant_origin_homeworld_4
+		trait_mzilli_distant_origin_homeworld_5
+	}
+	ai_weight = { weight = 0 }
+	randomized = no
+}
+
+trait_mzilli_distant_origin_homeworld_3 = {
+	cost = 0
+	icon = "gfx/interface/icons/traits/leader_traits/trait_ruler_expansionist.dds"
+	sorting_priority = -20
+	modification = no
+	allowed_archetypes = { BIOLOGICAL MACHINE ROBOT LITHOID }
+	opposites = {
+		trait_mzilli_distant_origin_3
+		trait_mzilli_distant_origin_homeworld_1
+		trait_mzilli_distant_origin_homeworld_2
+		trait_mzilli_distant_origin_homeworld_4
+		trait_mzilli_distant_origin_homeworld_5
+	}
+	ai_weight = { weight = 0 }
+	randomized = no
+}
+
+trait_mzilli_distant_origin_homeworld_4 = {
+	cost = 0
+	icon = "gfx/interface/icons/traits/leader_traits/trait_ruler_expansionist.dds"
+	sorting_priority = -20
+	modification = no
+	allowed_archetypes = { BIOLOGICAL MACHINE ROBOT LITHOID }
+	opposites = {
+		trait_mzilli_distant_origin_4
+		trait_mzilli_distant_origin_homeworld_1
+		trait_mzilli_distant_origin_homeworld_2
+		trait_mzilli_distant_origin_homeworld_3
+		trait_mzilli_distant_origin_homeworld_5
+	}
+	ai_weight = { weight = 0 }
+	randomized = no
+}
+
+trait_mzilli_distant_origin_homeworld_5 = {
+	cost = 0
+	icon = "gfx/interface/icons/traits/leader_traits/trait_ruler_expansionist.dds"
+	sorting_priority = -20
+	modification = no
+	allowed_archetypes = { BIOLOGICAL MACHINE ROBOT LITHOID }
+	opposites = {
+		trait_mzilli_distant_origin_5
+		trait_mzilli_distant_origin_homeworld_1
+		trait_mzilli_distant_origin_homeworld_2
+		trait_mzilli_distant_origin_homeworld_3
+		trait_mzilli_distant_origin_homeworld_4
+	}
+	ai_weight = { weight = 0 }
+	randomized = no
+}
