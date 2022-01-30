@@ -58,8 +58,10 @@ part = {
 
 	trigger = {
 		has_origin = origin_homeworld_occupiers
-		NOT = { has_country_flag = custom_start_screen }
-		NOT = { has_country_flag = spawned_refugees }
+		NOR = {
+			has_country_flag = custom_start_screen
+			has_country_flag = spawned_refugees
+		}
 		any_country = {
 			has_origin = origin_mzilli_exiles
 			home_planet = { is_same_value = ROOT.capital_scope }

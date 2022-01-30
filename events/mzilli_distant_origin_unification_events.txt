@@ -136,7 +136,7 @@ country_event = {
 						root.home_planet = {
 							has_planet_flag = homeworld_of_@prev
 							exists = space_owner
-							space_owner = { is_same_value = root }
+							is_owned_by = root
 						}
 						capital_scope = { NOT = { has_planet_flag = vestigial_colony_of_@root } }
 					}
@@ -146,7 +146,7 @@ country_event = {
 						prev.home_planet = {
 							has_planet_flag = homeworld_of_@prev
 							exists = space_owner
-							space_owner = { is_country = root }
+							is_owned_by = root
 						}
 						capital_scope = { NOT = { has_planet_flag = vestigial_colony_of_@root } }
 					}
@@ -401,10 +401,8 @@ ship_event = {
 		trigger = {
 			owner = {
 				OR = {
-					has_ethic = ethic_xenophobe
-					has_ethic = ethic_fanatic_xenophobe
-					has_ethic = ethic_militarist
-					has_ethic = ethic_fanatic_militarist
+					is_xenophobe = yes
+					is_militarist = yes
 				}
 			}
 		}
@@ -415,10 +413,8 @@ ship_event = {
 		trigger = {
 			owner = {
 				NOR = {
-					has_ethic = ethic_xenophobe
-					has_ethic = ethic_fanatic_xenophobe
-					has_ethic = ethic_militarist
-					has_ethic = ethic_fanatic_militarist
+					is_xenophobe = yes
+					is_militarist = yes
 				}
 			}
 		}
@@ -485,10 +481,7 @@ ship_event = {
 		name = mzilli_distant_origin_unification.6.phobe_mil
 		trigger = {
 			owner = {
-				OR = {
-					has_ethic = ethic_xenophobe
-					has_ethic = ethic_fanatic_xenophobe
-				}
+				is_xenophobe = yes
 			}
 		}
 		owner = { vestigial_colonies_add = yes }
@@ -499,10 +492,7 @@ ship_event = {
 		trigger = {
 			FROM = { is_planet_class = pc_shrouded }
 			owner = {
-				OR = {
-					has_ethic = ethic_xenophile
-					has_ethic = ethic_fanatic_xenophile
-				}
+				is_xenophile = yes
 			}
 		}
 		owner = { vestigial_colonies_add = yes }
@@ -513,10 +503,7 @@ ship_event = {
 		trigger = {
 			FROM = { NOT = { is_planet_class = pc_shrouded } }
 			owner = {
-				OR = {
-					has_ethic = ethic_xenophile
-					has_ethic = ethic_fanatic_xenophile
-				}
+				is_xenophile = yes
 			}
 		}
 		owner = { vestigial_colonies_add = yes }
@@ -526,10 +513,7 @@ ship_event = {
 		name = mzilli_distant_origin_unification.7.spir
 		trigger = {
 			owner = {
-				OR = {
-					has_ethic = ethic_spiritualist
-					has_ethic = ethic_fanatic_spiritualist
-				}
+				is_spiritualist = yes
 			}
 		}
 		owner = { vestigial_colonies_add = yes }
@@ -540,10 +524,7 @@ ship_event = {
 		trigger = {
 			FROM = { is_planet_class = pc_shrouded }
 			owner = {
-				OR = {
-					has_ethic = ethic_materialist
-					has_ethic = ethic_fanatic_materialist
-				}
+				is_materialist = yes
 			}
 		}
 		owner = { vestigial_colonies_add = yes }
@@ -554,10 +535,7 @@ ship_event = {
 		trigger = {
 			FROM = { NOT = { is_planet_class = pc_shrouded } }
 			owner = {
-				OR = {
-					has_ethic = ethic_materialist
-					has_ethic = ethic_fanatic_materialist
-				}
+				is_materialist = yes
 			}
 		}
 		owner = { vestigial_colonies_add = yes }
@@ -569,8 +547,7 @@ ship_event = {
 			FROM = { is_planet_class = pc_shrouded }
 			owner = {
 				OR = {
-					has_ethic = ethic_militarist
-					has_ethic = ethic_fanatic_militarist
+					is_militarist = yes
 				}
 			}
 		}
@@ -583,8 +560,7 @@ ship_event = {
 			FROM = { NOT = { is_planet_class = pc_shrouded } }
 			owner = {
 				OR = {
-					has_ethic = ethic_militarist
-					has_ethic = ethic_fanatic_militarist
+					is_militarist = yes
 				}
 			}
 		}
@@ -610,10 +586,7 @@ ship_event = {
 		trigger = {
 			FROM = { NOT = { is_planet_class = pc_shrouded } }
 			owner = {
-				OR = {
-					has_ethic = ethic_pacifist
-					has_ethic = ethic_fanatic_pacifist
-				}
+				is_pacifist = yes
 			}
 		}
 		owner = { vestigial_colonies_add = yes }
@@ -623,10 +596,7 @@ ship_event = {
 		name = mzilli_distant_origin_unification.7.egal
 		trigger = {
 			owner = {
-				OR = {
-					has_ethic = ethic_egalitarian
-					has_ethic = ethic_fanatic_egalitarian
-				}
+				is_egalitarian = yes
 			}
 		}
 		owner = { vestigial_colonies_add = yes }
@@ -636,10 +606,7 @@ ship_event = {
 		name = mzilli_distant_origin_unification.7.auth
 		trigger = {
 			owner = {
-				OR = {
-					has_ethic = ethic_authoritarian
-					has_ethic = ethic_fanatic_authoritarian
-				}
+				is_authoritarian = yes
 			}
 		}
 		owner = { vestigial_colonies_add = yes }
@@ -651,22 +618,14 @@ ship_event = {
 			FROM = { is_planet_class = pc_shrouded }
 			owner = {
 				NOR = {
-					has_ethic = ethic_xenophobe
-					has_ethic = ethic_fanatic_xenophobe
-					has_ethic = ethic_xenophile
-					has_ethic = ethic_fanatic_xenophile
-					has_ethic = ethic_spiritualist
-					has_ethic = ethic_fanatic_spiritualist
-					has_ethic = ethic_materialist
-					has_ethic = ethic_fanatic_materialist
-					has_ethic = ethic_militarist
-					has_ethic = ethic_fanatic_militarist
-					has_ethic = ethic_pacifist
-					has_ethic = ethic_fanatic_pacifist
-					has_ethic = ethic_egalitarian
-					has_ethic = ethic_fanatic_egalitarian
-					has_ethic = ethic_authoritarian
-					has_ethic = ethic_fanatic_authoritarian
+					is_xenophobe = yes
+					is_xenophile = yes
+					is_spiritualist = yes
+					is_materialist = yes
+					is_militarist = yes
+					is_pacifist = yes
+					is_egalitarian = yes
+					is_authoritarian = yes
 				}
 			}
 		}
@@ -679,22 +638,14 @@ ship_event = {
 			FROM = { NOT = { is_planet_class = pc_shrouded } }
 			owner = {
 				NOR = {
-					has_ethic = ethic_xenophobe
-					has_ethic = ethic_fanatic_xenophobe
-					has_ethic = ethic_xenophile
-					has_ethic = ethic_fanatic_xenophile
-					has_ethic = ethic_spiritualist
-					has_ethic = ethic_fanatic_spiritualist
-					has_ethic = ethic_materialist
-					has_ethic = ethic_fanatic_materialist
-					has_ethic = ethic_militarist
-					has_ethic = ethic_fanatic_militarist
-					has_ethic = ethic_pacifist
-					has_ethic = ethic_fanatic_pacifist
-					has_ethic = ethic_egalitarian
-					has_ethic = ethic_fanatic_egalitarian
-					has_ethic = ethic_authoritarian
-					has_ethic = ethic_fanatic_authoritarian
+					is_xenophobe = yes
+					is_xenophile = yes
+					is_spiritualist = yes
+					is_materialist = yes
+					is_militarist = yes
+					is_pacifist = yes
+					is_egalitarian = yes
+					is_authoritarian = yes
 				}
 			}
 		}
@@ -768,10 +719,8 @@ ship_event = {
 		trigger = {
 			owner = {
 				OR = {
-					has_ethic = ethic_xenophobe
-					has_ethic = ethic_fanatic_xenophobe
-					has_ethic = ethic_militarist
-					has_ethic = ethic_fanatic_militarist
+					is_xenophobe = yes
+					is_militarist = yes
 				}
 			}
 		}
@@ -782,10 +731,8 @@ ship_event = {
 		trigger = {
 			owner = {
 				NOR = {
-					has_ethic = ethic_xenophobe
-					has_ethic = ethic_fanatic_xenophobe
-					has_ethic = ethic_militarist
-					has_ethic = ethic_fanatic_militarist
+					is_xenophobe = yes
+					is_militarist = yes
 				}
 			}
 		}
@@ -825,10 +772,7 @@ ship_event = {
 		name = mzilli_distant_origin_unification.9.phobe
 		trigger = {
 			owner = {
-				OR = {
-					has_ethic = ethic_xenophobe
-					has_ethic = ethic_fanatic_xenophobe
-				}
+				is_xenophobe = yes
 			}
 		}
 		owner = { vestigial_colonies_add = yes }
@@ -838,10 +782,7 @@ ship_event = {
 		name = mzilli_distant_origin_unification.9.phile
 		trigger = {
 			owner = {
-				OR = {
-					has_ethic = ethic_xenophile
-					has_ethic = ethic_fanatic_xenophile
-				}
+				is_xenophile = yes
 			}
 		}
 		owner = { vestigial_colonies_add = yes }
@@ -851,10 +792,7 @@ ship_event = {
 		name = mzilli_distant_origin_unification.9.spir
 		trigger = {
 			owner = {
-				OR = {
-					has_ethic = ethic_spiritualist
-					has_ethic = ethic_fanatic_spiritualist
-				}
+				is_spiritualist = yes
 			}
 		}
 		owner = { vestigial_colonies_add = yes }
@@ -864,10 +802,7 @@ ship_event = {
 		name = mzilli_distant_origin_unification.9.mat
 		trigger = {
 			owner = {
-				OR = {
-					has_ethic = ethic_materialist
-					has_ethic = ethic_fanatic_materialist
-				}
+				is_materialist = yes
 			}
 		}
 		owner = { vestigial_colonies_add = yes }
@@ -878,8 +813,7 @@ ship_event = {
 		trigger = {
 			owner = {
 				OR = {
-					has_ethic = ethic_militarist
-					has_ethic = ethic_fanatic_militarist
+					is_militarist = yes
 				}
 			}
 		}
@@ -890,10 +824,7 @@ ship_event = {
 		name = mzilli_distant_origin_unification.9.pac
 		trigger = {
 			owner = {
-				OR = {
-					has_ethic = ethic_pacifist
-					has_ethic = ethic_fanatic_pacifist
-				}
+				is_pacifist = yes
 			}
 		}
 		owner = { vestigial_colonies_add = yes }
@@ -903,10 +834,7 @@ ship_event = {
 		name = mzilli_distant_origin_unification.9.egal
 		trigger = {
 			owner = {
-				OR = {
-					has_ethic = ethic_egalitarian
-					has_ethic = ethic_fanatic_egalitarian
-				}
+				is_egalitarian = yes
 			}
 		}
 		owner = { vestigial_colonies_add = yes }
@@ -916,10 +844,7 @@ ship_event = {
 		name = mzilli_distant_origin_unification.9.auth
 		trigger = {
 			owner = {
-				OR = {
-					has_ethic = ethic_authoritarian
-					has_ethic = ethic_fanatic_authoritarian
-				}
+				is_authoritarian = yes
 			}
 		}
 		owner = { vestigial_colonies_add = yes }
@@ -930,22 +855,14 @@ ship_event = {
 		trigger = {
 			owner = {
 				NOR = {
-					has_ethic = ethic_xenophobe
-					has_ethic = ethic_fanatic_xenophobe
-					has_ethic = ethic_xenophile
-					has_ethic = ethic_fanatic_xenophile
-					has_ethic = ethic_spiritualist
-					has_ethic = ethic_fanatic_spiritualist
-					has_ethic = ethic_materialist
-					has_ethic = ethic_fanatic_materialist
-					has_ethic = ethic_militarist
-					has_ethic = ethic_fanatic_militarist
-					has_ethic = ethic_pacifist
-					has_ethic = ethic_fanatic_pacifist
-					has_ethic = ethic_egalitarian
-					has_ethic = ethic_fanatic_egalitarian
-					has_ethic = ethic_authoritarian
-					has_ethic = ethic_fanatic_authoritarian
+					is_xenophobe = yes
+					is_xenophile = yes
+					is_spiritualist = yes
+					is_materialist = yes
+					is_militarist = yes
+					is_pacifist = yes
+					is_egalitarian = yes
+					is_authoritarian = yes
 				}
 			}
 		}
@@ -1101,10 +1018,7 @@ ship_event = {
 		trigger = {
 			FROM.space_owner = { NOT = { has_ethic = ethic_gestalt_consciousness } }
 			owner = {
-				OR = {
-					has_ethic = ethic_xenophobe
-					has_ethic = ethic_fanatic_xenophobe
-				}
+				is_xenophobe = yes
 			}
 		}
 		owner = { vestigial_colonies_add = yes }
@@ -1115,10 +1029,7 @@ ship_event = {
 		trigger = {
 			FROM.space_owner = { NOT = { has_ethic = ethic_gestalt_consciousness } }
 			owner = {
-				OR = {
-					has_ethic = ethic_xenophile
-					has_ethic = ethic_fanatic_xenophile
-				}
+				is_xenophile = yes
 			}
 		}
 		owner = { vestigial_colonies_add = yes }
@@ -1129,10 +1040,7 @@ ship_event = {
 		trigger = {
 			FROM.space_owner = { NOT = { has_ethic = ethic_gestalt_consciousness } }
 			owner = {
-				OR = {
-					has_ethic = ethic_spiritualist
-					has_ethic = ethic_fanatic_spiritualist
-				}
+				is_spiritualist = yes
 			}
 		}
 		owner = { vestigial_colonies_add = yes }
@@ -1143,10 +1051,7 @@ ship_event = {
 		trigger = {
 			FROM.space_owner = { NOT = { has_ethic = ethic_gestalt_consciousness } }
 			owner = {
-				OR = {
-					has_ethic = ethic_materialist
-					has_ethic = ethic_fanatic_materialist
-				}
+				is_materialist = yes
 			}
 		}
 		owner = { vestigial_colonies_add = yes }
@@ -1158,8 +1063,7 @@ ship_event = {
 			FROM.space_owner = { NOT = { has_ethic = ethic_gestalt_consciousness } }
 			owner = {
 				OR = {
-					has_ethic = ethic_militarist
-					has_ethic = ethic_fanatic_militarist
+					is_militarist = yes
 				}
 			}
 		}
@@ -1171,10 +1075,7 @@ ship_event = {
 		trigger = {
 			FROM.space_owner = { NOT = { has_ethic = ethic_gestalt_consciousness } }
 			owner = {
-				OR = {
-					has_ethic = ethic_pacifist
-					has_ethic = ethic_fanatic_pacifist
-				}
+				is_pacifist = yes
 			}
 		}
 		owner = { vestigial_colonies_add = yes }
@@ -1185,10 +1086,7 @@ ship_event = {
 		trigger = {
 			FROM.space_owner = { NOT = { has_ethic = ethic_gestalt_consciousness } }
 			owner = {
-				OR = {
-					has_ethic = ethic_egalitarian
-					has_ethic = ethic_fanatic_egalitarian
-				}
+				is_egalitarian = yes
 			}
 		}
 		owner = { vestigial_colonies_add = yes }
@@ -1199,10 +1097,7 @@ ship_event = {
 		trigger = {
 			FROM.space_owner = { NOT = { has_ethic = ethic_gestalt_consciousness } }
 			owner = {
-				OR = {
-					has_ethic = ethic_authoritarian
-					has_ethic = ethic_fanatic_authoritarian
-				}
+				is_authoritarian = yes
 			}
 		}
 		owner = { vestigial_colonies_add = yes }
@@ -1214,22 +1109,14 @@ ship_event = {
 			FROM.space_owner = { NOT = { has_ethic = ethic_gestalt_consciousness } }
 			owner = {
 				NOR = {
-					has_ethic = ethic_xenophobe
-					has_ethic = ethic_fanatic_xenophobe
-					has_ethic = ethic_xenophile
-					has_ethic = ethic_fanatic_xenophile
-					has_ethic = ethic_spiritualist
-					has_ethic = ethic_fanatic_spiritualist
-					has_ethic = ethic_materialist
-					has_ethic = ethic_fanatic_materialist
-					has_ethic = ethic_militarist
-					has_ethic = ethic_fanatic_militarist
-					has_ethic = ethic_pacifist
-					has_ethic = ethic_fanatic_pacifist
-					has_ethic = ethic_egalitarian
-					has_ethic = ethic_fanatic_egalitarian
-					has_ethic = ethic_authoritarian
-					has_ethic = ethic_fanatic_authoritarian
+					is_xenophobe = yes
+					is_xenophile = yes
+					is_spiritualist = yes
+					is_materialist = yes
+					is_militarist = yes
+					is_pacifist = yes
+					is_egalitarian = yes
+					is_authoritarian = yes
 				}
 			}
 		}
@@ -1252,10 +1139,8 @@ ship_event = {
 			FROM.space_owner = { has_ethic = ethic_gestalt_consciousness }
 			owner = {
 				NOR = {
-					has_ethic = ethic_xenophobe
-					has_ethic = ethic_fanatic_xenophobe
-					has_ethic = ethic_egalitarian
-					has_ethic = ethic_fanatic_egalitarian
+					is_xenophobe = yes
+					is_egalitarian = yes
 				}
 			}
 		}
@@ -1267,10 +1152,8 @@ ship_event = {
 			FROM.space_owner = { has_ethic = ethic_gestalt_consciousness }
 			owner = {
 				OR = {
-					has_ethic = ethic_xenophobe
-					has_ethic = ethic_fanatic_xenophobe
-					has_ethic = ethic_egalitarian
-					has_ethic = ethic_fanatic_egalitarian
+					is_xenophobe = yes
+					is_egalitarian = yes
 				}
 			}
 		}
@@ -1389,10 +1272,8 @@ ship_event = {
 		trigger = {
 			owner = {
 				OR = {
-					has_ethic = ethic_xenophobe
-					has_ethic = ethic_fanatic_xenophobe
-					has_ethic = ethic_militarist
-					has_ethic = ethic_fanatic_militarist
+					is_xenophobe = yes
+					is_militarist = yes
 				}
 			}
 		}
@@ -1403,10 +1284,8 @@ ship_event = {
 		trigger = {
 			owner = {
 				NOR = {
-					has_ethic = ethic_xenophobe
-					has_ethic = ethic_fanatic_xenophobe
-					has_ethic = ethic_militarist
-					has_ethic = ethic_fanatic_militarist
+					is_xenophobe = yes
+					is_militarist = yes
 				}
 			}
 		}
@@ -1451,10 +1330,7 @@ country_event = {
 	title = mzilli_distant_origin_unification.13.name
 	desc = {
 		trigger = {
-			OR = {
-				has_ethic = ethic_xenophobe
-				has_ethic = ethic_fanatic_xenophobe
-			}
+			is_xenophobe = yes
 			NOT = { has_civic = civic_inward_perfection }
 		}
 		text = mzilli_distant_origin_unification.13.desc.phobe
@@ -1463,10 +1339,7 @@ country_event = {
 		trigger = {
 			OR = {
 				has_civic = civic_inward_perfection
-				NOR = {
-					has_ethic = ethic_xenophobe
-					has_ethic = ethic_fanatic_xenophobe
-				}
+				is_xenophobe = no
 			}
 		}
 		text = mzilli_distant_origin_unification.13.desc
@@ -1479,10 +1352,7 @@ country_event = {
 	option = {
 		name = mzilli_distant_origin_unification.13.phobe
 		trigger = {
-			OR = {
-				has_ethic = ethic_xenophobe
-				has_ethic = ethic_fanatic_xenophobe
-			}
+			is_xenophobe = yes
 			NOT = { has_civic = civic_inward_perfection }
 		}
 		add_monthly_resource_mult = { resource = society_research value = @tier3researchreward min = @tier3researchmin max = @tier3researchmax }
@@ -1497,10 +1367,7 @@ country_event = {
 	option = {
 		name = mzilli_distant_origin_unification.13.phile
 		trigger = {
-			OR = {
-				has_ethic = ethic_xenophile
-				has_ethic = ethic_fanatic_xenophile
-			}
+			is_xenophile = yes
 		}
 		add_monthly_resource_mult = { resource = society_research value = @tier3researchreward min = @tier3researchmin max = @tier3researchmax }
 	}
@@ -1508,10 +1375,7 @@ country_event = {
 	option = {
 		name = mzilli_distant_origin_unification.13.spir
 		trigger = {
-			OR = {
-				has_ethic = ethic_spiritualist
-				has_ethic = ethic_fanatic_spiritualist
-			}
+			is_spiritualist = yes
 		}
 		add_monthly_resource_mult = { resource = society_research value = @tier3researchreward min = @tier3researchmin max = @tier3researchmax }
 	}
@@ -1519,10 +1383,7 @@ country_event = {
 	option = {
 		name = mzilli_distant_origin_unification.13.mat
 		trigger = {
-			OR = {
-				has_ethic = ethic_materialist
-				has_ethic = ethic_fanatic_materialist
-			}
+			is_materialist = yes
 		}
 		add_monthly_resource_mult = { resource = society_research value = @tier3researchreward min = @tier3researchmin max = @tier3researchmax }
 	}
@@ -1530,10 +1391,7 @@ country_event = {
 	option = {
 		name = mzilli_distant_origin_unification.13.mil
 		trigger = {
-			OR = {
-				has_ethic = ethic_militarist
-				has_ethic = ethic_fanatic_militarist
-			}
+			is_militarist = yes
 		}
 		add_monthly_resource_mult = { resource = society_research value = @tier3researchreward min = @tier3researchmin max = @tier3researchmax }
 	}
@@ -1541,10 +1399,7 @@ country_event = {
 	option = {
 		name = mzilli_distant_origin_unification.13.pac
 		trigger = {
-			OR = {
-				has_ethic = ethic_pacifist
-				has_ethic = ethic_fanatic_pacifist
-			}
+			is_pacifist = yes
 		}
 		add_monthly_resource_mult = { resource = society_research value = @tier3researchreward min = @tier3researchmin max = @tier3researchmax }
 	}
@@ -1552,10 +1407,7 @@ country_event = {
 	option = {
 		name = mzilli_distant_origin_unification.13.egal
 		trigger = {
-			OR = {
-				has_ethic = ethic_egalitarian
-				has_ethic = ethic_fanatic_egalitarian
-			}
+			is_egalitarian = yes
 		}
 		add_monthly_resource_mult = { resource = society_research value = @tier3researchreward min = @tier3researchmin max = @tier3researchmax }
 	}
@@ -1563,10 +1415,7 @@ country_event = {
 	option = {
 		name = mzilli_distant_origin_unification.13.auth
 		trigger = {
-			OR = {
-				has_ethic = ethic_authoritarian
-				has_ethic = ethic_fanatic_authoritarian
-			}
+			is_authoritarian = yes
 		}
 		add_monthly_resource_mult = { resource = society_research value = @tier3researchreward min = @tier3researchmin max = @tier3researchmax }
 	}
@@ -1575,22 +1424,14 @@ country_event = {
 		name = FASCINATING
 		trigger = {
 			NOR = {
-				has_ethic = ethic_xenophobe
-				has_ethic = ethic_fanatic_xenophobe
-				has_ethic = ethic_xenophile
-				has_ethic = ethic_fanatic_xenophile
-				has_ethic = ethic_spiritualist
-				has_ethic = ethic_fanatic_spiritualist
-				has_ethic = ethic_materialist
-				has_ethic = ethic_fanatic_materialist
-				has_ethic = ethic_militarist
-				has_ethic = ethic_fanatic_militarist
-				has_ethic = ethic_pacifist
-				has_ethic = ethic_fanatic_pacifist
-				has_ethic = ethic_egalitarian
-				has_ethic = ethic_fanatic_egalitarian
-				has_ethic = ethic_authoritarian
-				has_ethic = ethic_fanatic_authoritarian
+				is_xenophobe = yes
+				is_xenophile = yes
+				is_spiritualist = yes
+				is_materialist = yes
+				is_militarist = yes
+				is_pacifist = yes
+				is_egalitarian = yes
+				is_authoritarian = yes
 			}
 		}
 		add_monthly_resource_mult = { resource = society_research value = @tier3researchreward min = @tier3researchmin max = @tier3researchmax }
@@ -1610,10 +1451,7 @@ country_event = {
 	option = {
 		name = mzilli_distant_origin_unification.14.phobe
 		trigger = {
-			OR = {
-				has_ethic = ethic_xenophobe
-				has_ethic = ethic_fanatic_xenophobe
-			}
+			is_xenophobe = yes
 		}
 		add_monthly_resource_mult = { resource = society_research value = @tier3researchreward min = @tier3researchmin max = @tier3researchmax }
 	}
@@ -1621,10 +1459,7 @@ country_event = {
 	option = {
 		name = mzilli_distant_origin_unification.14.phile
 		trigger = {
-			OR = {
-				has_ethic = ethic_xenophile
-				has_ethic = ethic_fanatic_xenophile
-			}
+			is_xenophile = yes
 		}
 		add_monthly_resource_mult = { resource = society_research value = @tier3researchreward min = @tier3researchmin max = @tier3researchmax }
 	}
@@ -1632,10 +1467,7 @@ country_event = {
 	option = {
 		name = mzilli_distant_origin_unification.14.spir
 		trigger = {
-			OR = {
-				has_ethic = ethic_spiritualist
-				has_ethic = ethic_fanatic_spiritualist
-			}
+			is_spiritualist = yes
 		}
 		add_monthly_resource_mult = { resource = society_research value = @tier3researchreward min = @tier3researchmin max = @tier3researchmax }
 	}
@@ -1643,10 +1475,7 @@ country_event = {
 	option = {
 		name = mzilli_distant_origin_unification.14.mat
 		trigger = {
-			OR = {
-				has_ethic = ethic_materialist
-				has_ethic = ethic_fanatic_materialist
-			}
+			is_materialist = yes
 		}
 		add_monthly_resource_mult = { resource = society_research value = @tier3researchreward min = @tier3researchmin max = @tier3researchmax }
 	}
@@ -1654,10 +1483,7 @@ country_event = {
 	option = {
 		name = mzilli_distant_origin_unification.14.mil
 		trigger = {
-			OR = {
-				has_ethic = ethic_militarist
-				has_ethic = ethic_fanatic_militarist
-			}
+			is_militarist = yes
 		}
 		add_monthly_resource_mult = { resource = society_research value = @tier3researchreward min = @tier3researchmin max = @tier3researchmax }
 	}
@@ -1665,10 +1491,7 @@ country_event = {
 	option = {
 		name = mzilli_distant_origin_unification.14.pac
 		trigger = {
-			OR = {
-				has_ethic = ethic_pacifist
-				has_ethic = ethic_fanatic_pacifist
-			}
+			is_pacifist = yes
 		}
 		add_monthly_resource_mult = { resource = society_research value = @tier3researchreward min = @tier3researchmin max = @tier3researchmax }
 	}
@@ -1676,10 +1499,7 @@ country_event = {
 	option = {
 		name = mzilli_distant_origin_unification.14.egal
 		trigger = {
-			OR = {
-				has_ethic = ethic_egalitarian
-				has_ethic = ethic_fanatic_egalitarian
-			}
+			is_egalitarian = yes
 		}
 		add_monthly_resource_mult = { resource = society_research value = @tier3researchreward min = @tier3researchmin max = @tier3researchmax }
 	}
@@ -1687,10 +1507,7 @@ country_event = {
 	option = {
 		name = mzilli_distant_origin_unification.14.auth
 		trigger = {
-			OR = {
-				has_ethic = ethic_authoritarian
-				has_ethic = ethic_fanatic_authoritarian
-			}
+			is_authoritarian = yes
 		}
 		add_monthly_resource_mult = { resource = society_research value = @tier3researchreward min = @tier3researchmin max = @tier3researchmax }
 	}
@@ -1699,22 +1516,14 @@ country_event = {
 		name = FASCINATING
 		trigger = {
 			NOR = {
-				has_ethic = ethic_xenophobe
-				has_ethic = ethic_fanatic_xenophobe
-				has_ethic = ethic_xenophile
-				has_ethic = ethic_fanatic_xenophile
-				has_ethic = ethic_spiritualist
-				has_ethic = ethic_fanatic_spiritualist
-				has_ethic = ethic_materialist
-				has_ethic = ethic_fanatic_materialist
-				has_ethic = ethic_militarist
-				has_ethic = ethic_fanatic_militarist
-				has_ethic = ethic_pacifist
-				has_ethic = ethic_fanatic_pacifist
-				has_ethic = ethic_egalitarian
-				has_ethic = ethic_fanatic_egalitarian
-				has_ethic = ethic_authoritarian
-				has_ethic = ethic_fanatic_authoritarian
+				is_xenophobe = yes
+				is_xenophile = yes
+				is_spiritualist = yes
+				is_materialist = yes
+				is_militarist = yes
+				is_pacifist = yes
+				is_egalitarian = yes
+				is_authoritarian = yes
 			}
 		}
 		add_monthly_resource_mult = { resource = society_research value = @tier3researchreward min = @tier3researchmin max = @tier3researchmax }
@@ -1734,10 +1543,7 @@ country_event = {
 	option = {
 		name = mzilli_distant_origin_unification.15.phobe
 		trigger = {
-			OR = {
-				has_ethic = ethic_xenophobe
-				has_ethic = ethic_fanatic_xenophobe
-			}
+			is_xenophobe = yes
 		}
 		add_monthly_resource_mult = { resource = society_research value = @tier3researchreward min = @tier3researchmin max = @tier3researchmax }
 	}
@@ -1745,10 +1551,7 @@ country_event = {
 	option = {
 		name = mzilli_distant_origin_unification.15.phile
 		trigger = {
-			OR = {
-				has_ethic = ethic_xenophile
-				has_ethic = ethic_fanatic_xenophile
-			}
+			is_xenophile = yes
 		}
 		add_monthly_resource_mult = { resource = society_research value = @tier3researchreward min = @tier3researchmin max = @tier3researchmax }
 	}
@@ -1756,10 +1559,7 @@ country_event = {
 	option = {
 		name = mzilli_distant_origin_unification.15.spir
 		trigger = {
-			OR = {
-				has_ethic = ethic_spiritualist
-				has_ethic = ethic_fanatic_spiritualist
-			}
+			is_spiritualist = yes
 		}
 		add_monthly_resource_mult = { resource = society_research value = @tier3researchreward min = @tier3researchmin max = @tier3researchmax }
 	}
@@ -1767,10 +1567,7 @@ country_event = {
 	option = {
 		name = mzilli_distant_origin_unification.15.mat
 		trigger = {
-			OR = {
-				has_ethic = ethic_materialist
-				has_ethic = ethic_fanatic_materialist
-			}
+			is_materialist = yes
 		}
 		add_monthly_resource_mult = { resource = society_research value = @tier3researchreward min = @tier3researchmin max = @tier3researchmax }
 	}
@@ -1778,10 +1575,7 @@ country_event = {
 	option = {
 		name = mzilli_distant_origin_unification.15.mil
 		trigger = {
-			OR = {
-				has_ethic = ethic_militarist
-				has_ethic = ethic_fanatic_militarist
-			}
+			is_militarist = yes
 		}
 		add_monthly_resource_mult = { resource = society_research value = @tier3researchreward min = @tier3researchmin max = @tier3researchmax }
 	}
@@ -1789,10 +1583,7 @@ country_event = {
 	option = {
 		name = mzilli_distant_origin_unification.15.pac
 		trigger = {
-			OR = {
-				has_ethic = ethic_pacifist
-				has_ethic = ethic_fanatic_pacifist
-			}
+			is_pacifist = yes
 		}
 		add_monthly_resource_mult = { resource = society_research value = @tier3researchreward min = @tier3researchmin max = @tier3researchmax }
 	}
@@ -1800,10 +1591,7 @@ country_event = {
 	option = {
 		name = mzilli_distant_origin_unification.15.egal
 		trigger = {
-			OR = {
-				has_ethic = ethic_egalitarian
-				has_ethic = ethic_fanatic_egalitarian
-			}
+			is_egalitarian = yes
 		}
 		add_monthly_resource_mult = { resource = society_research value = @tier3researchreward min = @tier3researchmin max = @tier3researchmax }
 	}
@@ -1811,10 +1599,7 @@ country_event = {
 	option = {
 		name = mzilli_distant_origin_unification.15.auth
 		trigger = {
-			OR = {
-				has_ethic = ethic_authoritarian
-				has_ethic = ethic_fanatic_authoritarian
-			}
+			is_authoritarian = yes
 		}
 		add_monthly_resource_mult = { resource = society_research value = @tier3researchreward min = @tier3researchmin max = @tier3researchmax }
 	}
@@ -1823,22 +1608,14 @@ country_event = {
 		name = FASCINATING
 		trigger = {
 			NOR = {
-				has_ethic = ethic_xenophobe
-				has_ethic = ethic_fanatic_xenophobe
-				has_ethic = ethic_xenophile
-				has_ethic = ethic_fanatic_xenophile
-				has_ethic = ethic_spiritualist
-				has_ethic = ethic_fanatic_spiritualist
-				has_ethic = ethic_materialist
-				has_ethic = ethic_fanatic_materialist
-				has_ethic = ethic_militarist
-				has_ethic = ethic_fanatic_militarist
-				has_ethic = ethic_pacifist
-				has_ethic = ethic_fanatic_pacifist
-				has_ethic = ethic_egalitarian
-				has_ethic = ethic_fanatic_egalitarian
-				has_ethic = ethic_authoritarian
-				has_ethic = ethic_fanatic_authoritarian
+				is_xenophobe = yes
+				is_xenophile = yes
+				is_spiritualist = yes
+				is_materialist = yes
+				is_militarist = yes
+				is_pacifist = yes
+				is_egalitarian = yes
+				is_authoritarian = yes
 			}
 		}
 		add_monthly_resource_mult = { resource = society_research value = @tier3researchreward min = @tier3researchmin max = @tier3researchmax }
@@ -1858,10 +1635,7 @@ country_event = {
 	option = {
 		name = mzilli_distant_origin_unification.16.phobe
 		trigger = {
-			OR = {
-				has_ethic = ethic_xenophobe
-				has_ethic = ethic_fanatic_xenophobe
-			}
+			is_xenophobe = yes
 		}
 		add_monthly_resource_mult = { resource = society_research value = @tier3researchreward min = @tier3researchmin max = @tier3researchmax }
 	}
@@ -1869,10 +1643,7 @@ country_event = {
 	option = {
 		name = mzilli_distant_origin_unification.16.phile
 		trigger = {
-			OR = {
-				has_ethic = ethic_xenophile
-				has_ethic = ethic_fanatic_xenophile
-			}
+			is_xenophile = yes
 		}
 		add_monthly_resource_mult = { resource = society_research value = @tier3researchreward min = @tier3researchmin max = @tier3researchmax }
 	}
@@ -1880,10 +1651,7 @@ country_event = {
 	option = {
 		name = mzilli_distant_origin_unification.16.spir
 		trigger = {
-			OR = {
-				has_ethic = ethic_spiritualist
-				has_ethic = ethic_fanatic_spiritualist
-			}
+			is_spiritualist = yes
 		}
 		add_monthly_resource_mult = { resource = society_research value = @tier3researchreward min = @tier3researchmin max = @tier3researchmax }
 	}
@@ -1891,10 +1659,7 @@ country_event = {
 	option = {
 		name = mzilli_distant_origin_unification.16.mat
 		trigger = {
-			OR = {
-				has_ethic = ethic_materialist
-				has_ethic = ethic_fanatic_materialist
-			}
+			is_materialist = yes
 		}
 		add_monthly_resource_mult = { resource = society_research value = @tier3researchreward min = @tier3researchmin max = @tier3researchmax }
 	}
@@ -1902,10 +1667,7 @@ country_event = {
 	option = {
 		name = mzilli_distant_origin_unification.16.mil
 		trigger = {
-			OR = {
-				has_ethic = ethic_militarist
-				has_ethic = ethic_fanatic_militarist
-			}
+			is_militarist = yes
 		}
 		add_monthly_resource_mult = { resource = society_research value = @tier3researchreward min = @tier3researchmin max = @tier3researchmax }
 	}
@@ -1913,10 +1675,7 @@ country_event = {
 	option = {
 		name = mzilli_distant_origin_unification.16.pac
 		trigger = {
-			OR = {
-				has_ethic = ethic_pacifist
-				has_ethic = ethic_fanatic_pacifist
-			}
+			is_pacifist = yes
 		}
 		add_monthly_resource_mult = { resource = society_research value = @tier3researchreward min = @tier3researchmin max = @tier3researchmax }
 	}
@@ -1924,10 +1683,7 @@ country_event = {
 	option = {
 		name = mzilli_distant_origin_unification.15.egal
 		trigger = {
-			OR = {
-				has_ethic = ethic_egalitarian
-				has_ethic = ethic_fanatic_egalitarian
-			}
+			is_egalitarian = yes
 		}
 		add_monthly_resource_mult = { resource = society_research value = @tier3researchreward min = @tier3researchmin max = @tier3researchmax }
 	}
@@ -1935,10 +1691,7 @@ country_event = {
 	option = {
 		name = mzilli_distant_origin_unification.15.auth
 		trigger = {
-			OR = {
-				has_ethic = ethic_authoritarian
-				has_ethic = ethic_fanatic_authoritarian
-			}
+			is_authoritarian = yes
 		}
 		add_monthly_resource_mult = { resource = society_research value = @tier3researchreward min = @tier3researchmin max = @tier3researchmax }
 	}
@@ -1947,22 +1700,14 @@ country_event = {
 		name = FASCINATING
 		trigger = {
 			NOR = {
-				has_ethic = ethic_xenophobe
-				has_ethic = ethic_fanatic_xenophobe
-				has_ethic = ethic_xenophile
-				has_ethic = ethic_fanatic_xenophile
-				has_ethic = ethic_spiritualist
-				has_ethic = ethic_fanatic_spiritualist
-				has_ethic = ethic_materialist
-				has_ethic = ethic_fanatic_materialist
-				has_ethic = ethic_militarist
-				has_ethic = ethic_fanatic_militarist
-				has_ethic = ethic_pacifist
-				has_ethic = ethic_fanatic_pacifist
-				has_ethic = ethic_egalitarian
-				has_ethic = ethic_fanatic_egalitarian
-				has_ethic = ethic_authoritarian
-				has_ethic = ethic_fanatic_authoritarian
+				is_xenophobe = yes
+				is_xenophile = yes
+				is_spiritualist = yes
+				is_materialist = yes
+				is_militarist = yes
+				is_pacifist = yes
+				is_egalitarian = yes
+				is_authoritarian = yes
 			}
 		}
 		add_monthly_resource_mult = { resource = society_research value = @tier3researchreward min = @tier3researchmin max = @tier3researchmax }
@@ -1977,7 +1722,7 @@ event = {
 	is_triggered_only = yes
 
 	trigger = {
-		any_country = {
+		any_playable_country = {
 			has_origin = origin_remnants
 			has_event_chain = vestigial_colony_search
 			any_galaxy_planet = {
@@ -2062,10 +1807,8 @@ country_event = {
 		clear_global_event_target = mzilli_fallen
 		random_country = {
 			limit = {
-				OR = {
-					is_country_type = fallen_empire
-					is_country_type = awakened_fallen_empire
-				}
+				
+					is_fallen_empire = yes
 				NOT = { has_country_flag = fallen_empire_machine }
 			}
 			owner_species = {

@@ -9,7 +9,7 @@ event = {
 	immediate = {
 		set_global_flag = game_started
 
-		every_country = {
+		every_playable_country = {
 			limit = { is_ai = no }
 			country_event = { id = country.900 days = 460 random = 60 }
 		}

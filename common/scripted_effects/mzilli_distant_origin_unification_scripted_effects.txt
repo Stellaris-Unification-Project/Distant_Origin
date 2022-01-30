@@ -357,7 +357,7 @@ create_dead_colony = {
 		0 = {
 			modifier = {
 				add = 10
-				NOT = { is_moon = yes }
+				is_moon = no
 				root = { species_portrait = human }
 				solar_system = { NOT = { any_system_planet = { has_planet_flag = prime_name } } }
 			}
@@ -830,7 +830,7 @@ create_primitive_vestigial_colony = {
 		0 = {
 			modifier = {
 				add = 10
-				NOT = { is_moon = yes }
+				is_moon = no
 				owner = { species_portrait = human }
 				solar_system = { NOT = { any_system_planet = { has_planet_flag = prime_name } } }
 			}
@@ -1601,7 +1601,7 @@ create_spacefaring_vestigial_colony = {
 		0 = {
 			modifier = {
 				add = 10
-				NOT = { is_moon = yes }
+				is_moon = no
 				owner = { species_portrait = human }
 				solar_system = { NOT = { any_system_planet = { has_planet_flag = prime_name } } }
 			}
@@ -2214,7 +2214,7 @@ create_machine_vestigial_colony = {
 			create_country = {
 				name_list = "MACHINE2"
 				type = default
-				species = last_created
+				species = last_created_species
 				ignore_initial_colony_error = yes
 				day_zero_contact = no
 				ethos = { ethic = ethic_gestalt_consciousness }
@@ -2235,7 +2235,7 @@ create_machine_vestigial_colony = {
 			create_country = {
 				name_list = "MACHINE3"
 				type = default
-				species = last_created
+				species = last_created_species
 				ignore_initial_colony_error = yes
 				day_zero_contact = no
 				ethos = { ethic = ethic_gestalt_consciousness }
@@ -2294,7 +2294,7 @@ create_machine_vestigial_colony = {
 		if = {
 			limit = { has_civic = civic_machine_assimilator }
 			every_owned_pop = {
-				limit = { NOT = { species = last_created } }
+				limit = { NOT = { species = last_created_species } }
 				modify_species = {
 					species = this
 					add_trait = trait_cybernetic

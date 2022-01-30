@@ -370,8 +370,7 @@ ship_event = {
 		trigger = {
 			owner = {
 				OR = {
-					has_ethic = ethic_authoritarian
-					has_ethic = ethic_fanatic_authoritarian
+					is_authoritarian = yes
 					has_civic = civic_shadow_council
 				}
 			}
@@ -447,8 +446,7 @@ ship_event = {
 		trigger = {
 			owner = {
 				OR = {
-					has_ethic = ethic_authoritarian
-					has_ethic = ethic_fanatic_authoritarian
+					is_authoritarian = yes
 					has_civic = civic_shadow_council
 				}
 			}
@@ -582,8 +580,7 @@ country_event = {
 		name = mzilli_distant_origin.4.b
 		trigger = {
 			OR = {
-				has_ethic = ethic_authoritarian
-				has_ethic = ethic_fanatic_authoritarian
+				is_authoritarian = yes
 				has_civic = civic_shadow_council
 			}
 		}
@@ -952,7 +949,7 @@ planet_event = {
 						}
 					}
 				}
-				NOT = { is_same_value = from.owner }
+				NOT = { is_same_empire = from.owner }
 			}
 			if = {
 				limit = { home_planet = { is_planet_class = pc_infested } }

@@ -843,7 +843,7 @@ create_distant_origin_country_with_random_namelist = {
 		else = {
 			create_primitive_species = yes
 			create_country = {
-				species = last_created
+				species = last_created_species
 				name_list = random
 				type = default
 				origin = "origin_homeworld_occupiers"
@@ -929,7 +929,7 @@ fix_sol_planet_names = {
 				has_planet_flag = planet_mercury
 				AND = {
 					is_planet_class = pc_molten
-					NOT = { is_moon = yes }
+					is_moon = no
 				}
 			}
 		}
@@ -938,7 +938,7 @@ fix_sol_planet_names = {
 	random_system_planet = {
 		limit = {
 			is_planet_class = pc_toxic
-			NOT = { is_moon = yes }
+			is_moon = no
 		}
 		set_name = "NAME_Venus"
 	}
@@ -995,7 +995,7 @@ fix_sol_planet_names = {
 				is_planet_class = pc_gas_giant
 				is_planet_class = pc_ice_giant
 			}
-			NOT = { has_moon = yes }
+			has_moon = no
 		}
 		set_name = "NAME_Uranus"
 	}
@@ -1007,7 +1007,7 @@ fix_sol_planet_names = {
 			}
 			has_moon = yes
 			num_moons = 1
-			NOT = { has_ring = yes }
+			has_ring = no
 		}
 		set_name = "NAME_Neptune"
 		random_moon = { set_name = "NAME_Triton" }

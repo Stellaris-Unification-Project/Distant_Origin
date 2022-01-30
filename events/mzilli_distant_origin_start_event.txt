@@ -315,7 +315,7 @@ event = {
 								}
 							}
 							random_owned_pop = {
-								limit = { species = { NOT = { is_same_value = prevprev.owner_species } } }
+								limit = { species = { NOT = { is_same_empire = prevprev.owner_species } } }
 								species = { save_global_event_target_as = source_species }
 							}
 						}
@@ -455,7 +455,7 @@ event = {
 										}
 									}
 									random_owned_pop = {
-										limit = { species = { NOT = { is_same_value = prevprev.owner_species } } }
+										limit = { species = { NOT = { is_same_empire = prevprev.owner_species } } }
 										species = {
 											save_global_event_target_as = source_species
 											set_species_homeworld = prevprevprev
@@ -477,7 +477,7 @@ event = {
 					if = { # Spawns homeworld system if none exists
 						limit = {
 							OR = {
-								NOT = { has_a_distant_origin_trait = yes }
+								has_a_distant_origin_trait = no
 								AND = {
 									owner_species = { has_trait = trait_mzilli_distant_origin_1 }
 									NOT = { any_system = { has_star_flag = distant_origin_homeworld_1 } }
@@ -566,7 +566,7 @@ event = {
 											}
 										}
 										random_owned_pop = {
-											limit = { species = { NOT = { is_same_value = prevprev.owner_species } } }
+											limit = { species = { NOT = { is_same_empire = prevprev.owner_species } } }
 											species = {
 												save_global_event_target_as = source_species
 												set_species_homeworld = prevprevprev
@@ -756,7 +756,7 @@ event = {
 								}
 							}
 							random_owned_pop = {
-								limit = { species = { NOT = { is_same_value = prevprev.owner_species } } }
+								limit = { species = { NOT = { is_same_empire = prevprev.owner_species } } }
 								species = { save_global_event_target_as = source_species }
 								prevprev = { change_pc = event_target:source_species }
 							}

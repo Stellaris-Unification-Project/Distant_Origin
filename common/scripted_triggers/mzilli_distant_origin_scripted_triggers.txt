@@ -60,8 +60,7 @@ is_valid_vestigial_colony_site = {
 		has_modifier = "titanic_life"
 		is_planet_class = pc_nuked
 		is_planet_class = pc_relic
-		is_planet_class = pc_ringworld_habitable
-		is_planet_class = pc_habitat
+		is_artificial = yes
 		is_planet_class = pc_bespin
 		exists = owner
 	}

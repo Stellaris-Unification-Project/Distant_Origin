@@ -87,7 +87,7 @@ triggered_opinion_distant_origin_vengeful_refugees = {
 triggered_opinion_distant_origin_vengeful_refugees_subject = {
 	trigger = {
 		has_civic = civic_vengeful_refugees
-		FROM = { any_subject = { any_system_within_border = { any_system_planet = { is_planet = root.home_planet } } } }
+		FROM = { any_subject = { any_planet_within_border = { is_planet = root.home_planet } } } }
 	}
 	opinion = {
 		base = -200

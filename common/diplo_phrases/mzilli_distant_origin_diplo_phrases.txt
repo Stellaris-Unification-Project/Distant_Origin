@@ -13,10 +13,7 @@ greetings = {
 		trigger = {
 			has_ai_personality = vengeful_refugees
 			FROM = {
-				OR = {
-					has_ethic = ethic_pacifist
-					has_ethic = ethic_fanatic_pacifist
-				}
+				is_pacifist = yes
 			}
 			NOT = { is_at_war_with = FROM }
 			OR = {
@@ -146,8 +143,10 @@ greetings = {
 		}
 		trigger = {
 			has_ai_personality = vengeful_refugees
-			NOT = { is_same_species = FROM }
-			NOT = { is_at_war_with = FROM }
+			NOR = {
+				is_same_species = FROM
+				is_at_war_with = FROM
+			}
 			is_neutral_to = FROM
 		}
 	}
@@ -159,8 +158,10 @@ greetings = {
 		}
 		trigger = {
 			has_ai_personality = vengeful_refugees
-			NOT = { is_same_species = FROM }
-			NOT = { is_at_war_with = FROM }
+			NOR = {
+				is_same_species = FROM
+				is_at_war_with = FROM
+			}
 			is_neutral_to = FROM
 		}
 	}
@@ -173,10 +174,7 @@ greetings = {
 		trigger = {
 			has_ai_personality = vengeful_refugees
 			FROM = {
-				OR = {
-					has_ethic = ethic_pacifist
-					has_ethic = ethic_fanatic_pacifist
-				}
+				is_pacifist = yes
 			}
 			NOT = { is_at_war_with = FROM }
 			is_neutral_to = FROM
@@ -243,8 +241,10 @@ greetings = {
 		}
 		trigger = {
 			has_ai_personality = vengeful_refugees
-			NOT = { is_same_species = FROM }
-			NOT = { is_at_war_with = FROM }
+			NOR = {
+				is_same_species = FROM
+				is_at_war_with = FROM
+			}
 			is_at_war = no
 			OR = {
 				is_friendly_to = FROM
@@ -261,8 +261,10 @@ greetings = {
 		}
 		trigger = {
 			has_ai_personality = vengeful_refugees
-			NOT = { is_same_species = FROM }
-			NOT = { is_at_war_with = FROM }
+			NOR = {
+				is_same_species = FROM
+				is_at_war_with = FROM
+			}
 			is_at_war = yes
 			OR = {
 				is_friendly_to = FROM
@@ -280,10 +282,7 @@ greetings = {
 		trigger = {
 			has_origin = origin_mzilli_exiles
 			FROM = {
-				OR = {
-					has_ethic = ethic_pacifist
-					has_ethic = ethic_fanatic_pacifist
-				}
+				is_pacifist = yes
 			}
 			NOT = { is_same_species = FROM }
 			NOT = { is_at_war_with = FROM }
@@ -303,8 +302,10 @@ greetings = {
 		trigger = {
 			has_ai_personality = vengeful_refugees
 			is_in_federation_with = FROM
-			NOT = { is_same_species = FROM }
-			NOT = { is_at_war_with = FROM }
+			NOR = {
+				is_same_species = FROM
+				is_at_war_with = FROM
+			}
 			OR = {
 				is_friendly_to = FROM
 				is_cordial_to = FROM
@@ -321,8 +322,10 @@ greetings = {
 		trigger = {
 			has_ai_personality = vengeful_refugees
 			is_in_federation_with = FROM
-			NOT = { is_same_species = FROM }
-			NOT = { is_at_war_with = FROM }
+			NOR = {
+				is_same_species = FROM
+				is_at_war_with = FROM
+			}
 			OR = {
 				is_friendly_to = FROM
 				is_cordial_to = FROM
@@ -341,8 +344,10 @@ greetings = {
 		trigger = {
 			has_ai_personality = vengeful_refugees
 			is_in_federation_with = FROM
-			NOT = { is_same_species = FROM }
-			NOT = { is_at_war_with = FROM }
+			NOR = {
+				is_same_species = FROM
+				is_at_war_with = FROM
+			}
 			OR = {
 				is_friendly_to = FROM
 				is_cordial_to = FROM
